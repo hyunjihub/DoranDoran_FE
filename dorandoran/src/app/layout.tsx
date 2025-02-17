@@ -42,7 +42,7 @@ export default function RootLayout({
             <div className="bg-white h-full w-full flex flex-col">
               <Header />
               <div className="h-full flex-glow overflow-auto scrollbar-hide">
-                <div className="flex flex-grow justify-center items-center w-full h-full">{children}</div>
+                <div className="flex-grow w-full h-full">{children}</div>
                 <Footer />
               </div>
               <TabBar />
