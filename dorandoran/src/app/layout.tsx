@@ -2,7 +2,6 @@ import './globals.css';
 
 import type { Metadata, Viewport } from 'next';
 
-import Footer from './_component/layout/Footer';
 import Header from './_component/layout/header/Header';
 import TabBar from './_component/layout/TabBar';
 
@@ -43,7 +42,6 @@ export default function RootLayout({
               <Header />
               <div className="h-full flex-glow overflow-auto scrollbar-hide">
                 <div className="flex-grow w-full h-full">{children}</div>
-                <Footer />
               </div>
               <TabBar />
             </div>

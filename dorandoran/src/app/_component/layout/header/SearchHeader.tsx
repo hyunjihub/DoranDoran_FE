@@ -5,7 +5,7 @@ import search from '/public/img/icon/search.svg';
 
 export default function SearchHeader() {
   return (
-    <div className="w-full flex items-center justify-center px-[16px] py-[12px]">
+    <div className="w-full h-full flex items-center justify-center px-[16px] py-[12px]">
       <Link href={'/'}>
         <Image src={arrow} alt="이전페이지" width={14} height={26} />
       </Link>

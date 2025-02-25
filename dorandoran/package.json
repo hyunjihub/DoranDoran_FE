@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/react-slick": "^0.23.13",
+    "framer-motion": "^12.4.7",
     "next": "15.1.7",
     "next-pwa": "^5.6.0",
     "react": "^19.0.0",

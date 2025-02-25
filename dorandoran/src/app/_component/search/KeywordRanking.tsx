@@ -4,12 +4,10 @@ interface KeywordRankingProps {
 }
 
 export default function KeywordRanking({ rank, keyword }: KeywordRankingProps) {
-  console.log(rank, keyword);
   return (
-    <li>
-      <p>
-        <strong>{rank}</strong> {keyword}
-      </p>
+    <li className="flex items-center gap-2">
+      <strong className={`w-6 ${rank <= 3 ? 'text-[#7B3796]' : ''}`}>{rank}</strong>
+      <span className="text-sm">{keyword}</span>
     </li>
   );
 }
