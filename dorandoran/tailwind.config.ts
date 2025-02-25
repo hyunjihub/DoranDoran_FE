@@ -8,6 +8,9 @@ export default {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    fontFamily: {
+      pretendard: ['Pretendard'],
+    },
     extend: {
       colors: {
         background: 'var(--background)',

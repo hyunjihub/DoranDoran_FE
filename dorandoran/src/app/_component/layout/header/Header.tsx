@@ -21,7 +21,7 @@ export default function Header() {
     <header className="w-full h-[64px] sticky top-0 bg-white">
       {pathname === '/' ? (
         <MainHeader />
-      ) : pathname === 'search' ? (
+      ) : pathname === '/search' ? (
         <SearchHeader />
       ) : (
         <div className="relative w-full flex items-center justify-center px-[16px] py-[12px]">
