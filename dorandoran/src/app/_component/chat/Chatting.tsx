@@ -1,18 +1,22 @@
+import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps } from 'react-virtualized';
+import React, { useCallback, useMemo } from 'react';
+
 import Date from './Date';
+import { IMessage } from '@/app/_util/types/types';
 import MyMessage from './MyMessage';
 import OtherMessage from './OtherMessage';
 import SystemMessage from './SystemMessage';
 import getChatDate from '@/app/_util/getChatDate';
 import getChatTime from '@/app/_util/getChatTime';
-import { useMemo } from 'react';
+import messageSample from '@/app/_util/messageSample.json';
+
+const cache = new CellMeasurerCache({
+  fixedWidth: true,
+  defaultHeight: 50,
+});
 
 export default function Chatting() {
-  const messages = [
-    { id: 1, sender: 'me', content: '안녕하세요!', timestamp: '2025-02-25 12:00:00' },
-    { id: 2, sender: 'other', content: '안녕하세요! 어떻게 도와드릴까요?', timestamp: '2025-02-25 12:01:00' },
-    { id: 3, sender: 'me', content: '채팅방 UI 구현 중이에요.', timestamp: '2025-02-25 12:02:00' },
-    { id: 4, sender: 'system', content: '도란2님이 퇴장하셨습니다.', timestamp: '2025-02-25 12:02:00' },
-  ];
+  const messages: IMessage[] = messageSample.messages;
 
   const processedMessages = useMemo(() => {
     return messages.map((message, index, arr) => {
@@ -27,26 +31,49 @@ export default function Chatting() {
     });
   }, [messages]);
 
+  const rowRenderer = useCallback(
+    ({ index, key, style, parent }: ListRowProps) => {
+      const message = processedMessages[index];
+      return (
+        <CellMeasurer cache={cache} parent={parent} key={key} columnIndex={0} rowIndex={index}>
+          <div key={key} style={style} className="w-full flex flex-col items-center">
+            {message.isDateChanged && <Date timestamp={message.timestamp} />}
+            {message.sender === 'me' ? (
+              <MyMessage
+                message={message.content}
+                timestamp={message.isLastInGroup ? getChatTime(message.timestamp) : null}
+              />
+            ) : message.sender === 'other' ? (
+              <OtherMessage
+                message={message.content}
+                timestamp={message.isLastInGroup ? getChatTime(message.timestamp) : null}
+              />
+            ) : (
+              <SystemMessage />
+            )}
+          </div>
+        </CellMeasurer>
+      );
+    },
+    [processedMessages]
+  );
+
   return (
-    <div className="w-full">
-      {processedMessages.map((message) => (
-        <div className="w-full flex flex-col items-center" key={message.id}>
-          {message.isDateChanged && <Date timestamp={message.timestamp} />}
-          {message.sender === 'me' ? (
-            <MyMessage
-              message={message.content}
-              timestamp={message.isLastInGroup ? getChatTime(message.timestamp) : null}
-            />
-          ) : message.sender === 'other' ? (
-            <OtherMessage
-              message={message.content}
-              timestamp={message.isLastInGroup ? getChatTime(message.timestamp) : null}
-            />
-          ) : (
-            <SystemMessage />
-          )}
-        </div>
-      ))}
+    <div className="w-full h-full pb-[80px]">
+      <AutoSizer>
+        {({ height, width }) => (
+          <List
+            className="overflow-scroll scrollbar-hide"
+            width={width}
+            height={height}
+            rowCount={processedMessages.length}
+            rowHeight={cache.rowHeight}
+            rowRenderer={rowRenderer}
+            deferredMeasurementCache={cache}
+            overscanRowCount={10}
+          />
+        )}
+      </AutoSizer>
     </div>
   );
 }

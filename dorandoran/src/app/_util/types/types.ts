@@ -10,3 +10,12 @@ export interface IChat {
   isAvaliable: boolean | null;
   chatTitle: string | null;
 }
+
+export interface IMessage {
+  id: number;
+  sender: string;
+  content: string;
+  timestamp: string;
+  isDateChanged?: boolean;
+  isLastInGroup?: boolean;
+}
