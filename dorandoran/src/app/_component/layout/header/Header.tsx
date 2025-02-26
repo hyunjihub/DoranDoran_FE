@@ -1,5 +1,6 @@
 'use client';
 
+import ChatHeader from './ChatHeader';
 import DefaultHeader from './DefaultHeader';
 import MainHeader from './MainHeader';
 import SearchHeader from './SearchHeader';
@@ -14,6 +15,8 @@ export default function Header() {
         <MainHeader />
       ) : pathname === '/search' ? (
         <SearchHeader />
+      ) : pathname.startsWith('/chat/') ? (
+        <ChatHeader />
       ) : (
         <DefaultHeader pathname={pathname} />
       )}

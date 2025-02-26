@@ -1,17 +1,23 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import plus from '/public/img/icon/plus.svg';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import user from '/public/img/icon/user.svg';
 
 export default function ChatListItem() {
   const [swiped, setSwiped] = useState(false);
 
+  const router = useRouter();
+
+  const handleEnter = () => {
+    router.push('/chat/1');
+  };
+
   return (
-    <Link className="relative w-full max-w-md mx-auto overflow-hidden" href={'/chat/1'}>
+    <li className="relative w-full max-w-md mx-auto overflow-hidden" onClick={handleEnter}>
       <motion.div
         className={`absolute inset-0 flex items-center justify-end bg-red-500 transition-all ${
           swiped ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
@@ -21,7 +27,7 @@ export default function ChatListItem() {
         <button className="text-white p-4">나가기</button>
       </motion.div>
 
-      <motion.li
+      <motion.div
         className="py-2 pr-3 flex justify-between items-center bg-white"
         drag="x"
         dragConstraints={{ left: -70, right: 0 }}
@@ -50,7 +56,7 @@ export default function ChatListItem() {
             1
           </div>
         </div>
-      </motion.li>
-    </Link>
+      </motion.div>
+    </li>
   );
 }

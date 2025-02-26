@@ -7,9 +7,11 @@ import hamburger from '/public/img/icon/hamburger.svg';
 import home from '/public/img/icon/home.svg';
 import search from '/public/img/icon/search.svg';
 import { usePathname } from 'next/navigation';
+import { useStore } from '@/store/useStore';
 import user from '/public/img/icon/user.svg';
 
 export default function TabBar() {
+  const { userId } = useStore();
   const pathname = usePathname();
   const notRendering = ['/search', '/login', '/singup', '/find', '/chat', '/mypage/nickname'];
   const isChatRoute = pathname.startsWith('/chat/') && pathname.split('/').length === 3;
@@ -41,7 +43,7 @@ export default function TabBar() {
           </Link>
         </li>
         <li>
-          <Link className="min-w-[55px] flex flex-col items-center" href={'/mypage'}>
+          <Link className="min-w-[55px] flex flex-col items-center" href={`${userId ? '/mypage' : '/login'}`}>
             <Image src={user} alt="마이페이지" width={30} height={30} />
             마이페이지
           </Link>
