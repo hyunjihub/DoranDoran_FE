@@ -37,7 +37,6 @@ export default function RootLayout({
             }}
             className="relative z-10 flex justify-center items-center"
           >
-            {/* 모바일 웹 UI - 여기에 실제 모바일 UI 콘텐츠를 추가 */}
             <div className="bg-white h-full w-full flex flex-col">
               <Header />
               <div className="h-full flex-glow overflow-auto scrollbar-hide">
@@ -47,8 +46,7 @@ export default function RootLayout({
             </div>
           </div>
 
-          {/* 홍보 UI 영역 */}
-          <div className="absolute top-0 left-0 right-0 bottom-0 bg-yellow-300 p-4 z-0 flex justify-center items-center">
+          <div className="absolute top-0 left-0 right-0 bottom-0 bg-[#FFE2E2] p-4 z-0 flex justify-center items-center">
             <div className="bg-white p-8 rounded-lg shadow-lg max-w-md">
               <h2 className="text-xl font-bold text-center">🎉 특별 할인 이벤트 🎉</h2>
               <p className="text-center">모바일 웹을 통해 50% 할인 혜택을 받으세요!</p>

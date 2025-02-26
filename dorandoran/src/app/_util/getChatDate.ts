@@ -8,5 +8,5 @@ export default function getChatDate(timestamp: string): string {
     weekday: 'short',
   };
 
-  return date.toLocaleDateString('ko-KR', options).replace(',', '').trim(); // 'ko-KR'로 한국어 형식 적용
+  return date.toLocaleDateString('ko-KR', options).replace(',', '').trim();
 }
