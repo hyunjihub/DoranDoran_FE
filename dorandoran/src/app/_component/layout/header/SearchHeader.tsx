@@ -1,12 +1,28 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import arrow from '/public/img/icon/prevArrow.svg';
 import search from '/public/img/icon/search.svg';
 
 export default function SearchHeader() {
+  const [previousPage, setPreviousPage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const prevPage = sessionStorage.getItem('prev');
+
+    if (prevPage) {
+      setPreviousPage(prevPage);
+    } else {
+      setPreviousPage('/');
+    }
+  }, []);
+
   return (
     <div className="w-full h-full flex items-center justify-center px-[16px] py-[12px]">
-      <Link href={'/'}>
+      <Link href={previousPage || '/'}>
         <Image src={arrow} alt="이전페이지" width={14} height={26} />
       </Link>
       <div className="relative ml-[24px] flex-1">
