@@ -9,11 +9,6 @@ export function useNavigationHistory() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === '/') {
-      sessionStorage.removeItem(HISTORY_KEY);
-      return;
-    }
-
     const storedHistory = sessionStorage.getItem(HISTORY_KEY);
     let parsedHistory: string[] = storedHistory ? JSON.parse(storedHistory) : [];
 
