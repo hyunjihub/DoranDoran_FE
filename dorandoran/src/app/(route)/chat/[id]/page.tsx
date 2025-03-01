@@ -1,7 +1,7 @@
 'use client';
 
 import Chatting from '@/app/_component/chat/Chatting';
-import TextInput from '@/app/_component/chat/TextInput';
+import MessageInput from '@/app/_component/chat/MessageInput';
 import { chatStore } from '@/store/useStore';
 import { useEffect } from 'react';
 
@@ -19,7 +19,7 @@ export default function Chat() {
   return (
     <div className="h-full px-[16px] flex flex-col">
       <Chatting />
-      <TextInput />
+      <MessageInput />
     </div>
   );
 }

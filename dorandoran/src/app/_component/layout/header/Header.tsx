@@ -20,7 +20,7 @@ export default function Header() {
         <MainHeader />
       ) : pathname === '/search' ? (
         <SearchHeader />
-      ) : pathname.startsWith('/chat/') ? (
+      ) : pathname.startsWith('/chat/') && !pathname.includes('/setting') ? (
         <ChatHeader />
       ) : (
         <DefaultHeader pathname={pathname} />

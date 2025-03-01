@@ -6,7 +6,7 @@ import Image from 'next/image';
 import camera from '/public/img/icon/camera.svg';
 import send from '/public/img/icon/send.svg';
 
-export default function TextInput() {
+export default function MessageInput() {
   const [message, setMessage] = useState<string>('');
   const fileInput = useRef<HTMLInputElement | null>(null);
 

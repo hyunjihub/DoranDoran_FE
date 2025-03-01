@@ -11,7 +11,7 @@ interface TitleMap {
 }
 
 export default function DefaultHeader({ pathname }: { pathname: string }) {
-  const pageTitle = (TITLE as TitleMap)[pathname] || '기본 제목';
+  const pageTitle = (TITLE as TitleMap)[pathname] || '채팅방 설정';
 
   const router = useRouter();
   const { goBack } = useNavigationHistory();
