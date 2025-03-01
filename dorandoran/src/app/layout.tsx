@@ -3,7 +3,6 @@ import './globals.css';
 import type { Metadata, Viewport } from 'next';
 
 import Header from './_component/layout/header/Header';
-import RouteObserver from './_util/RouteObserver';
 import TabBar from './_component/layout/TabBar';
 
 export const viewport: Viewport = {
@@ -46,8 +45,6 @@ export default function RootLayout({
               <TabBar />
             </div>
           </div>
-
-          <RouteObserver />
 
           <div className="absolute top-0 left-0 right-0 bottom-0 bg-[#FFE2E2] p-4 z-0 flex justify-center items-center">
             <div className="bg-white p-8 rounded-lg shadow-lg max-w-md">

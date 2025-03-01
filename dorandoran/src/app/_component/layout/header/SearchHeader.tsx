@@ -1,30 +1,25 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import Image from 'next/image';
-import Link from 'next/link';
 import arrow from '/public/img/icon/prevArrow.svg';
 import search from '/public/img/icon/search.svg';
+import { useNavigationHistory } from '@/app/_util/useNavigationHistory';
+import { useRouter } from 'next/navigation';
 
 export default function SearchHeader() {
-  const [previousPage, setPreviousPage] = useState<string | null>(null);
+  const router = useRouter();
+  const { goBack } = useNavigationHistory();
 
-  useEffect(() => {
-    const prevPage = sessionStorage.getItem('prev');
-
-    if (prevPage) {
-      setPreviousPage(prevPage);
-    } else {
-      setPreviousPage('/');
-    }
-  }, []);
+  const handleBack = () => {
+    const previousPage = goBack();
+    router.push(previousPage);
+  };
 
   return (
     <div className="w-full h-full flex items-center justify-center px-[16px] py-[12px]">
-      <Link href={previousPage || '/'}>
+      <button onClick={handleBack}>
         <Image src={arrow} alt="이전페이지" width={14} height={26} />
-      </Link>
+      </button>
       <div className="relative ml-[24px] flex-1">
         <input
           type="text"
