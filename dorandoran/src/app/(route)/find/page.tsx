@@ -21,7 +21,7 @@ export default function Find() {
   }, [queryType]);
 
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="h-full flex flex-col">
         <FindHeader type={type} setType={setType} />
         <form className="px-[16px] mt-[24px] flex flex-col gap-8">
