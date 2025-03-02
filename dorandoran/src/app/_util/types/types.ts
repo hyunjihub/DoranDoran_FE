@@ -19,3 +19,5 @@ export interface IMessage {
   isDateChanged?: boolean;
   isLastInGroup?: boolean;
 }
+
+export type AuthStatus = 'idle' | 'inProgress' | 'failed' | 'success';

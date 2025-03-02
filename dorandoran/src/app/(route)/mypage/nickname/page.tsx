@@ -1,6 +1,6 @@
 'use client';
 
-import TextInput from '@/app/_component/form/TextInput';
+import TextInput from '@/app/_component/form/setting/TextInput';
 import { useState } from 'react';
 
 export default function Nickname() {

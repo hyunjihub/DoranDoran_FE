@@ -9,13 +9,17 @@ export default function FindHeader({
     <header>
       <ul className="flex">
         <li
-          className={`w-1/2 text-center py-1.5 ${type === 'email' ? 'font-bold border-b-2 border-[#7B3796] ' : ''}`}
+          className={`w-1/2 text-center py-1.5 ${
+            type === 'email' ? 'font-bold border-b-2 border-[#7B3796] ' : 'border-b'
+          }`}
           onClick={() => setType('email')}
         >
           이메일 찾기
         </li>
         <li
-          className={`w-1/2 text-center py-1.5 ${type === 'password' ? 'font-bold border-b-2 border-[#7B3796] ' : ''}`}
+          className={`w-1/2 text-center py-1.5 ${
+            type === 'password' ? 'font-bold border-b-2 border-[#7B3796] ' : 'border-b'
+          }`}
           onClick={() => setType('password')}
         >
           비밀번호 재설정

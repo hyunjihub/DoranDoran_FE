@@ -1,10 +1,10 @@
-import ChatReceiveInput from '@/app/_component/form/ChatReceiveInput';
-import EmailInput from '@/app/_component/form/EmailInput';
+import ChatReceiveInput from '@/app/_component/form/setting/ChatReceiveInput';
+import EmailInput from '@/app/_component/form/setting/EmailInput';
 import Image from 'next/image';
-import ImageInput from '@/app/_component/form/ImageInput';
-import InputToLink from '@/app/_component/form/InputToLink';
+import ImageInput from '@/app/_component/form/setting/ImageInput';
+import InputToLink from '@/app/_component/form/setting/InputToLink';
 import Link from 'next/link';
-import PushNotificationInput from '@/app/_component/form/PushNotificationInput';
+import PushNotificationInput from '@/app/_component/form/setting/PushNotificationInput';
 import arrow from '/public/img/icon/prevArrow.svg';
 
 export default function MyPage() {

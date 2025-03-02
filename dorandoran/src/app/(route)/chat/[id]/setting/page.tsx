@@ -1,6 +1,6 @@
-import ImageInput from '@/app/_component/form/ImageInput';
-import InputToLink from '@/app/_component/form/InputToLink';
-import MaxCountInput from '@/app/_component/form/MaxCountInput';
+import ImageInput from '@/app/_component/form/setting/ImageInput';
+import InputToLink from '@/app/_component/form/setting/InputToLink';
+import MaxCountInput from '@/app/_component/form/setting/MaxCountInput';
 
 export default function Setting() {
   return (
