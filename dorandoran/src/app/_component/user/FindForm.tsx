@@ -21,7 +21,7 @@ export default function FindForm() {
   }, [queryType]);
 
   return (
-    <>
+    <div className="h-full flex flex-col">
       <FindHeader type={type} setType={setType} />
       <form className="px-[16px] mt-[24px] flex flex-col gap-8">
         <EmailInput authState={authState} setAuthState={setAuthState} />
@@ -30,6 +30,6 @@ export default function FindForm() {
           {type === 'email' ? '이메일 찾기' : '비밀번호 찾기'}
         </button>
       </form>
-    </>
+    </div>
   );
 }
