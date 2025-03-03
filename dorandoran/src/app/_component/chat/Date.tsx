@@ -1,3 +1,5 @@
+'use client';
+
 import getChatDate from '@/app/_util/getChatDate';
 
 export default function Date({ timestamp }: { timestamp: string }) {

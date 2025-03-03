@@ -1,5 +1,7 @@
+'use client';
+
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps } from 'react-virtualized';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Date from './Date';
 import { IMessage } from '@/app/_util/types/types';
@@ -16,7 +18,11 @@ const cache = new CellMeasurerCache({
 });
 
 export default function Chatting() {
-  const messages: IMessage[] = messageSample.messages;
+  const [messages, setMessages] = useState<IMessage[]>([]);
+
+  useEffect(() => {
+    setMessages(messageSample.messages);
+  }, []);
 
   const processedMessages = useMemo(() => {
     return messages.map((message, index, arr) => {
