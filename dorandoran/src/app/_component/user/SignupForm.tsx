@@ -1,24 +1,37 @@
 'use client';
 
+import { SubmitHandler, useForm } from 'react-hook-form';
+
 import { AuthStatus } from '@/app/_util/types/types';
 import EmailInput from '../form/EmailInput';
+import { ISignupForm } from '@/app/_util/types/types';
+import NicknameInput from '../form/NicknameInput';
 import PasswordInput from '../form/PasswordInput';
 import { useState } from 'react';
 
 export default function SignupForm() {
   const [authState, setAuthState] = useState<AuthStatus>('idle');
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<ISignupForm>({ mode: 'onBlur' });
+
+  const onSubmit: SubmitHandler<ISignupForm> = (data) => {
+    if (authState !== 'success') {
+      alert('이메일 인증이 완료되지 않았습니다.\n이메일 인증 후 다시 시도해주세요.');
+      return;
+    }
+    console.log(data);
+  };
 
   return (
-    <form className="mt-[24px] flex flex-col gap-8">
-      <EmailInput authState={authState} setAuthState={setAuthState} />
-      <PasswordInput type="signup" />
-      <label className="flex flex-col gap-1 font-bold">
-        닉네임
-        <input
-          className="border rounded p-[12px] text-sm outline-none font-normal"
-          placeholder="한글, 영문자만을 사용하여 2~8글자"
-        />
-      </label>
+    <form className="mt-[24px] flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
+      <EmailInput authState={authState} setAuthState={setAuthState} register={register} errors={errors} />
+      <PasswordInput type="signup" register={register} errors={errors} watch={watch} />
+      <NicknameInput register={register} errors={errors} />
+
       <button className="w-full py-[12px] border border-[#7B3796] bg-[#7B3796] rounded text-white text-center font-bold">
         가입하기
       </button>

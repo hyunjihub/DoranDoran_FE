@@ -20,4 +20,17 @@ export interface IMessage {
   isLastInGroup?: boolean;
 }
 
+export interface IFindForm {
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+
+export interface ISignupForm {
+  nickname: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+
 export type AuthStatus = 'idle' | 'inProgress' | 'failed' | 'success';
