@@ -3,11 +3,18 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { ILoginForm } from '@/app/_util/types/types';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
+import { useStore } from '@/store/useStore';
 
 export default function LoginForm() {
+  const router = useRouter();
+  const { setData } = useStore();
   const [loginFail, setLoginFail] = useState(false);
   const [capsLockFlag, setCapsLockFlag] = useState(false);
+  const param = useSearchParams();
 
   const {
     register,
@@ -15,9 +22,14 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm<ILoginForm>();
 
-  const onSubmit: SubmitHandler<ILoginForm> = (data) => {
-    console.log(data);
-    setLoginFail(true);
+  const onSubmit: SubmitHandler<ILoginForm> = async (data) => {
+    try {
+      const response = await axios.post('/api/member/login', data);
+      setData(response.data);
+      router.push(decodeURIComponent(param.get('redirect') ?? '/'));
+    } catch {
+      setLoginFail(true);
+    }
   };
 
   const checkCapsLock = (e: React.KeyboardEvent<HTMLInputElement>) => {

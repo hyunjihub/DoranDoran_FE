@@ -43,7 +43,10 @@ export default function TabBar() {
           </Link>
         </li>
         <li>
-          <Link className="min-w-[55px] flex flex-col items-center" href={`${userId ? '/mypage' : '/login'}`}>
+          <Link
+            className="min-w-[55px] flex flex-col items-center"
+            href={`${userId ? '/mypage' : `/login?redirect=${encodeURIComponent(pathname)}`}`}
+          >
             <Image src={user} alt="마이페이지" width={30} height={30} />
             마이페이지
           </Link>

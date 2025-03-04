@@ -7,9 +7,12 @@ import EmailInput from '../form/EmailInput';
 import { ISignupForm } from '@/app/_util/types/types';
 import NicknameInput from '../form/NicknameInput';
 import PasswordInput from '../form/PasswordInput';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function SignupForm() {
+  const router = useRouter();
   const [authState, setAuthState] = useState<AuthStatus>('idle');
   const {
     register,
@@ -18,12 +21,18 @@ export default function SignupForm() {
     formState: { errors },
   } = useForm<ISignupForm>({ mode: 'onBlur' });
 
-  const onSubmit: SubmitHandler<ISignupForm> = (data) => {
+  const onSubmit: SubmitHandler<ISignupForm> = async (data) => {
     if (authState !== 'success') {
       alert('이메일 인증이 완료되지 않았습니다.\n이메일 인증 후 다시 시도해주세요.');
       return;
     }
-    console.log(data);
+    try {
+      await axios.post('/api/member/signup', data);
+      alert('회원가입이 완료되었습니다!');
+      router.push('/');
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (

@@ -6,8 +6,29 @@ import InputToLink from '@/app/_component/form/setting/InputToLink';
 import Link from 'next/link';
 import PushNotificationInput from '@/app/_component/form/setting/PushNotificationInput';
 import arrow from '/public/img/icon/prevArrow.svg';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { useStore } from '@/store/useStore';
 
 export default function MyPage() {
+  const { setData } = useStore();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await axios.post('/api/member/logout');
+      setData({
+        userId: null,
+        profileImg: null,
+        nickname: null,
+        accessToken: null,
+      });
+      router.push('/');
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   return (
     <div className="w-full h-full flex flex-col items-center">
       <div className="w-full border-b border-t">
@@ -31,7 +52,9 @@ export default function MyPage() {
       <div className="w-full border-y">
         <PushNotificationInput />
       </div>
-      <button className="mt-10 w-[200px] text-white font-bold bg-[#7B3796] rounded-lg py-[12px]">로그아웃</button>
+      <button className="mt-10 w-[200px] text-white font-bold bg-[#7B3796] rounded-lg py-[12px]" onClick={handleLogout}>
+        로그아웃
+      </button>
       <button className="mt-3 text-gray-500 text-xs">회원 탈퇴</button>
     </div>
   );
