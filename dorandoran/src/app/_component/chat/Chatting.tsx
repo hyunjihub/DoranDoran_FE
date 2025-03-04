@@ -65,7 +65,7 @@ export default function Chatting() {
   );
 
   return (
-    <div className="w-full h-full pb-[80px]">
+    <div className="w-full h-full pb-[75px]">
       <AutoSizer>
         {({ height, width }) => (
           <List

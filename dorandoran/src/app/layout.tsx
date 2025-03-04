@@ -29,15 +29,8 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <div className="relative flex justify-center items-center min-h-screen bg-gray-100">
-          <div
-            style={{
-              width: '430px',
-              height: '100vh',
-              overflow: 'hidden',
-            }}
-            className="relative z-10 flex justify-center items-center"
-          >
-            <div className="bg-white h-full w-full flex flex-col">
+          <div className="w-[430px] h-screen overflow-hidden relative z-10 flex justify-center items-center">
+            <div className="bg-white h-full w-full flex flex-col relative">
               <Header />
               <div className="h-full flex-glow overflow-auto scrollbar-hide">
                 <div className="flex-grow w-full h-full">{children}</div>

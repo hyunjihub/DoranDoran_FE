@@ -18,7 +18,7 @@ export default function TabBar() {
 
   if (notRendering.includes(pathname) || isChatRoute) return null;
   return (
-    <nav className="sticky bottom-0 w-full border-t border-[#EAEAEA] px-[24px] py-[12px]">
+    <nav className="fixed bottom-0 left-1/2 transform -translate-x-1/2 border-t border-[#EAEAEA] px-[24px] py-[12px] bg-white w-full max-w-[430px]">
       <ul className="flex justify-between items-center text-xs font-semibold text-[#757575]">
         <li>
           <Link className="min-w-[55px] flex flex-col items-center" href={'/'}>

@@ -19,8 +19,15 @@ export default function FindForm() {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<IFindForm>({ mode: 'onBlur' });
+
+  useEffect(() => {
+    if (queryType === 'password' || queryType === 'email') {
+      setType(queryType);
+    }
+  }, [queryType]);
 
   const onSubmit: SubmitHandler<IFindForm> = (data) => {
     if (authState !== 'success') {
@@ -32,10 +39,8 @@ export default function FindForm() {
   };
 
   useEffect(() => {
-    if (queryType === 'password' || queryType === 'email') {
-      setType(queryType);
-    }
-  }, [queryType]);
+    reset();
+  }, [type, reset]);
 
   return (
     <div className="h-full flex flex-col">

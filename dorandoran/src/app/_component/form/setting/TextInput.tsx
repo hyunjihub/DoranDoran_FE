@@ -17,7 +17,7 @@ export default function TextInput({ setInputData, inputData }: TextInputProps) {
   };
 
   return (
-    <div className="w-full relative">
+    <div className="fixed bottom-0 w-full">
       <input
         className="w-full mt-3 py-[12px] pl-[16px] pr-[40px] outline-none"
         placeholder="닉네임"
