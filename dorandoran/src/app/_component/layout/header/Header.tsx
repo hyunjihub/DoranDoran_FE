@@ -12,6 +12,7 @@ export default function Header() {
 
   useEffect(() => {
     if (pathname === '/') sessionStorage.removeItem('history');
+    if (pathname === '/login') sessionStorage.removeItem('history');
   }, [pathname]);
 
   return (
