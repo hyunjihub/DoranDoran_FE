@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { TITLE } from '@/app/_util/types/constants';
 import arrow from '/public/img/icon/prevArrow.svg';
-import { useNavigationHistory } from '@/app/_util/useNavigationHistory';
+import { useNavigationHistory } from '@/app/_util/hooks/useNavigationHistory';
 import { useRouter } from 'next/navigation';
 
 interface TitleMap {

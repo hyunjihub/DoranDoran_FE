@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import arrow from '/public/img/icon/prevArrow.svg';
 import search from '/public/img/icon/search.svg';
-import { useNavigationHistory } from '@/app/_util/useNavigationHistory';
+import { useNavigationHistory } from '@/app/_util/hooks/useNavigationHistory';
 import { useRouter } from 'next/navigation';
 
 export default function SearchHeader() {

@@ -8,13 +8,13 @@ import { useStore } from '@/store/useStore';
 export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { userId } = useStore();
+  const { user } = useStore();
 
   useEffect(() => {
-    if (!userId) {
+    if (!user.userId) {
       router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
     }
-  }, [userId, router, pathname]);
+  }, [user, router, pathname]);
 
-  return userId ? <>{children}</> : null;
+  return user ? <>{children}</> : null;
 }

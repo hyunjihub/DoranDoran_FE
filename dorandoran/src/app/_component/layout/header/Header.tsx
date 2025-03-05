@@ -6,9 +6,11 @@ import MainHeader from './MainHeader';
 import SearchHeader from './SearchHeader';
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import useTabSync from '@/app/_util/hooks/useTabSync';
 
 export default function Header() {
   const pathname = usePathname();
+  useTabSync();
 
   useEffect(() => {
     if (pathname === '/') sessionStorage.removeItem('history');

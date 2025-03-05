@@ -4,10 +4,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import { create } from 'zustand';
 
 interface UserState {
-  userId: string | null;
-  profileImg: string | null;
-  nickname: string | null;
-  accessToken: string | null;
+  user: IUser;
   setData: (newData: IUser) => void;
   updateData: (modified: { profileImg: string; nickname: string }) => void;
   reissueAccessToken: (newToken: string) => void;
@@ -21,33 +18,42 @@ interface ChatState {
   updateTitle: (modified: { chatTitle: string }) => void;
   updateState: (modified: { isAvaliable: boolean }) => void;
 }
+
 const useStore = create(
   persist<UserState>(
     (set) => ({
-      userId: null,
-      profileImg: null,
-      nickname: null,
-      accessToken: null,
+      user: {
+        userId: null,
+        profileImg: null,
+        nickname: null,
+        accessToken: null,
+      },
+
       setData: (newData) =>
         set(() => ({
-          userId: newData.userId,
-          profileImg: newData.profileImg,
-          nickname: newData.nickname,
-          accessToken: newData.accessToken,
+          user: { ...newData },
         })),
-      updateData: (modified: { profileImg: string; nickname: string }) =>
-        set(() => ({
-          profileImg: modified.profileImg,
-          nickname: modified.nickname,
+
+      updateData: (modified) =>
+        set((state) => ({
+          user: {
+            ...state.user,
+            profileImg: modified.profileImg,
+            nickname: modified.nickname,
+          },
         })),
-      reissueAccessToken: (newToken: string) =>
-        set(() => ({
-          accessToken: newToken,
+
+      reissueAccessToken: (newToken) =>
+        set((state) => ({
+          user: {
+            ...state.user,
+            accessToken: newToken,
+          },
         })),
     }),
     {
       name: 'userStorage',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => sessionStorage),
     }
   )
 );

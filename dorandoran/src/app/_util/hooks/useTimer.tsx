@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { AuthStatus } from './types/types';
+import { AuthStatus } from '../types/types';
 
 export function useTimer(
   timeLeft: number,

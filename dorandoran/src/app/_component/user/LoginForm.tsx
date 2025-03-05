@@ -26,6 +26,7 @@ export default function LoginForm() {
     try {
       const response = await axios.post('/api/member/login', data);
       setData(response.data);
+      localStorage.setItem('doran-rememberMe', '1');
       router.push(decodeURIComponent(param.get('redirect') ?? '/'));
     } catch {
       setLoginFail(true);

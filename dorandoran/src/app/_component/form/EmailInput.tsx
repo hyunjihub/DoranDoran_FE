@@ -5,7 +5,7 @@ import AuthButton from './AuthButton';
 import AuthCode from './AuthCode';
 import { AuthStatus } from '@/app/_util/types/types';
 import { useState } from 'react';
-import { useTimer } from '@/app/_util/useTimer';
+import { useTimer } from '@/app/_util/hooks/useTimer';
 
 interface EmailInputProps<T extends FieldValues> {
   authState: AuthStatus;
