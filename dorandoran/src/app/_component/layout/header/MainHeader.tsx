@@ -4,10 +4,10 @@ import logo from '/public/img/logo.png';
 import search from '/public/img/icon/search.svg';
 import { usePathname } from 'next/navigation';
 import { useStore } from '@/store/useStore';
-import user from '/public/img/icon/user.svg';
+import userIcon from '/public/img/icon/user.svg';
 
 export default function MainHeader() {
-  const { userId } = useStore();
+  const { user } = useStore();
   const pathname = usePathname();
 
   return (
@@ -21,8 +21,8 @@ export default function MainHeader() {
         <Link href={'/search'}>
           <Image src={search} alt="검색" width={28} height={28} />
         </Link>
-        <Link href={`${userId ? '/mypage' : `/login?redirect=${encodeURIComponent(pathname)}`}`}>
-          <Image src={user} alt="마이페이지" width={28} height={28} />
+        <Link href={`${user.userId ? '/mypage' : `/login?redirect=${encodeURIComponent(pathname)}`}`}>
+          <Image src={userIcon} alt="마이페이지" width={28} height={28} />
         </Link>
       </div>
     </div>

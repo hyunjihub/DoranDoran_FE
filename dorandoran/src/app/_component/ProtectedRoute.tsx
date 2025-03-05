@@ -16,5 +16,5 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
     }
   }, [user, router, pathname]);
 
-  return user ? <>{children}</> : null;
+  return user.userId ? <>{children}</> : null;
 }
