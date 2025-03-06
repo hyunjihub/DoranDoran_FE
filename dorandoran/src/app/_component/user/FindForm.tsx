@@ -46,7 +46,13 @@ export default function FindForm() {
     <div className="h-full flex flex-col">
       <FindHeader type={type} setType={setType} />
       <form className="px-[16px] mt-[24px] flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
-        <EmailInput authState={authState} setAuthState={setAuthState} register={register} errors={errors} />
+        <EmailInput
+          authState={authState}
+          setAuthState={setAuthState}
+          register={register}
+          errors={errors}
+          watch={watch}
+        />
         {type === 'password' && <PasswordInput type="find" register={register} watch={watch} errors={errors} />}
         <button className="w-full py-[12px] border border-[#7B3796] bg-[#7B3796] rounded text-white text-center font-bold">
           {type === 'email' ? '이메일 찾기' : '비밀번호 찾기'}

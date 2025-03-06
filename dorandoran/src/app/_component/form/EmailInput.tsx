@@ -1,4 +1,4 @@
-import { FieldError, FieldValues, Path, UseFormRegister } from 'react-hook-form';
+import { FieldError, FieldValues, Path, UseFormRegister, UseFormWatch } from 'react-hook-form';
 import { IFindForm, ISignupForm } from '@/app/_util/types/types';
 
 import AuthButton from './AuthButton';
@@ -11,6 +11,7 @@ interface EmailInputProps<T extends FieldValues> {
   authState: AuthStatus;
   setAuthState: React.Dispatch<React.SetStateAction<AuthStatus>>;
   register: UseFormRegister<T>;
+  watch: UseFormWatch<T>;
   errors: {
     email?: FieldError;
   };
@@ -20,6 +21,7 @@ export default function EmailInput<T extends ISignupForm | IFindForm>({
   authState,
   setAuthState,
   register,
+  watch,
   errors,
 }: EmailInputProps<T>) {
   const [timeLeft, setTimeLeft] = useState(180);
@@ -40,7 +42,7 @@ export default function EmailInput<T extends ISignupForm | IFindForm>({
           },
         })}
       />
-      <AuthButton authState={authState} setAuthState={setAuthState} />
+      <AuthButton authState={authState} setAuthState={setAuthState} watch={watch} />
       {authState !== 'idle' && <AuthCode authState={authState} setAuthState={setAuthState} timeLeft={timeLeft} />}
       {errors.email ? <span className="text-red-500 text-xs font-normal">{errors.email.message}</span> : <></>}
     </label>

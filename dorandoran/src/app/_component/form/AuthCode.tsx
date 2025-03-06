@@ -1,5 +1,7 @@
 import { AuthStatus } from '@/app/_util/types/types';
+import axios from 'axios';
 import getAuthTime from '@/app/_util/getAuthTime';
+import { useState } from 'react';
 
 interface AuthCodeProps {
   authState: AuthStatus;
@@ -8,8 +10,22 @@ interface AuthCodeProps {
 }
 
 export default function AuthCode({ authState, setAuthState, timeLeft }: AuthCodeProps) {
-  const handleAuthState = () => {
-    setAuthState('success');
+  const [authCode, setAuthCode] = useState('');
+
+  const handleAuthState = async () => {
+    if (!authCode) {
+      alert('인증번호를 입력해주세요');
+      return;
+    }
+
+    try {
+      await axios.post('/api/member/auth', {
+        authCode: authCode,
+      });
+      setAuthState('success');
+    } catch {
+      setAuthState('failed');
+    }
   };
 
   return (
@@ -19,6 +35,7 @@ export default function AuthCode({ authState, setAuthState, timeLeft }: AuthCode
           className="w-full border rounded p-[12px] text-sm outline-none"
           placeholder="인증번호 입력"
           disabled={authState === 'success'}
+          onChange={(e) => setAuthCode(e.target.value)}
         />
         <button
           className={`absolute top-[9px] right-[12px] w-[90px] rounded py-[6px] text-xs text-white font-normal ${

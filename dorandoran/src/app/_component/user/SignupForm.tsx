@@ -37,9 +37,9 @@ export default function SignupForm() {
 
   return (
     <form className="mt-[24px] flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
-      <EmailInput authState={authState} setAuthState={setAuthState} register={register} errors={errors} />
+      <EmailInput authState={authState} setAuthState={setAuthState} register={register} errors={errors} watch={watch} />
       <PasswordInput type="signup" register={register} errors={errors} watch={watch} />
-      <NicknameInput register={register} errors={errors} />
+      <NicknameInput register={register} watch={watch} errors={errors} />
 
       <button className="w-full py-[12px] border border-[#7B3796] bg-[#7B3796] rounded text-white text-center font-bold">
         가입하기
