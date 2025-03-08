@@ -8,6 +8,7 @@ import { ISignupForm } from '@/app/_util/types/types';
 import NicknameInput from '../form/NicknameInput';
 import PasswordInput from '../form/PasswordInput';
 import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -21,18 +22,25 @@ export default function SignupForm() {
     formState: { errors },
   } = useForm<ISignupForm>({ mode: 'onBlur' });
 
-  const onSubmit: SubmitHandler<ISignupForm> = async (data) => {
+  const mutation = useMutation({
+    mutationFn: async (data: ISignupForm) => {
+      await axios.post('/api/member/signup', data);
+    },
+    onSuccess: () => {
+      alert('회원가입이 완료되었습니다!');
+      router.push('/');
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
+
+  const onSubmit: SubmitHandler<ISignupForm> = (data) => {
     if (authState !== 'success') {
       alert('이메일 인증이 완료되지 않았습니다.\n이메일 인증 후 다시 시도해주세요.');
       return;
     }
-    try {
-      await axios.post('/api/member/signup', data);
-      alert('회원가입이 완료되었습니다!');
-      router.push('/');
-    } catch (error) {
-      alert(error);
-    }
+    mutation.mutate(data);
   };
 
   return (
@@ -41,7 +49,10 @@ export default function SignupForm() {
       <PasswordInput type="signup" register={register} errors={errors} watch={watch} />
       <NicknameInput register={register} watch={watch} errors={errors} />
 
-      <button className="w-full py-[12px] border border-[#7B3796] bg-[#7B3796] rounded text-white text-center font-bold">
+      <button
+        className="w-full py-[12px] border border-[#7B3796] bg-[#7B3796] rounded text-white text-center font-bold"
+        disabled={mutation.isPending}
+      >
         가입하기
       </button>
     </form>

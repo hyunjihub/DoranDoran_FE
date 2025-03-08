@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 export default function useNicknameCheck(nickname: string) {
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
@@ -15,27 +16,29 @@ export default function useNicknameCheck(nickname: string) {
     try {
       const response = await axios.get(`/api/member/nickname?nickname=${nickname}`);
       setIsAvailable(response.data);
-    } catch (error) {
-      console.error('닉네임 중복 검사 오류:', error);
+    } catch {
       setIsAvailable(null);
     }
   };
 
-  const debouncedCheck = useCallback((nickname: string) => {
+  const { refetch } = useQuery({
+    queryKey: ['nicknameCheck', nickname],
+    queryFn: () => checkNicknameAvailability(nickname),
+    enabled: nickname.length >= 2 && nickname.length <= 8,
+    refetchOnWindowFocus: false, // 창을 다시 포커싱해도 쿼리 재실행 안 함
+    retry: false, // 실패 시 재시도 안 함
+    refetchInterval: false, // 자동으로 주기적인 리패치하지 않음
+  });
+
+  useEffect(() => {
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current);
     }
 
     debounceTimeout.current = setTimeout(() => {
-      checkNicknameAvailability(nickname);
+      refetch();
     }, 500);
-  }, []);
-
-  useEffect(() => {
-    if (nickname) {
-      debouncedCheck(nickname);
-    }
-  }, [nickname, debouncedCheck]);
+  }, [nickname, refetch]);
 
   return isAvailable;
 }

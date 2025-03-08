@@ -1,4 +1,3 @@
-import { ISignupForm } from '@/app/_util/types/types';
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
@@ -8,9 +7,8 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { data } = await axios.post<ISignupForm>(`${API_BASE_URL}/member/signup`, body);
-
-    return NextResponse.json(data, { status: 201 });
+    await axios.post(`${API_BASE_URL}/member/signup`, body);
+    return NextResponse.json({}, { status: 204 });
   } catch (error: unknown) {
     let errorMessage = '서버 오류 발생';
     let status = 500;

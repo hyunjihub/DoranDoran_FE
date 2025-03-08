@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { ILoginForm } from '@/app/_util/types/types';
 import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
@@ -22,15 +23,23 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm<ILoginForm>();
 
-  const onSubmit: SubmitHandler<ILoginForm> = async (data) => {
-    try {
+  const mutation = useMutation({
+    mutationFn: async (data: ILoginForm) => {
       const response = await axios.post('/api/member/login', data);
-      setData(response.data);
+      return response.data;
+    },
+    onSuccess: (data) => {
+      setData(data);
       localStorage.setItem('doran-rememberMe', '1');
       router.push(decodeURIComponent(param.get('redirect') ?? '/'));
-    } catch {
+    },
+    onError: () => {
       setLoginFail(true);
-    }
+    },
+  });
+
+  const onSubmit: SubmitHandler<ILoginForm> = async (data) => {
+    mutation.mutate(data);
   };
 
   const checkCapsLock = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -74,7 +83,10 @@ export default function LoginForm() {
       ) : (
         <></>
       )}
-      <button className="w-full py-[12px] border border-[#7B3796] bg-[#7B3796] rounded text-white text-center font-bold">
+      <button
+        className="w-full py-[12px] border border-[#7B3796] bg-[#7B3796] rounded text-white text-center font-bold"
+        disabled={mutation.isPending}
+      >
         로그인
       </button>
     </form>

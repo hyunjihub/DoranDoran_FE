@@ -1,14 +1,20 @@
+import { IUser } from '@/app/_util/types/types';
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
 const API_BASE_URL = 'https://your-backend-server.com'; // 실제 백엔드 서버 주소
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
-    const body = await req.json();
+    const { data } = await axios.post<IUser>(
+      `${API_BASE_URL}/member/relogin`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
 
-    await axios.post(`${API_BASE_URL}/member/email`, body);
-    return NextResponse.json({}, { status: 204 });
+    return NextResponse.json(data, { status: 201 });
   } catch (error: unknown) {
     let errorMessage = '서버 오류 발생';
     let status = 500;

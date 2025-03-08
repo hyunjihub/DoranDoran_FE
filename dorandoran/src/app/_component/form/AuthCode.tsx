@@ -1,6 +1,7 @@
 import { AuthStatus } from '@/app/_util/types/types';
 import axios from 'axios';
 import getAuthTime from '@/app/_util/getAuthTime';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
 interface AuthCodeProps {
@@ -12,20 +13,27 @@ interface AuthCodeProps {
 export default function AuthCode({ authState, setAuthState, timeLeft }: AuthCodeProps) {
   const [authCode, setAuthCode] = useState('');
 
+  const mutation = useMutation({
+    mutationFn: async () => {
+      await axios.post('/api/member/auth', {
+        authCode: authCode,
+      });
+    },
+    onSuccess: () => {
+      setAuthState('success');
+    },
+    onError: () => {
+      setAuthState('failed');
+    },
+  });
+
   const handleAuthState = async () => {
     if (!authCode) {
       alert('인증번호를 입력해주세요');
       return;
     }
 
-    try {
-      await axios.post('/api/member/auth', {
-        authCode: authCode,
-      });
-      setAuthState('success');
-    } catch {
-      setAuthState('failed');
-    }
+    mutation.mutate();
   };
 
   return (

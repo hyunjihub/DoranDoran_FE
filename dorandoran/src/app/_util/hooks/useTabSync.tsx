@@ -9,7 +9,7 @@ export default function useTabSync() {
   useEffect(() => {
     const channel = new BroadcastChannel('auth-channel');
 
-    if (!user.userId && !localStorage.getItem('doran-rememberMe')) {
+    if (!user.userId) {
       channel.postMessage({ type: 'sync-request' });
     }
 

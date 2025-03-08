@@ -1,4 +1,4 @@
-import { ILoginForm } from '@/app/_util/types/types';
+import { IUser } from '@/app/_util/types/types';
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { data } = await axios.post<ILoginForm>(`${API_BASE_URL}/member/login`, body);
+    const { data } = await axios.post<IUser>(`${API_BASE_URL}/member/login`, body);
 
     return NextResponse.json(data, { status: 201 });
   } catch (error: unknown) {
