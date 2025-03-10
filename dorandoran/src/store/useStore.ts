@@ -7,7 +7,6 @@ interface UserState {
   user: IUser;
   setData: (newData: IUser) => void;
   updateData: (modified: { profileImg: string; nickname: string }) => void;
-  reissueAccessToken: (newToken: string) => void;
 }
 
 interface ChatState {
@@ -26,7 +25,6 @@ const useStore = create(
         userId: null,
         profileImg: null,
         nickname: null,
-        accessToken: null,
       },
 
       setData: (newData) =>
@@ -40,14 +38,6 @@ const useStore = create(
             ...state.user,
             profileImg: modified.profileImg,
             nickname: modified.nickname,
-          },
-        })),
-
-      reissueAccessToken: (newToken) =>
-        set((state) => ({
-          user: {
-            ...state.user,
-            accessToken: newToken,
           },
         })),
     }),

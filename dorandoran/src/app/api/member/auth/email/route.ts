@@ -1,19 +1,12 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
-const API_BASE_URL = 'https://your-backend-server.com'; // 실제 백엔드 서버 주소
-
-export async function POST() {
+export async function POST(req: Request) {
   try {
-    const { data } = await axios.post<string>(
-      `${API_BASE_URL}/member/reissue`,
-      {},
-      {
-        withCredentials: true,
-      }
-    );
+    const body = await req.json();
 
-    return NextResponse.json(data, { status: 201 });
+    await axios.post(`${process.env.API_BASE_URL}/member/auth/email`, body);
+    return NextResponse.json({}, { status: 204 });
   } catch (error: unknown) {
     let errorMessage = '서버 오류 발생';
     let status = 500;

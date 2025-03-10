@@ -18,7 +18,6 @@ export default function Logout() {
         userId: null,
         profileImg: null,
         nickname: null,
-        accessToken: null,
       });
       localStorage.removeItem('doran-rememberMe');
       router.push('/');

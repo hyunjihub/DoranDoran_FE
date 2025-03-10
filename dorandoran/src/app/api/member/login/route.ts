@@ -2,13 +2,11 @@ import { IUser } from '@/app/_util/types/types';
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
-const API_BASE_URL = 'https://your-backend-server.com'; // 실제 백엔드 서버 주소
-
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { data } = await axios.post<IUser>(`${API_BASE_URL}/member/login`, body);
+    const { data } = await axios.post<IUser>(`${process.env.API_BASE_URL}/member/login`, body);
 
     return NextResponse.json(data, { status: 201 });
   } catch (error: unknown) {

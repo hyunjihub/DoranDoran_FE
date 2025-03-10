@@ -24,13 +24,15 @@ export default function useNicknameCheck(nickname: string) {
   const { refetch } = useQuery({
     queryKey: ['nicknameCheck', nickname],
     queryFn: () => checkNicknameAvailability(nickname),
-    enabled: nickname.length >= 2 && nickname.length <= 8,
+    enabled: !!nickname && nickname.length >= 2 && nickname.length <= 8,
     refetchOnWindowFocus: false, // 창을 다시 포커싱해도 쿼리 재실행 안 함
     retry: false, // 실패 시 재시도 안 함
     refetchInterval: false, // 자동으로 주기적인 리패치하지 않음
   });
 
   useEffect(() => {
+    if (!nickname) return;
+
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current);
     }

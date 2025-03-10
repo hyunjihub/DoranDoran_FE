@@ -10,7 +10,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    await axios.get(`https://external-api.com/nickname?word=${word}`);
+    await axios.get(`${process.env.API_BASE_URL}/nickname?word=${word}`);
     return NextResponse.json({}, { status: 204 });
   } catch (error: unknown) {
     let errorMessage = '서버 오류 발생';
