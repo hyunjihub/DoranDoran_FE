@@ -25,7 +25,6 @@ export default function useTabSync() {
           userId: null,
           profileImg: null,
           nickname: null,
-          accessToken: null,
         });
       } else if (type === 'login-event') {
         setData(data);
