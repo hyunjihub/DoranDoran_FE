@@ -3,7 +3,10 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { ILoginForm } from '@/app/_util/types/types';
+import Image from 'next/image';
 import axios from 'axios';
+import eye from '/public/img/icon/eye.svg';
+import eyeClose from '/public/img/icon/eyeClose.svg';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
@@ -16,6 +19,7 @@ export default function LoginForm() {
   const [loginFail, setLoginFail] = useState(false);
   const [capsLockFlag, setCapsLockFlag] = useState(false);
   const param = useSearchParams();
+  const [passwordClosed, setPasswordClosed] = useState(true);
 
   const {
     register,
@@ -48,7 +52,7 @@ export default function LoginForm() {
   };
 
   return (
-    <form className="mt-[24px] flex flex-col gap-10" onSubmit={handleSubmit(onSubmit)}>
+    <form className="mt-[24px] flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
       <label className="flex flex-col gap-1 font-bold">
         이메일
         <input
@@ -63,16 +67,27 @@ export default function LoginForm() {
           })}
         />
       </label>
-      <label className="flex flex-col gap-1 font-bold">
+      <label className="mt-5 flex flex-col gap-1 font-bold">
         비밀번호
-        <input
-          className="border rounded p-[12px] text-sm outline-none font-normal"
-          placeholder="영문, 숫자, 특수문자 조합 8글자 이상"
-          onKeyUp={(e) => checkCapsLock(e)}
-          {...register('password', {
-            required: '비밀번호를 입력해주세요.',
-          })}
-        />
+        <div className="relative w-full">
+          <input
+            type="password"
+            className="w-full border rounded p-[12px] text-sm outline-none font-normal"
+            placeholder="영문, 숫자, 특수문자 조합 8글자 이상"
+            onKeyUp={(e) => checkCapsLock(e)}
+            {...register('password', {
+              required: '비밀번호를 입력해주세요.',
+            })}
+          />
+          <Image
+            className="absolute right-[12px] top-[10px]"
+            src={passwordClosed ? eyeClose : eye}
+            alt="비밀번호 표시"
+            width={24}
+            height={24}
+            onClick={() => setPasswordClosed(!passwordClosed)}
+          />
+        </div>
       </label>
       {errors.email || errors.password ? (
         <span className="text-red-500 text-xs font-normal">{errors.email?.message || errors.password?.message}</span>
@@ -84,7 +99,7 @@ export default function LoginForm() {
         <></>
       )}
       <button
-        className="w-full py-[12px] border border-[#7B3796] bg-[#7B3796] rounded text-white text-center font-bold"
+        className="w-full mt-5 py-[12px] border border-[#7B3796] bg-[#7B3796] rounded text-white text-center font-bold"
         disabled={mutation.isPending}
       >
         로그인

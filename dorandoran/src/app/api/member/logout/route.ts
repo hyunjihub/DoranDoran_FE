@@ -3,7 +3,13 @@ import axios from 'axios';
 
 export async function POST() {
   try {
-    await axios.post(`${process.env.API_BASE_URL}/member/logout`);
+    await axios.post(
+      `${process.env.API_BASE_URL}/member/logout`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
     return NextResponse.json({}, { status: 204 });
   } catch (error: unknown) {
     let errorMessage = '서버 오류 발생';
