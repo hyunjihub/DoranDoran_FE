@@ -2,6 +2,7 @@
 
 import { ChangeEvent, useRef } from 'react';
 
+import CameraIcon from '../../ui/CameraIcon';
 import Image from 'next/image';
 import plus from '/public/img/icon/plus.svg';
 
@@ -26,10 +27,10 @@ export default function ImageInput() {
       <div className="relative w-[140px] h-[140px] rounded-full border">
         <Image className="object-cover rounded-full" src={plus} alt="프로필 이미지" fill />
         <button
-          className="w-[40px] h-[40px] absolute bottom-0 right-0 rounded-full bg-gray-300"
+          className="w-[40px] h-[40px] absolute bottom-0 right-0 rounded-full bg-gray-300 flex items-center justify-center"
           onClick={handleUploadImg}
         >
-          카메라
+          <CameraIcon type="default" size={28} />
         </button>
         <input type="file" className="hidden" ref={fileInput} onChange={handleFileChange} />
       </div>

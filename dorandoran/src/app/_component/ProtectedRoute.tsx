@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { useStore } from '@/store/useStore';
@@ -8,13 +8,22 @@ import { useStore } from '@/store/useStore';
 export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { user } = useStore();
+  const { isLoggedIn } = useStore();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!user.userId) {
+    if (isLoggedIn !== null && isLoggedIn !== undefined) {
+      setIsLoading(false);
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (!isLoading && isLoggedIn === false) {
+      console.log(isLoggedIn);
       router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
     }
-  }, [user, router, pathname]);
+  }, [isLoading, isLoggedIn, router, pathname]);
 
-  return user.userId ? <>{children}</> : null;
+  if (isLoading) return null;
+  return isLoggedIn ? <>{children}</> : null;
 }

@@ -5,7 +5,9 @@ import { create } from 'zustand';
 
 interface UserState {
   user: IUser;
-  setData: (newData: IUser) => void;
+  isLoggedIn: boolean;
+  login: (newData: IUser) => void;
+  logout: () => void;
   updateData: (modified: { profileImg: string; nickname: string }) => void;
 }
 
@@ -26,10 +28,22 @@ const useStore = create(
         profileImg: null,
         nickname: null,
       },
+      isLoggedIn: false,
 
-      setData: (newData) =>
+      login: (newData) =>
         set(() => ({
           user: { ...newData },
+          isLoggedIn: true,
+        })),
+
+      logout: () =>
+        set(() => ({
+          user: {
+            userId: null,
+            profileImg: null,
+            nickname: null,
+          },
+          isLoggedIn: false,
         })),
 
       updateData: (modified) =>
@@ -43,7 +57,15 @@ const useStore = create(
     }),
     {
       name: 'userStorage',
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() =>
+        typeof window !== 'undefined'
+          ? sessionStorage
+          : {
+              getItem: () => null,
+              setItem: () => {},
+              removeItem: () => {},
+            }
+      ),
     }
   )
 );

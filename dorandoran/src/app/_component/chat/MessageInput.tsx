@@ -2,8 +2,8 @@
 
 import { ChangeEvent, useRef, useState } from 'react';
 
+import CameraIcon from '../ui/CameraIcon';
 import Image from 'next/image';
-import camera from '/public/img/icon/camera.svg';
 import send from '/public/img/icon/send.svg';
 
 export default function MessageInput() {
@@ -39,7 +39,7 @@ export default function MessageInput() {
         <input className="hidden" type="file" ref={fileInput} onChange={handleFileChange} />
 
         <button onClick={handleUploadImg}>
-          <Image src={camera} alt="이미지 첨부" width={40} height={40} />
+          <CameraIcon type="purple" size={30} />
         </button>
 
         <button className="ml-2">

@@ -15,7 +15,7 @@ import { useStore } from '@/store/useStore';
 
 export default function LoginForm() {
   const router = useRouter();
-  const { setData } = useStore();
+  const { login } = useStore();
   const [loginFail, setLoginFail] = useState(false);
   const [capsLockFlag, setCapsLockFlag] = useState(false);
   const param = useSearchParams();
@@ -33,7 +33,7 @@ export default function LoginForm() {
       return response.data;
     },
     onSuccess: (data) => {
-      setData(data);
+      login(data);
       localStorage.setItem('doran-rememberMe', '1');
       router.push(decodeURIComponent(param.get('redirect') ?? '/'));
     },

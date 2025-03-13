@@ -1,18 +1,16 @@
 'use client';
 
-import axios from 'axios';
+import { useStore } from '@/store/useStore';
 
 export default function Recommend() {
-  const handleRecommend = async () => {
-    try {
-      const response = await axios.post('https://api.dorandoran.online/member/login', {
-        email: 'test1234@example.com',
-        password: 'test1234!',
-      });
-      console.log('추천 결과:', response.data);
-    } catch (error) {
-      console.error('추천 요청 실패:', error);
-    }
+  const { login } = useStore();
+
+  const handleLogin = () => {
+    login({
+      userId: 1,
+      profileImg: null,
+      nickname: '임시로그인',
+    });
   };
 
   return (
@@ -21,9 +19,9 @@ export default function Recommend() {
       <p className="text-xs text-gray-500">새로운 친구, 새로운 인연! 도란도란에서!</p>
       <button
         className="mt-4 px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded-lg hover:bg-blue-600"
-        onClick={handleRecommend}
+        onClick={handleLogin}
       >
-        친구 추천받기
+        임시 로그인
       </button>
     </section>
   );

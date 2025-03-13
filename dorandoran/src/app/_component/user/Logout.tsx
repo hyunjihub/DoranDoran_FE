@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useStore } from '@/store/useStore';
 
 export default function Logout() {
-  const { setData } = useStore();
+  const { logout } = useStore();
   const router = useRouter();
 
   const mutation = useMutation({
@@ -14,11 +14,7 @@ export default function Logout() {
       await axios.post('/api/member/logout');
     },
     onSuccess: () => {
-      setData({
-        userId: null,
-        profileImg: null,
-        nickname: null,
-      });
+      logout();
       localStorage.removeItem('doran-rememberMe');
       router.push('/');
     },

@@ -1,11 +1,11 @@
 import Image from 'next/image';
-import camera from '/public/img/icon/camera.svg';
+import plus from '/public/img/icon/plus.svg';
 
 export default function OtherMessage({ message, timestamp }: { message: string; timestamp: string | null }) {
   return (
     <div className="w-full flex justify-start gap-2 my-2">
       <button className="relative w-[30px] h-[30px] rounded-full">
-        <Image className="object-cover" src={camera} alt="프로필 이미지" fill />
+        <Image className="object-cover" src={plus} alt="프로필 이미지" fill />
       </button>
 
       <div>
