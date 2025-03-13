@@ -4,6 +4,12 @@ export interface IUser {
   profileImg: string | null;
 }
 
+export interface IMypage {
+  email: string | null;
+  isNotification: boolean | null;
+  isPermitted: boolean | null;
+}
+
 export interface IChat {
   isManager: boolean | null;
   isAvaliable: boolean | null;

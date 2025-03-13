@@ -1,5 +1,6 @@
 import ChatReceiveInput from '@/app/_component/form/setting/ChatReceiveInput';
 import EmailInput from '@/app/_component/form/setting/EmailInput';
+import { IMypage } from '@/app/_util/types/types';
 import Image from 'next/image';
 import ImageInput from '@/app/_component/form/setting/ImageInput';
 import InputToLink from '@/app/_component/form/setting/InputToLink';
@@ -8,8 +9,15 @@ import Logout from '@/app/_component/user/Logout';
 import ProtectedRoute from '@/app/_component/ProtectedRoute';
 import PushNotificationInput from '@/app/_component/form/setting/PushNotificationInput';
 import arrow from '/public/img/icon/prevArrow.svg';
+import { getFetchUserInfo } from '@/app/_util/getFetchUserInfo';
+import { useQuery } from '@tanstack/react-query';
 
 export default function MyPage() {
+  const { data } = useQuery<IMypage, Error>({
+    queryKey: ['user'],
+    queryFn: getFetchUserInfo,
+  });
+
   return (
     <ProtectedRoute>
       <div className="w-full h-full flex flex-col items-center">
@@ -20,10 +28,10 @@ export default function MyPage() {
           <InputToLink name="닉네임 변경" placeHolder="" link="/mypage/nickname" inputData="임시닉네임" />
         </div>
         <div className="w-full border-b">
-          <EmailInput />
+          <EmailInput email={data?.email ?? 'e1ample@gmail.com'} />
         </div>
         <div className="w-full border-b">
-          <ChatReceiveInput />
+          <ChatReceiveInput isPermmited={data?.isPermitted ?? false} />
         </div>
         <div className="w-full flex justify-between items-center px-[16px] py-[18px]">
           <p className="font-bold">비밀번호 재설정</p>
@@ -32,7 +40,7 @@ export default function MyPage() {
           </Link>
         </div>
         <div className="w-full border-y">
-          <PushNotificationInput />
+          <PushNotificationInput isNotification={data?.isNotification ?? false} />
         </div>
         <Logout />
         <button className="mt-3 text-gray-500 text-xs">회원 탈퇴</button>

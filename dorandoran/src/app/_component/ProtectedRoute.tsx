@@ -19,7 +19,6 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!isLoading && isLoggedIn === false) {
-      console.log(isLoggedIn);
       router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
     }
   }, [isLoading, isLoggedIn, router, pathname]);
