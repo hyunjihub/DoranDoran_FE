@@ -1,3 +1,5 @@
+'use client';
+
 import ChatReceiveInput from '@/app/_component/form/setting/ChatReceiveInput';
 import EmailInput from '@/app/_component/form/setting/EmailInput';
 import { IMypage } from '@/app/_util/types/types';

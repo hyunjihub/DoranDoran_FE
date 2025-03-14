@@ -32,7 +32,7 @@ export default function TextInput({ setInputData, inputData, placeholder }: Text
   };
 
   return (
-    <div className="fixed bottom-0 w-full">
+    <div className="w-full relative">
       <input
         ref={inputRef}
         className="w-full mt-3 py-[12px] pl-[16px] pr-[40px] outline-none"
