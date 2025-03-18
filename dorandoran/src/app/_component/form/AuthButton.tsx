@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 interface AuthButtonProps<T extends FieldValues> {
   authState: AuthStatus;
   setAuthState: React.Dispatch<React.SetStateAction<AuthStatus>>;
+  setClientCode: React.Dispatch<React.SetStateAction<string | null>>;
   watch: UseFormWatch<T>;
 }
 
@@ -15,17 +16,20 @@ export default function AuthButton<T extends ISignupForm | IFindForm>({
   authState,
   setAuthState,
   watch,
+  setClientCode,
 }: AuthButtonProps<T>) {
   const email = watch('email' as Path<T>);
 
   const mutation = useMutation({
     mutationFn: async () => {
-      await axios.post('/api/member/email', {
+      const response = await axios.post('/api/member/email', {
         email: email,
         isSignUp: true,
       });
+      return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setClientCode(data.clientCode);
       setAuthState('inProgress');
     },
     onError: (error) => {
