@@ -1,14 +1,35 @@
 'use client';
 
-import { ChangeEvent, useRef } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import CameraIcon from '../../ui/CameraIcon';
 import Image from 'next/image';
+import axios from 'axios';
 import getImageURL from '@/app/_util/getImageURL';
 import plus from '/public/img/icon/plus.svg';
+import { useMutation } from '@tanstack/react-query';
+import { useStore } from '@/store/useStore';
 
 export default function ImageInput() {
+  const { updateData, user } = useStore();
   const fileInput = useRef<HTMLInputElement | null>(null);
+  const [profileImg, setProfileImg] = useState('');
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      await axios.post('/api/member/mypage/profile', profileImg);
+    },
+    onSuccess: () => {
+      updateData({ profileImg: profileImg, nickname: user.nickname || '' });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  useEffect(() => {
+    if (profileImg !== '' && profileImg !== user.profileImg) mutation.mutate();
+  }, [profileImg, mutation, user]);
 
   const handleUploadImg = () => {
     if (fileInput.current) {
@@ -21,7 +42,7 @@ export default function ImageInput() {
     if (image) {
       const url = await getImageURL(image);
       if (url) {
-        console.log(url);
+        setProfileImg(url);
       }
     }
     event.target.value = '';
