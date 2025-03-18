@@ -1,18 +1,13 @@
 import { IUser } from '@/app/_util/types/types';
 import { NextResponse } from 'next/server';
 import axios from 'axios';
-import { cookies } from 'next/headers';
+import { checkTokens } from '@/app/_util/tokenCheck';
 
 export async function POST() {
   try {
-    const cookieStore = await cookies();
-    const accessToken = cookieStore.get('accessToken');
-    const refreshToken = cookieStore.get('refreshToken');
-
-    if (!accessToken) {
-      return NextResponse.json({ error: 'accessToken이 없습니다.' }, { status: 401 });
-    } else if (!refreshToken) {
-      return NextResponse.json({ error: 'refreshToken이 없습니다.' }, { status: 401 });
+    const tokenErrorResponse = await checkTokens();
+    if (tokenErrorResponse) {
+      return tokenErrorResponse;
     }
 
     const { data } = await axios.post<IUser>(

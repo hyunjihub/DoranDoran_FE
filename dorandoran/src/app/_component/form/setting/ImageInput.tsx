@@ -4,6 +4,7 @@ import { ChangeEvent, useRef } from 'react';
 
 import CameraIcon from '../../ui/CameraIcon';
 import Image from 'next/image';
+import getImageURL from '@/app/_util/getImageURL';
 import plus from '/public/img/icon/plus.svg';
 
 export default function ImageInput() {
@@ -15,11 +16,15 @@ export default function ImageInput() {
     }
   };
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      console.log('파일 업로드:', file.name);
+  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const image = event.target.files?.[0];
+    if (image) {
+      const url = await getImageURL(image);
+      if (url) {
+        console.log(url);
+      }
     }
+    event.target.value = '';
   };
 
   return (
