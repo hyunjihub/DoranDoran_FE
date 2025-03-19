@@ -17,7 +17,14 @@ export default function ImageInput() {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      await axios.post('/api/member/mypage/profile', profileImg);
+      const formData = new FormData();
+      formData.append('profileImg', profileImg);
+
+      await axios.post('/api/member/mypage/profile', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
     },
     onSuccess: () => {
       updateData({ profileImg: profileImg, nickname: user.nickname || '' });

@@ -1,7 +1,7 @@
 import { Fields, Files, IncomingForm } from 'formidable';
+import { NextRequest, NextResponse } from 'next/server';
 
 import { IncomingMessage } from 'http';
-import { NextResponse } from 'next/server';
 import axios from 'axios';
 import { checkTokens } from '@/app/_util/tokenCheck';
 
@@ -11,14 +11,16 @@ export const config = {
   },
 };
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  const tokenErrorResponse = await checkTokens();
+  if (tokenErrorResponse) {
+    return tokenErrorResponse;
+  }
+
+  const form = new IncomingForm();
+
   return new Promise<NextResponse>((resolve, reject) => {
-    // Next.js의 Request를 IncomingMessage로 변환
-    const nodeReq = req as unknown as IncomingMessage;
-
-    const form = new IncomingForm();
-
-    form.parse(nodeReq, async (err, fields: Fields, files: Files) => {
+    form.parse(req as unknown as IncomingMessage, async (err, fields: Fields, files: Files) => {
       if (err) {
         return reject(NextResponse.json({ error: '파일 업로드 실패' }, { status: 500 }));
       }
@@ -29,23 +31,14 @@ export async function POST(req: Request) {
       }
 
       try {
-        const tokenErrorResponse = await checkTokens();
-        if (tokenErrorResponse) {
-          return resolve(tokenErrorResponse);
-        }
-
         const response = await axios.post(
           `${process.env.API_BASE_URL}/image`,
           { imageName: image.originalFilename },
-          {
-            withCredentials: true,
-          }
+          { withCredentials: true }
         );
 
         await axios.put(response.data.uploadUrl, image, {
-          headers: {
-            'Content-Type': image.mimetype,
-          },
+          headers: { 'Content-Type': image.mimetype },
         });
 
         return resolve(
