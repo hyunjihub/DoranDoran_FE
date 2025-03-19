@@ -6,7 +6,9 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { data } = await axios.post<IUser>(`${process.env.API_BASE_URL}/member/login`, body);
+    const { data } = await axios.post<IUser>(`${process.env.API_BASE_URL}/member/login`, body, {
+      withCredentials: true,
+    });
     return NextResponse.json(data, { status: 201 });
   } catch (error: unknown) {
     let errorMessage = '서버 오류 발생';
