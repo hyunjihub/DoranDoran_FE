@@ -4,7 +4,7 @@ import type { Metadata, Viewport } from 'next';
 
 import Header from './_component/layout/header/Header';
 import Providers from './providers';
-import PwaProvider from './_util/PwaProvider';
+import PwaProvider from './PwaProvider';
 import TabBar from './_component/layout/TabBar';
 
 export const viewport: Viewport = {

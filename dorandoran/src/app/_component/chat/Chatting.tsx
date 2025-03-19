@@ -10,7 +10,7 @@ import OtherMessage from './OtherMessage';
 import SystemMessage from './SystemMessage';
 import getChatDate from '@/app/_util/getChatDate';
 import getChatTime from '@/app/_util/getChatTime';
-import messageSample from '@/app/_util/messageSample.json';
+import messageSample from '@/app/_util/json/messageSample.json';
 
 const cache = new CellMeasurerCache({
   fixedWidth: true,

@@ -6,7 +6,7 @@ import Recommend from './_component/landing/Recommend';
 export default function Home() {
   return (
     <>
-      <div className="h-full">
+      <div className="pb-10">
         <Carousel />
         <NewChat />
         <Recommend />

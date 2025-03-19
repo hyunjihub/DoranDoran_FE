@@ -24,5 +24,5 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
   }, [isLoading, isLoggedIn, router, pathname]);
 
   if (isLoading) return null;
-  return isLoggedIn ? <>{children}</> : null;
+  return <>{children}</>;
 }

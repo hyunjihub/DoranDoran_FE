@@ -16,6 +16,14 @@ export interface IChat {
   chatTitle: string | null;
 }
 
+export interface IRoom {
+  id: number;
+  title: string;
+  count: number;
+  maxCount: number;
+  lastChatTime: string;
+}
+
 export interface IMessage {
   id: number;
   sender: string;
