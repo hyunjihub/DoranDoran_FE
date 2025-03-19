@@ -7,7 +7,7 @@ import { useStore } from '@/store/useStore';
 import userIcon from '/public/img/icon/user.svg';
 
 export default function MainHeader() {
-  const { user } = useStore();
+  const { isLoggedIn } = useStore();
   const pathname = usePathname();
 
   return (
@@ -21,7 +21,7 @@ export default function MainHeader() {
         <Link href={'/search'}>
           <Image src={search} alt="검색" width={28} height={28} />
         </Link>
-        <Link href={`${user.userId ? '/mypage' : `/login?redirect=${encodeURIComponent(pathname)}`}`}>
+        <Link href={`${isLoggedIn ? '/mypage' : `/login?redirect=${encodeURIComponent(pathname)}`}`}>
           <Image src={userIcon} alt="마이페이지" width={28} height={28} />
         </Link>
       </div>

@@ -11,7 +11,7 @@ import { useStore } from '@/store/useStore';
 import userIcon from '/public/img/icon/user.svg';
 
 export default function TabBar() {
-  const { user } = useStore();
+  const { isLoggedIn } = useStore();
   const pathname = usePathname();
   const notRendering = ['/search', '/login', '/singup', '/find', '/chat', '/mypage/nickname'];
   const isChatRoute = pathname.startsWith('/chat/') && pathname.split('/').length === 3;
@@ -45,7 +45,7 @@ export default function TabBar() {
         <li>
           <Link
             className="min-w-[55px] flex flex-col items-center"
-            href={`${user.userId ? '/mypage' : `/login?redirect=${encodeURIComponent(pathname)}`}`}
+            href={`${isLoggedIn ? '/mypage' : `/login?redirect=${encodeURIComponent(pathname)}`}`}
           >
             <Image src={userIcon} alt="마이페이지" width={30} height={30} />
             마이페이지
