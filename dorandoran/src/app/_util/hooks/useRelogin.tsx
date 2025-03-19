@@ -7,7 +7,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useStore } from '@/store/useStore';
 
 export default function useRelogin() {
-  const { login, user } = useStore();
+  const { login, isLoggedIn } = useStore();
   const isRememberMe = typeof window !== 'undefined' ? localStorage.getItem('doran-rememberMe') : null;
   const hasExecuted = useRef(false);
 
@@ -25,9 +25,9 @@ export default function useRelogin() {
   });
 
   useEffect(() => {
-    if (!hasExecuted.current && !user.userId && isRememberMe) {
+    if (!hasExecuted.current && !isLoggedIn && isRememberMe) {
       mutation.mutate();
       hasExecuted.current = true;
     }
-  }, [user.userId, isRememberMe, mutation]);
+  }, [isLoggedIn, isRememberMe, mutation]);
 }
