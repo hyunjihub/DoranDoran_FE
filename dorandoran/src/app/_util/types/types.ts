@@ -1,5 +1,5 @@
 export interface IUser {
-  userId: number | null;
+  memberId: number | null;
   nickname: string | null;
   profileImg: string | null;
 }

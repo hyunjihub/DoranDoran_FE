@@ -24,7 +24,7 @@ const useStore = create(
   persist<UserState>(
     (set) => ({
       user: {
-        userId: null,
+        memberId: null,
         profileImg: null,
         nickname: null,
       },
@@ -39,7 +39,7 @@ const useStore = create(
       logout: () =>
         set(() => ({
           user: {
-            userId: null,
+            memberId: null,
             profileImg: null,
             nickname: null,
           },
