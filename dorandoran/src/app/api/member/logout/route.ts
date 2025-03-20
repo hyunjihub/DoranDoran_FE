@@ -1,14 +1,9 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
-import { checkTokens } from '@/app/_util/tokenCheck';
+import { cookies } from 'next/headers';
 
 export async function POST() {
   try {
-    const tokenErrorResponse = await checkTokens();
-    if (tokenErrorResponse) {
-      return tokenErrorResponse;
-    }
-
     await axios.post(
       `${process.env.API_BASE_URL}/member/logout`,
       {},
@@ -16,6 +11,14 @@ export async function POST() {
         withCredentials: true,
       }
     );
+
+    const cookieNames = ['access', 'refresh'];
+    const cookieJar = cookies();
+
+    cookieNames.forEach(async (cookieName) => {
+      (await cookieJar).delete(cookieName);
+    });
+
     return NextResponse.json({}, { status: 204 });
   } catch (error: unknown) {
     let errorMessage = '서버 오류 발생';

@@ -1,13 +1,8 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
-import { checkTokens } from '@/app/_util/tokenCheck';
 
 export async function POST(req: Request) {
   try {
-    const tokenErrorResponse = await checkTokens();
-    if (tokenErrorResponse) {
-      return tokenErrorResponse;
-    }
     const body = await req.json();
 
     await axios.post(`${process.env.API_BASE_URL}/member/mypage/nickname`, body, {

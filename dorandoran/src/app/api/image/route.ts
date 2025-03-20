@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { IncomingMessage } from 'http';
 import axios from 'axios';
-import { checkTokens } from '@/app/_util/tokenCheck';
 
 export const config = {
   api: {
@@ -12,11 +11,6 @@ export const config = {
 };
 
 export async function POST(req: NextRequest) {
-  const tokenErrorResponse = await checkTokens();
-  if (tokenErrorResponse) {
-    return tokenErrorResponse;
-  }
-
   const form = new IncomingForm();
 
   return new Promise<NextResponse>((resolve, reject) => {
