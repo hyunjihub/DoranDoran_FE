@@ -26,7 +26,7 @@ export async function POST(req: Request) {
           sameSite: 'none',
           path: '/',
           domain: host,
-          maxAge: cookieName === 'access' ? undefined : 604800,
+          ...(cookieName !== 'access' ? { maxAge: 604800 } : {}),
         });
       });
     }
