@@ -5,8 +5,8 @@ import { cookies } from 'next/headers';
 export async function POST() {
   try {
     const cookieStore = cookies();
-    const access = (await cookieStore).get('access')?.value || '';
-    const refresh = (await cookieStore).get('refresh')?.value || '';
+    const accessToken = (await cookieStore).get('access')?.value || '';
+    const refreshToken = (await cookieStore).get('refresh')?.value || '';
 
     await axios.post(
       `${process.env.API_BASE_URL}/member/logout`,
@@ -14,7 +14,7 @@ export async function POST() {
       {
         withCredentials: true,
         headers: {
-          Cookie: `access=${access}; refresh=${refresh};`,
+          Cookie: `access=${accessToken}; refresh=${refreshToken};`,
         },
       }
     );

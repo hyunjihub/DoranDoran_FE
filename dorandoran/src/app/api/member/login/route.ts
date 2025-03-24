@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       return res;
     }
 
-    return NextResponse.json(response.data, { status: 201 });
+    return NextResponse.json({ status: 201 });
   } catch (error: unknown) {
     let errorMessage = '서버 오류 발생';
     let status = 500;
