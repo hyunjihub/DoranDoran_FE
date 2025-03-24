@@ -4,19 +4,25 @@ import { cookies } from 'next/headers';
 
 export async function POST() {
   try {
-    const cookieJar = cookies();
+    const cookieStore = cookies();
+    const access = (await cookieStore).get('access')?.value || '';
+    const refresh = (await cookieStore).get('refresh')?.value || '';
+
     await axios.post(
       `${process.env.API_BASE_URL}/member/logout`,
       {},
       {
         withCredentials: true,
+        headers: {
+          Cookie: `access=${access}; refresh=${refresh};`,
+        },
       }
     );
 
     const cookieNames = ['access', 'refresh'];
 
     cookieNames.forEach(async (cookieName) => {
-      (await cookieJar).delete(cookieName);
+      (await cookieStore).delete(cookieName);
     });
 
     return NextResponse.json({}, { status: 204 });
