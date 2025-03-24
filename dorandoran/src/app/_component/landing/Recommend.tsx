@@ -5,7 +5,7 @@ import axios from 'axios';
 export default function Recommend() {
   const handleLogin = async () => {
     try {
-      const response = await axios.get(`https://api.dorandoran.online/member/mypage`, {
+      const response = await axios.get(`https://api.dorandoran.online/member/relogin`, {
         withCredentials: true,
       });
       console.log(response);
