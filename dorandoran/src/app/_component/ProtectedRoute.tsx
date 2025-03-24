@@ -9,6 +9,7 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const isLoggedIn = useStore((state) => state.isLoggedIn);
+  const isLoggingOut = useStore((state) => state.isLoggingOut);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -18,10 +19,10 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    if (!isLoading && isLoggedIn === false) {
+    if (!isLoading && isLoggedIn === false && !isLoggingOut) {
       router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
     }
-  }, [isLoading, isLoggedIn, router, pathname]);
+  }, [isLoading, isLoggedIn, router, pathname, isLoggingOut]);
 
   if (isLoading) return null;
   return <>{children}</>;

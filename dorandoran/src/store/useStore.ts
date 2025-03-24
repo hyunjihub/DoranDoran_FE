@@ -6,6 +6,7 @@ import { create } from 'zustand';
 interface UserState {
   user: IUser;
   isLoggedIn: boolean;
+  isLoggingOut: boolean;
   login: (newData: IUser) => void;
   logout: () => void;
   updateData: (modified: { profileImg: string; nickname: string }) => void;
@@ -29,6 +30,7 @@ const useStore = create(
         nickname: null,
       },
       isLoggedIn: false,
+      isLoggingOut: false,
 
       login: (newData) =>
         set(() => ({
@@ -36,7 +38,7 @@ const useStore = create(
           isLoggedIn: true,
         })),
 
-      logout: () =>
+      logout: () => {
         set(() => ({
           user: {
             memberId: null,
@@ -44,7 +46,13 @@ const useStore = create(
             nickname: null,
           },
           isLoggedIn: false,
-        })),
+          isLoggingOut: true,
+        }));
+
+        setTimeout(() => {
+          set(() => ({ isLoggingOut: false }));
+        }, 100);
+      },
 
       updateData: (modified) =>
         set((state) => ({
