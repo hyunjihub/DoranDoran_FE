@@ -5,11 +5,6 @@ import { cookies } from 'next/headers';
 export async function POST() {
   try {
     const cookieJar = cookies();
-    console.log('현재 쿠키:', (await cookieJar).getAll());
-    if (!(await cookieJar).has('access')) {
-      return NextResponse.json({ error: 'No access token' }, { status: 400 });
-    }
-
     await axios.post(
       `${process.env.API_BASE_URL}/member/logout`,
       {},

@@ -2,19 +2,24 @@
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { AuthStatus } from '@/app/_util/types/types';
 import EmailInput from '@/app/_component/form/EmailInput';
 import FindHeader from '@/app/_component/user/FindHeader';
 import { IFindForm } from '@/app/_util/types/types';
 import PasswordInput from '@/app/_component/form/PasswordInput';
-import { useSearchParams } from 'next/navigation';
+import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
+import { useStore } from '@/store/useStore';
 
 export default function FindForm() {
+  const logout = useStore((state) => state.logout);
   const searchParams = useSearchParams();
   const queryType = searchParams.get('type');
   const [type, setType] = useState(queryType === 'password' ? 'password' : 'email');
   const [authState, setAuthState] = useState<AuthStatus>('idle');
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -22,6 +27,20 @@ export default function FindForm() {
     reset,
     formState: { errors },
   } = useForm<IFindForm>({ mode: 'onBlur' });
+
+  const mutation = useMutation({
+    mutationFn: async (data: IFindForm) => {
+      await axios.post('/api/member/password', data);
+    },
+    onSuccess: () => {
+      logout();
+      localStorage.removeItem('doran-rememberMe');
+      router.push('/');
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   useEffect(() => {
     if (queryType === 'password' || queryType === 'email') {
@@ -35,7 +54,7 @@ export default function FindForm() {
       return;
     }
 
-    console.log(data);
+    mutation.mutate(data);
   };
 
   useEffect(() => {
