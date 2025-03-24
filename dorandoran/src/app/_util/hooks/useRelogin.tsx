@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
@@ -11,6 +11,13 @@ export default function useRelogin() {
   const login = useStore((state) => state.login);
   const isRememberMe = typeof window !== 'undefined' ? localStorage.getItem('doran-rememberMe') : null;
   const hasExecuted = useRef(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (isLoggedIn !== null && isLoggedIn !== undefined) {
+      setIsLoading(false);
+    }
+  }, [isLoggedIn]);
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -26,9 +33,9 @@ export default function useRelogin() {
   });
 
   useEffect(() => {
-    if (!hasExecuted.current && !isLoggedIn && isRememberMe) {
+    if (!isLoading && !hasExecuted.current && isLoggedIn === false && isRememberMe) {
       mutation.mutate();
       hasExecuted.current = true;
     }
-  }, [isLoggedIn, isRememberMe, mutation]);
+  }, [isLoggedIn, isRememberMe, mutation, isLoading]);
 }
