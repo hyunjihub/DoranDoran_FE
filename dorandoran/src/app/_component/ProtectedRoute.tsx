@@ -8,7 +8,7 @@ import { useStore } from '@/store/useStore';
 export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { isLoggedIn } = useStore();
+  const isLoggedIn = useStore((state) => state.isLoggedIn);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

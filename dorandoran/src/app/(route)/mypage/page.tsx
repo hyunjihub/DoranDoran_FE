@@ -13,11 +13,14 @@ import PushNotificationInput from '@/app/_component/form/setting/PushNotificatio
 import arrow from '/public/img/icon/prevArrow.svg';
 import { getFetchUserInfo } from '@/app/_util/getFetchUserInfo';
 import { useQuery } from '@tanstack/react-query';
+import { useStore } from '@/store/useStore';
 
 export default function MyPage() {
+  const user = useStore((state) => state.user);
   const { data } = useQuery<IMypage, Error>({
     queryKey: ['user'],
     queryFn: getFetchUserInfo,
+    refetchOnWindowFocus: false,
   });
 
   return (
@@ -27,7 +30,7 @@ export default function MyPage() {
           <ImageInput />
         </div>
         <div className="w-full border-b">
-          <InputToLink name="닉네임 변경" placeHolder="" link="/mypage/nickname" inputData="임시닉네임" />
+          <InputToLink name="닉네임 변경" placeHolder="" link="/mypage/nickname" inputData={user.nickname || ''} />
         </div>
         <div className="w-full border-b">
           <EmailInput email={data?.email ?? 'e1ample@gmail.com'} />

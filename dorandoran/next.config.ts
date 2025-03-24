@@ -10,13 +10,15 @@ const withPWA = withPWAInit({
 
 const nextConfig: NextConfig = {
   async headers() {
+    const isDev = process.env.NODE_ENV === 'development';
+
     return [
       {
         source: '/api/:path*',
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: process.env.API_BASE_URL || '*',
+            value: isDev ? 'http://localhost:8080' : process.env.API_BASE_URL || '*',
           },
           {
             key: 'Access-Control-Allow-Methods',

@@ -4,7 +4,10 @@ import { useEffect } from 'react';
 import { useStore } from '@/store/useStore';
 
 export default function useTabSync() {
-  const { login, logout, isLoggedIn, user } = useStore();
+  const isLoggedIn = useStore((state) => state.isLoggedIn);
+  const login = useStore((state) => state.login);
+  const logout = useStore((state) => state.logout);
+  const user = useStore((state) => state.user);
 
   useEffect(() => {
     const channel = new BroadcastChannel('auth-channel');

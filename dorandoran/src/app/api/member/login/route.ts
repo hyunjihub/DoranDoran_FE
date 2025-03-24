@@ -7,7 +7,6 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const host = req.headers.get('host') || '.dorandoran.online';
-
     const response = await axios.post<IUser>(`${process.env.API_BASE_URL}/member/login`, body, {
       withCredentials: true,
       headers: {

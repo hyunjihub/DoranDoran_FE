@@ -7,7 +7,8 @@ import { useMutation } from '@tanstack/react-query';
 import { useStore } from '@/store/useStore';
 
 export default function useRelogin() {
-  const { login, isLoggedIn } = useStore();
+  const isLoggedIn = useStore((state) => state.isLoggedIn);
+  const login = useStore((state) => state.login);
   const isRememberMe = typeof window !== 'undefined' ? localStorage.getItem('doran-rememberMe') : null;
   const hasExecuted = useRef(false);
 

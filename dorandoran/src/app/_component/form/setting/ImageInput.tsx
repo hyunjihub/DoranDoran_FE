@@ -11,7 +11,9 @@ import { useMutation } from '@tanstack/react-query';
 import { useStore } from '@/store/useStore';
 
 export default function ImageInput() {
-  const { updateData, user } = useStore();
+  const user = useStore((state) => state.user);
+  const updateData = useStore((state) => state.updateData);
+
   const fileInput = useRef<HTMLInputElement | null>(null);
   const [profileImg, setProfileImg] = useState('');
 

@@ -7,7 +7,7 @@ import { useStore } from '@/store/useStore';
 import userIcon from '/public/img/icon/user.svg';
 
 export default function MainHeader() {
-  const { isLoggedIn } = useStore();
+  const isLoggedIn = useStore((state) => state.isLoggedIn);
   const pathname = usePathname();
 
   return (

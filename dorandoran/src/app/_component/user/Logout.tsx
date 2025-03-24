@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useStore } from '@/store/useStore';
 
 export default function Logout() {
-  const { logout } = useStore();
+  const logout = useStore((state) => state.logout);
   const router = useRouter();
 
   const mutation = useMutation({
