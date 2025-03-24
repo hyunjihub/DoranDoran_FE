@@ -11,7 +11,13 @@ export default function Logout() {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      await axios.post('/api/member/logout');
+      await axios.post(
+        '/api/member/logout',
+        {},
+        {
+          withCredentials: true,
+        }
+      );
     },
     onSuccess: () => {
       logout();
