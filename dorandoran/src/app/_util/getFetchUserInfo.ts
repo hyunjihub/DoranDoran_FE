@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const getFetchUserInfo = async (): Promise<IMypage> => {
   try {
-    const response = await axios.get('/api/member/mypage');
+    const response = await axios.get('/api/member/mypage', { withCredentials: true });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
