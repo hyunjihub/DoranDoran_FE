@@ -6,12 +6,12 @@ import { cookies } from 'next/headers';
 export async function GET() {
   try {
     const cookieStore = cookies();
-    const access = (await cookieStore).get('access')?.value || '';
+    const accessToken = (await cookieStore).get('access')?.value || '';
 
     const { data } = await axios.get<IMypage>(`${process.env.API_BASE_URL}/member/mypage`, {
       withCredentials: true,
       headers: {
-        Cookie: `access=${access}`,
+        Cookie: `access=${accessToken}`,
       },
     });
 
