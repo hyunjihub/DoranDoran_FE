@@ -1,11 +1,18 @@
 import { IMypage } from '@/app/_util/types/types';
 import { NextResponse } from 'next/server';
 import axios from 'axios';
+import { cookies } from 'next/headers';
 
 export async function GET() {
   try {
+    const cookieStore = cookies();
+    const sessionCookie = (await cookieStore).get('access')?.value || '';
+
     const { data } = await axios.get<IMypage>(`${process.env.API_BASE_URL}/member/mypage`, {
       withCredentials: true,
+      headers: {
+        Cookie: `access=${sessionCookie}`,
+      },
     });
 
     return NextResponse.json(data, { status: 201 });
