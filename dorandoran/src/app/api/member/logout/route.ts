@@ -8,7 +8,7 @@ export async function POST() {
     const accessToken = (await cookieStore).get('access')?.value || '';
     const refreshToken = (await cookieStore).get('refresh')?.value || '';
 
-    await axios.post(
+    const response = await axios.post(
       `${process.env.API_BASE_URL}/member/logout`,
       {},
       {
@@ -19,11 +19,16 @@ export async function POST() {
       }
     );
 
-    const cookieNames = ['access', 'refresh'];
+    const setCookieHeader = response.headers['set-cookie'];
+    if (setCookieHeader) {
+      const res = NextResponse.json({}, { status: 201 });
 
-    cookieNames.forEach(async (cookieName) => {
-      (await cookieStore).delete(cookieName);
-    });
+      setCookieHeader.forEach((cookie) => {
+        res.headers.append('Set-Cookie', cookie);
+      });
+
+      return res;
+    }
 
     return NextResponse.json({}, { status: 204 });
   } catch (error: unknown) {
