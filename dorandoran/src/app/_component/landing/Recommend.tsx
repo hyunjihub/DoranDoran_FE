@@ -5,16 +5,9 @@ import axios from 'axios';
 export default function Recommend() {
   const handleLogin = async () => {
     try {
-      const response = await axios.post(
-        `https://api.dorandoran.online/member/login`,
-        {
-          email: 'test1234@example.com',
-          password: 'test1234!',
-        },
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get(`https://api.dorandoran.online/member/mypage`, {
+        withCredentials: true,
+      });
       console.log(response);
     } catch (error) {
       console.log(error);

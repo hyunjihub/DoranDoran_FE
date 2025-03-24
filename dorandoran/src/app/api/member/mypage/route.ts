@@ -2,15 +2,11 @@ import { IMypage } from '@/app/_util/types/types';
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
-export async function POST() {
+export async function GET() {
   try {
-    const { data } = await axios.post<IMypage>(
-      `${process.env.API_BASE_URL}/member/mypage`,
-      {},
-      {
-        withCredentials: true,
-      }
-    );
+    const { data } = await axios.get<IMypage>(`${process.env.API_BASE_URL}/member/mypage`, {
+      withCredentials: true,
+    });
 
     return NextResponse.json(data, { status: 201 });
   } catch (error: unknown) {
