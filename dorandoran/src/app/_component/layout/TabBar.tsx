@@ -7,11 +7,9 @@ import hamburger from '/public/img/icon/hamburger.svg';
 import home from '/public/img/icon/home.svg';
 import search from '/public/img/icon/search.svg';
 import { usePathname } from 'next/navigation';
-import { useStore } from '@/store/useStore';
 import userIcon from '/public/img/icon/user.svg';
 
 export default function TabBar() {
-  const isLoggedIn = useStore((state) => state.isLoggedIn);
   const pathname = usePathname();
   const notRendering = ['/search', '/login', '/singup', '/find', '/chat', '/mypage/nickname'];
   const isChatRoute = pathname.startsWith('/chat/') && pathname.split('/').length === 3;
@@ -43,10 +41,7 @@ export default function TabBar() {
           </Link>
         </li>
         <li>
-          <Link
-            className="min-w-[55px] flex flex-col items-center"
-            href={`${isLoggedIn ? '/mypage' : `/login?redirect=${encodeURIComponent(pathname)}`}`}
-          >
+          <Link className="min-w-[55px] flex flex-col items-center" href={'/mypage'}>
             <Image src={userIcon} alt="마이페이지" width={30} height={30} />
             마이페이지
           </Link>

@@ -71,7 +71,7 @@ export default function LoginForm() {
         비밀번호
         <div className="relative w-full">
           <input
-            type="password"
+            type={passwordClosed ? 'password' : 'text'}
             className="w-full border rounded p-[12px] text-sm outline-none font-normal"
             placeholder="영문, 숫자, 특수문자 조합 8글자 이상"
             onKeyUp={(e) => checkCapsLock(e)}
@@ -81,7 +81,7 @@ export default function LoginForm() {
           />
           <Image
             className="absolute right-[12px] top-[10px]"
-            src={passwordClosed ? eyeClose : eye}
+            src={passwordClosed ? eye : eyeClose}
             alt="비밀번호 표시"
             width={24}
             height={24}
