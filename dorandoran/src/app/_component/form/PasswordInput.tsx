@@ -45,7 +45,7 @@ export default function PasswordInput<T extends ISignupForm | IFindForm>({
         />
         <Image
           className="absolute right-[12px] top-[10px]"
-          src={passwordClosed ? eyeClose : eye}
+          src={passwordClosed ? eye : eyeClose}
           alt="비밀번호 표시"
           width={24}
           height={24}

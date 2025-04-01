@@ -9,7 +9,7 @@ export default async function getImageURL(image: File): Promise<string | null> {
     return null;
   }
 
-  if (image.size > maxSizeMB * 1024 * 1024) {
+  if (image.size < maxSizeMB * 1024 * 1024) {
     alert('이미지는 10MB 이하의 파일만 업로드 가능합니다.');
     return null;
   }
