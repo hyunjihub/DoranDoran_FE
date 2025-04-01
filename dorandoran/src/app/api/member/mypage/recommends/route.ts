@@ -1,20 +1,22 @@
-import { NextRequest, NextResponse } from 'next/server';
-
+import { NextResponse } from 'next/server';
 import axios from 'axios';
 import { cookies } from 'next/headers';
 
-export async function POST(req: NextRequest) {
+export async function PATCH() {
   try {
-    const body = await req.json();
     const cookieStore = cookies();
     const access = (await cookieStore).get('access')?.value || '';
 
-    await axios.post(`${process.env.API_BASE_URL}/member/mypage/profile`, body, {
-      withCredentials: true,
-      headers: {
-        Cookie: `access=${access}`,
-      },
-    });
+    await axios.patch(
+      `${process.env.API_BASE_URL}/member/mypage/recommends`,
+      {},
+      {
+        withCredentials: true,
+        headers: {
+          Cookie: `access=${access}`,
+        },
+      }
+    );
 
     return NextResponse.json({ status: 201 });
   } catch (error: unknown) {

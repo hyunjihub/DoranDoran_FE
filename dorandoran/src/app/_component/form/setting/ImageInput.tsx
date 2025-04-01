@@ -19,14 +19,7 @@ export default function ImageInput() {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const formData = new FormData();
-      formData.append('profileImg', profileImg);
-
-      await axios.post('/api/member/mypage/profile', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      await axios.post('/api/member/mypage/profile', { profileImage: profileImg });
     },
     onSuccess: () => {
       updateData({ profileImg: profileImg, nickname: user.nickname || '' });
@@ -36,9 +29,9 @@ export default function ImageInput() {
     },
   });
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (profileImg !== '' && profileImg !== user.profileImg) mutation.mutate();
-  }, [profileImg, mutation, user]);
+  }, [profileImg, mutation, user]);*/
 
   const handleUploadImg = () => {
     if (fileInput.current) {
@@ -60,7 +53,7 @@ export default function ImageInput() {
   return (
     <div className="w-full h-[200px] bg-gray-200 flex justify-center items-center">
       <div className="relative w-[140px] h-[140px] rounded-full border">
-        <Image className="object-cover rounded-full" src={plus} alt="프로필 이미지" fill />
+        <Image className="object-cover rounded-full" src={profileImg || plus} alt="프로필 이미지" fill />
         <button
           className="w-[40px] h-[40px] absolute bottom-0 right-0 rounded-full bg-gray-300 flex items-center justify-center"
           onClick={handleUploadImg}

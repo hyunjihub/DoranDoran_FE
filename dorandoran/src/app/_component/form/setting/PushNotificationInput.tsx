@@ -10,7 +10,7 @@ export default function PushNotificationInput({ isNotification }: { isNotificati
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
-      await axios.post('/api/member/mypage/notification', { isNotification });
+      await axios.patch('/api/member/mypage/notification');
     },
     onSuccess: () => {
       queryClient.setQueryData(['user'], (oldData: IMypage) => {

@@ -18,7 +18,7 @@ export default function Nickname() {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      await axios.post('/api/member/mypage/nickname', { nickname });
+      await axios.patch('/api/member/mypage/nickname', { nickname });
     },
     onSuccess: () => {
       updateData({ profileImg: user.profileImg || '', nickname: nickname });

@@ -8,7 +8,7 @@ export default function ChatReceiveInput({ isPermmited }: { isPermmited: boolean
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
-      await axios.post('/api/member/mypage/recommends', { isPermmited });
+      await axios.patch('/api/member/mypage/recommends');
     },
     onSuccess: () => {
       queryClient.setQueryData(['user'], (oldData: IMypage) => {

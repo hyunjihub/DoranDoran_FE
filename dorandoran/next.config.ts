@@ -36,6 +36,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: `${process.env.IMAGE_BUCKET}.s3.amazonaws.com`,
+        pathname: '/**',
+      },
+    ],
+  },
 };
 
 export default withPWA(nextConfig);

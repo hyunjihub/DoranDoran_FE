@@ -3,13 +3,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 import { cookies } from 'next/headers';
 
-export async function POST(req: NextRequest) {
+export async function PATCH(req: NextRequest) {
   try {
     const body = await req.json();
     const cookieStore = cookies();
     const access = (await cookieStore).get('access')?.value || '';
 
-    await axios.post(`${process.env.API_BASE_URL}/member/mypage/profile`, body, {
+    await axios.patch(`${process.env.API_BASE_URL}/member/mypage/profile`, body, {
       withCredentials: true,
       headers: {
         Cookie: `access=${access}`,
