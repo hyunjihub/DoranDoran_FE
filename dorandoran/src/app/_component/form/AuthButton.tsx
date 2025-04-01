@@ -33,7 +33,14 @@ export default function AuthButton<T extends ISignupForm | IFindForm>({
       setAuthState('inProgress');
     },
     onError: (error) => {
-      alert(error);
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage = error.response.data?.error;
+        if (errorMessage === '이미 가입된 이메일입니다.') {
+          alert('이미 가입된 계정입니다.');
+        } else if (errorMessage === '회원정보를 찾을 수 없습니다.') {
+          alert('해당 이메일로 가입된 계정이 존재하지 않습니다.');
+        }
+      }
     },
   });
 

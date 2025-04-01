@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import axios from 'axios';
 import { cookies } from 'next/headers';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(req: NextRequest) {
   const cookieStore = cookies();
@@ -12,12 +13,12 @@ export async function POST(req: NextRequest) {
   if (!(file instanceof File)) {
     return NextResponse.json({ error: '올바른 파일이 아닙니다.' }, { status: 400 });
   }
+  const uniqueName = uuidv4() + encodeURIComponent(file.name);
 
-  console.log(file.name, file.size);
   try {
     const response = await axios.post(
       `${process.env.API_BASE_URL}/image`,
-      { fileName: file.name, fileSize: file.size / 1024 ** 2 },
+      { fileName: uniqueName, fileSize: file.size / 1024 ** 2 },
       {
         withCredentials: true,
         headers: {
@@ -31,11 +32,10 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(
-      { url: `https://${process.env.IMAGE_BUCKET}.s3.amazonaws.com/${file.name}` },
+      { url: `https://${process.env.IMAGE_BUCKET}.s3.amazonaws.com/${uniqueName}` },
       { status: 200 }
     );
   } catch (error: unknown) {
-    console.log(error);
     let errorMessage = '서버 오류 발생';
     let status = 500;
 

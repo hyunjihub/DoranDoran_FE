@@ -29,9 +29,9 @@ export default function ImageInput() {
     },
   });
 
-  /*useEffect(() => {
+  useEffect(() => {
     if (profileImg !== '' && profileImg !== user.profileImg) mutation.mutate();
-  }, [profileImg, mutation, user]);*/
+  }, [profileImg, mutation, user]);
 
   const handleUploadImg = () => {
     if (fileInput.current) {
