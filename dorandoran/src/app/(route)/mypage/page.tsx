@@ -40,7 +40,7 @@ export default function MyPage() {
         </div>
         <div className="w-full flex justify-between items-center px-[16px] py-[18px]">
           <p className="font-bold">비밀번호 재설정</p>
-          <Link href={'/find?type=password'}>
+          <Link href={'/find'}>
             <Image className="rotate-180" src={arrow} alt="비밀번호 재설정" width={8} height={8} />
           </Link>
         </div>

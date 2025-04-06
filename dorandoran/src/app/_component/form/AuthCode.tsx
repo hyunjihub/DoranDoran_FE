@@ -7,17 +7,15 @@ import { useState } from 'react';
 interface AuthCodeProps {
   authState: AuthStatus;
   setAuthState: React.Dispatch<React.SetStateAction<AuthStatus>>;
-  clientCode: string | null;
   timeLeft: number;
 }
 
-export default function AuthCode({ authState, setAuthState, timeLeft, clientCode }: AuthCodeProps) {
+export default function AuthCode({ authState, setAuthState, timeLeft }: AuthCodeProps) {
   const [authCode, setAuthCode] = useState('');
 
   const mutation = useMutation({
     mutationFn: async () => {
       await axios.post('/api/member/auth', {
-        clientCode: clientCode,
         authCode: authCode,
       });
     },

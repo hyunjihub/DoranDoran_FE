@@ -1,7 +1,7 @@
 export const TITLE = {
   '/chat/setting': '채팅방 설정',
   '/chatlist': '채팅 목록',
-  '/find': '계정 찾기',
+  '/find': '비밀번호 재설정',
   '/login': '로그인',
   '/mychat': '내 채팅',
   '/mypage': '마이페이지',

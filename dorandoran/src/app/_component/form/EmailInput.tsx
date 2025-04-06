@@ -25,7 +25,6 @@ export default function EmailInput<T extends ISignupForm | IFindForm>({
   errors,
 }: EmailInputProps<T>) {
   const [timeLeft, setTimeLeft] = useState(180);
-  const [clientCode, setClientCode] = useState<string | null>(null);
   useTimer(timeLeft, setTimeLeft, authState, setAuthState);
 
   return (
@@ -43,10 +42,8 @@ export default function EmailInput<T extends ISignupForm | IFindForm>({
           },
         })}
       />
-      <AuthButton authState={authState} setAuthState={setAuthState} watch={watch} setClientCode={setClientCode} />
-      {authState !== 'idle' && (
-        <AuthCode authState={authState} setAuthState={setAuthState} timeLeft={timeLeft} clientCode={clientCode} />
-      )}
+      <AuthButton authState={authState} setAuthState={setAuthState} watch={watch} />
+      {authState !== 'idle' && <AuthCode authState={authState} setAuthState={setAuthState} timeLeft={timeLeft} />}
       {errors.email ? <span className="text-red-500 text-xs font-normal">{errors.email.message}</span> : <></>}
     </label>
   );

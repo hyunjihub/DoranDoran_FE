@@ -6,7 +6,7 @@ export default function LoginComponent() {
     <div className="h-full px-[16px] flex flex-col">
       <LoginForm />
       <Link className="mt-[8px] text-center text-xs" href={'/find'}>
-        아이디 | 비밀번호 찾기
+        비밀번호 재설정
       </Link>
       <Link
         className="mt-[40px] w-full py-[12px] border border-[#7B3796] rounded text-[#7B3796] text-center font-bold"
