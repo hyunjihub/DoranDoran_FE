@@ -46,7 +46,7 @@ export default function TextInput({ setInputData, inputData, placeholder }: Text
           alt="전체 지우기"
           width={28}
           height={28}
-          className="absolute right-4 top-[34px] transform -translate-y-1/2 cursor-pointer"
+          className="absolute right-4 top-[36px] transform -translate-y-1/2 cursor-pointer"
           onClick={handleClear}
         />
       )}

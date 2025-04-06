@@ -6,7 +6,7 @@ import CameraIcon from '../../ui/CameraIcon';
 import Image from 'next/image';
 import axios from 'axios';
 import getImageURL from '@/app/_util/getImageURL';
-import plus from '/public/img/icon/plus.svg';
+import profile from '/public/img/profile.jpg';
 import { useMutation } from '@tanstack/react-query';
 import { useStore } from '@/store/useStore';
 
@@ -53,7 +53,7 @@ export default function ImageInput() {
   return (
     <div className="w-full h-[200px] bg-gray-200 flex justify-center items-center">
       <div className="relative w-[140px] h-[140px] rounded-full border">
-        <Image className="object-cover rounded-full" src={profileImg || plus} alt="프로필 이미지" fill />
+        <Image className="object-cover rounded-full" src={profileImg || profile} alt="프로필 이미지" fill />
         <button
           className="w-[40px] h-[40px] absolute bottom-0 right-0 rounded-full bg-gray-300 flex items-center justify-center"
           onClick={handleUploadImg}

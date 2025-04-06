@@ -32,7 +32,7 @@ export default function PasswordInput<T extends ISignupForm | IFindForm>({
       <div className="relative w-full">
         <input
           className="w-full border rounded py-[12px] pl-[12px] pr-[40px] text-sm outline-none font-normal"
-          type={passwordClosed ? 'text' : 'password'}
+          type={passwordClosed ? 'password' : 'text'}
           placeholder="영문, 숫자, 특수문자 조합 8글자 이상"
           {...register('password' as Path<T>, {
             required: '비밀번호는 필수입니다.',
@@ -55,7 +55,7 @@ export default function PasswordInput<T extends ISignupForm | IFindForm>({
       <div className="relative w-full">
         <input
           className="w-full border rounded py-[12px] pl-[12px] pr-[40px] text-sm outline-none font-normal"
-          type={confirmClosed ? 'text' : 'password'}
+          type={confirmClosed ? 'password' : 'text'}
           placeholder="비밀번호 확인"
           {...register('passwordConfirm' as Path<T>, {
             required: '비밀번호 확인은 필수입니다.',
@@ -64,7 +64,7 @@ export default function PasswordInput<T extends ISignupForm | IFindForm>({
         />
         <Image
           className="absolute right-[12px] top-[10px]"
-          src={confirmClosed ? eyeClose : eye}
+          src={confirmClosed ? eye : eyeClose}
           alt="비밀번호 표시"
           width={24}
           height={24}

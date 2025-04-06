@@ -20,7 +20,7 @@ export default function Header() {
   }, [pathname]);
 
   return (
-    <header className="w-full h-[64px] sticky top-0 bg-white">
+    <header className="w-full h-[64px] sticky top-0 bg-white border-b">
       {pathname === '/' ? (
         <MainHeader />
       ) : pathname === '/search' ? (
