@@ -3,6 +3,7 @@
 import { FieldError, UseFormRegister, UseFormWatch } from 'react-hook-form';
 
 import { ISignupForm } from '@/app/_util/types/types';
+import NicknameError from '../error/NicknameError';
 import useNicknameCheck from '@/app/_util/hooks/useNicknameCheck';
 
 interface NicknameInput {
@@ -31,9 +32,7 @@ export default function NicknameInput({ register, watch, errors }: NicknameInput
           },
         })}
       />
-      {errors.nickname && <span className="text-red-500 text-xs font-normal">{errors.nickname.message}</span>}
-      {isAvailable === false && <span className="text-red-500 text-xs font-normal">이미 사용 중인 닉네임입니다.</span>}
-      {isAvailable === true && <span className="text-green-500 text-xs font-normal">사용 가능한 닉네임입니다.</span>}
+      <NicknameError errors={errors} isAvailable={isAvailable} />
     </label>
   );
 }
