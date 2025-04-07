@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import LoginForm from '@/app/_component/user/LoginForm';
+import LoginForm from '@/app/_component/user/login/LoginForm';
 
 export default function LoginComponent() {
   return (
     <div className="h-full px-[16px] flex flex-col">
       <LoginForm />
-      <Link className="mt-[8px] text-center text-xs" href={'/find'}>
+      <Link className="mt-[8px] text-center text-xs" href={'/find'} role="button">
         비밀번호 재설정
       </Link>
       <Link

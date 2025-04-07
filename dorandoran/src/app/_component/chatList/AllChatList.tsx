@@ -53,7 +53,7 @@ export default function AllChatList() {
         <></>
       ) : (
         <>
-          <ul className="mt-4 grid grid-cols-2 gap-4">
+          <ul className="my-4 pb-24 grid grid-cols-2 gap-4">
             {data?.pages.map((page, pageIndex) =>
               page.data.map((room: IRoom, idx: number) => <RoomItem room={room} key={`${pageIndex}-${idx}`} />)
             )}
