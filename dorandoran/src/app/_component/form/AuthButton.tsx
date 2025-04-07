@@ -20,7 +20,7 @@ export default function AuthButton<T extends ISignupForm | IFindForm>({
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.post('/api/member/email', {
+      const response = await axios.post('/api/member/auth/email', {
         email: email,
         isSignUp: true,
       });

@@ -15,7 +15,7 @@ export default function AuthCode({ authState, setAuthState, timeLeft }: AuthCode
 
   const mutation = useMutation({
     mutationFn: async () => {
-      await axios.post('/api/member/auth', {
+      await axios.post('/api/member/auth/code', {
         authCode: authCode,
       });
     },
