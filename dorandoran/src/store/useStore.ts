@@ -9,7 +9,7 @@ interface UserState {
   isLoggingOut: boolean;
   login: (newData: IUser) => void;
   logout: () => void;
-  updateData: (modified: { profileImg: string; nickname: string }) => void;
+  updateData: (modified: { profileImage: string; nickname: string }) => void;
 }
 
 interface ChatState {
@@ -26,7 +26,7 @@ const useStore = create(
     (set) => ({
       user: {
         memberId: null,
-        profileImg: null,
+        profileImage: null,
         nickname: null,
       },
       isLoggedIn: false,
@@ -42,7 +42,7 @@ const useStore = create(
         set(() => ({
           user: {
             memberId: null,
-            profileImg: null,
+            profileImage: null,
             nickname: null,
           },
           isLoggedIn: false,
@@ -58,7 +58,7 @@ const useStore = create(
         set((state) => ({
           user: {
             ...state.user,
-            profileImg: modified.profileImg,
+            profileImage: modified.profileImage,
             nickname: modified.nickname,
           },
         })),

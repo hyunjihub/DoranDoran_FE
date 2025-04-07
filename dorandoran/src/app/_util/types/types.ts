@@ -1,7 +1,7 @@
 export interface IUser {
   memberId: number | null;
   nickname: string | null;
-  profileImg: string | null;
+  profileImage: string | null;
 }
 
 export interface IMypage {

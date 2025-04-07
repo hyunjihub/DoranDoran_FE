@@ -6,11 +6,15 @@ import ProtectedRoute from '@/app/_component/ProtectedRoute';
 import TextInput from '@/app/_component/form/setting/TextInput';
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
+import { useNavigationHistory } from '@/app/_util/hooks/useNavigationHistory';
+import { useRouter } from 'next/navigation';
 import { useStore } from '@/store/useStore';
 
 export default function Nickname() {
   const { updateData, user } = useStore();
   const [nickname, setNickname] = useState('');
+  const router = useRouter();
+  const { goBack } = useNavigationHistory();
 
   useEffect(() => {
     if (user.nickname) setNickname(user.nickname);
@@ -21,7 +25,9 @@ export default function Nickname() {
       await axios.patch('/api/member/mypage/nickname', { nickname });
     },
     onSuccess: () => {
-      updateData({ profileImg: user.profileImg || '', nickname: nickname });
+      updateData({ profileImage: user.profileImage || '', nickname: nickname });
+      const previousPage = goBack();
+      router.push(previousPage);
     },
     onError: (error) => {
       console.log(error);

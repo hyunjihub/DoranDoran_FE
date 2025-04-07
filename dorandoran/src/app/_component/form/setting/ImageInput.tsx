@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef } from 'react';
 
 import CameraIcon from '../../ui/CameraIcon';
 import Image from 'next/image';
@@ -15,23 +15,17 @@ export default function ImageInput() {
   const updateData = useStore((state) => state.updateData);
 
   const fileInput = useRef<HTMLInputElement | null>(null);
-  const [profileImg, setProfileImg] = useState('');
-
   const mutation = useMutation({
-    mutationFn: async () => {
-      await axios.post('/api/member/mypage/profile', { profileImage: profileImg });
+    mutationFn: async (profileImage: string) => {
+      await axios.patch('/api/member/mypage/profile', { profileImage });
     },
-    onSuccess: () => {
-      updateData({ profileImg: profileImg, nickname: user.nickname || '' });
+    onSuccess: (_data, profileImage) => {
+      updateData({ profileImage, nickname: user.nickname || '' });
     },
     onError: (error) => {
       console.log(error);
     },
   });
-
-  useEffect(() => {
-    if (profileImg !== '' && profileImg !== user.profileImg) mutation.mutate();
-  }, [profileImg, mutation, user]);
 
   const handleUploadImg = () => {
     if (fileInput.current) {
@@ -44,7 +38,7 @@ export default function ImageInput() {
     if (image) {
       const url = await getImageURL(image);
       if (url) {
-        setProfileImg(url);
+        mutation.mutate(url);
       }
     }
     event.target.value = '';
@@ -53,7 +47,7 @@ export default function ImageInput() {
   return (
     <div className="w-full h-[200px] bg-gray-200 flex justify-center items-center">
       <div className="relative w-[140px] h-[140px] rounded-full border">
-        <Image className="object-cover rounded-full" src={profileImg || profile} alt="프로필 이미지" fill />
+        <Image className="object-cover rounded-full" src={user.profileImage || profile} alt="프로필 이미지" fill />
         <button
           className="w-[40px] h-[40px] absolute bottom-0 right-0 rounded-full bg-gray-300 flex items-center justify-center"
           onClick={handleUploadImg}

@@ -9,14 +9,17 @@ import InputToLink from '@/app/_component/form/setting/InputToLink';
 import Link from 'next/link';
 import Loading from '@/app/_component/layout/Loading';
 import Logout from '@/app/_component/user/Logout';
+import PromptModal from '@/app/_component/user/PromptModal';
 import ProtectedRoute from '@/app/_component/ProtectedRoute';
 import PushNotificationInput from '@/app/_component/form/setting/PushNotificationInput';
 import arrow from '/public/img/icon/prevArrow.svg';
 import { getFetchUserInfo } from '@/app/_util/getFetchUserInfo';
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useStore } from '@/store/useStore';
 
 export default function MyPage() {
+  const [isActive, setIsActive] = useState(false);
   const user = useStore((state) => state.user);
   const { data, isLoading } = useQuery<IMypage, Error>({
     queryKey: ['user'],
@@ -52,9 +55,12 @@ export default function MyPage() {
             <PushNotificationInput isNotification={data?.isNotification ?? false} />
           </div>
           <Logout />
-          <button className="mt-3 text-gray-500 text-xs">회원 탈퇴</button>
+          <button className="mt-3 text-gray-500 text-xs" onClick={() => setIsActive(true)}>
+            회원 탈퇴
+          </button>
         </div>
       )}
+      {isActive && <PromptModal setIsActive={setIsActive} />}
     </ProtectedRoute>
   );
 }

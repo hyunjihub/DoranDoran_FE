@@ -14,7 +14,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: '올바른 파일이 아닙니다.' }, { status: 400 });
   }
   const uniqueName = uuidv4() + encodeURIComponent(file.name);
-
   try {
     const response = await axios.post(
       `${process.env.API_BASE_URL}/image`,
