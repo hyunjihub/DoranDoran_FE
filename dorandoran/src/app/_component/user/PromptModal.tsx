@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useStore } from '@/store/useStore';
+import { userStore } from '@/store/useUserStore';
 
 interface PromptModalProps {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,7 +11,7 @@ interface PromptModalProps {
 export default function PromptModal({ setIsActive }: PromptModalProps) {
   const [input, setInput] = useState('');
 
-  const logout = useStore((state) => state.logout);
+  const logout = userStore((state) => state.logout);
   const router = useRouter();
 
   const mutation = useMutation({

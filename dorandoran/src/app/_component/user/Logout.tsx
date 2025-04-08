@@ -3,10 +3,10 @@
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useStore } from '@/store/useStore';
+import { userStore } from '@/store/useUserStore';
 
 export default function Logout() {
-  const logout = useStore((state) => state.logout);
+  const logout = userStore((state) => state.logout);
   const router = useRouter();
 
   const mutation = useMutation({

@@ -10,11 +10,11 @@ import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useStore } from '@/store/useStore';
+import { userStore } from '@/store/useUserStore';
 
 export default function FindForm() {
-  const isLoggedIn = useStore((state) => state.isLoggedIn);
-  const logout = useStore((state) => state.logout);
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
+  const logout = userStore((state) => state.logout);
   const [authState, setAuthState] = useState<AuthStatus>('idle');
   const router = useRouter();
   const {

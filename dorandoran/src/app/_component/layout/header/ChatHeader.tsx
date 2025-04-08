@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import arrow from '/public/img/icon/prevArrow.svg';
-import { chatStore } from '@/store/useStore';
+import { chatStore } from '@/store/useChatStore';
 import more from '/public/img/icon/more.svg';
 import { usePathname } from 'next/navigation';
 

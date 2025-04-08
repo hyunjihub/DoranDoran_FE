@@ -16,6 +16,11 @@ export interface IChat {
   chatTitle: string | null;
 }
 
+export interface IWebsocket {
+  socket: WebSocket | null;
+  isConnect: boolean;
+}
+
 export interface IRoom {
   id: number;
   title: string;

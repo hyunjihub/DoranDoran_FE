@@ -3,7 +3,7 @@
 import Chatting from '@/app/_component/chat/Chatting';
 import MessageInput from '@/app/_component/chat/MessageInput';
 import ProtectedRoute from '@/app/_component/ProtectedRoute';
-import { chatStore } from '@/store/useStore';
+import { chatStore } from '@/store/useChatStore';
 import { useEffect } from 'react';
 
 export default function Chat() {

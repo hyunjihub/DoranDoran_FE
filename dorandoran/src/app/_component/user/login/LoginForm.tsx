@@ -10,11 +10,11 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-import { useStore } from '@/store/useStore';
+import { userStore } from '@/store/useUserStore';
 
 export default function LoginForm() {
   const router = useRouter();
-  const { login } = useStore();
+  const { login } = userStore();
   const [loginFail, setLoginFail] = useState(false);
   const [capsLockFlag, setCapsLockFlag] = useState(false);
   const param = useSearchParams();

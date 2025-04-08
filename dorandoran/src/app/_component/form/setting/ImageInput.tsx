@@ -8,11 +8,11 @@ import axios from 'axios';
 import getImageURL from '@/app/_util/getImageURL';
 import profile from '/public/img/profile.jpg';
 import { useMutation } from '@tanstack/react-query';
-import { useStore } from '@/store/useStore';
+import { userStore } from '@/store/useUserStore';
 
 export default function ImageInput() {
-  const user = useStore((state) => state.user);
-  const updateData = useStore((state) => state.updateData);
+  const user = userStore((state) => state.user);
+  const updateData = userStore((state) => state.updateData);
 
   const fileInput = useRef<HTMLInputElement | null>(null);
   const mutation = useMutation({
@@ -40,6 +40,8 @@ export default function ImageInput() {
       if (url) {
         mutation.mutate(url);
       }
+    } else {
+      alert('이미지 파일만 업로드 가능합니다.');
     }
     event.target.value = '';
   };

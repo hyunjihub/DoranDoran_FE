@@ -58,7 +58,7 @@ export default function AllChatList() {
               page.data.map((room: IRoom, idx: number) => <RoomItem room={room} key={`${pageIndex}-${idx}`} />)
             )}
           </ul>
-          {isFetchingNextPage && <p className="text-center py-4">불러오는 중...</p>}
+          {isFetchingNextPage && <p className="text-xs text-center py-4">불러오는 중...</p>}
           <div ref={observerRef} className="h-6" />
         </>
       )}

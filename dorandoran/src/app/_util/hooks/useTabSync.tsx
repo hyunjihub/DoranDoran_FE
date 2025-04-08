@@ -1,13 +1,13 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useStore } from '@/store/useStore';
+import { userStore } from '@/store/useUserStore';
 
 export default function useTabSync() {
-  const isLoggedIn = useStore((state) => state.isLoggedIn);
-  const login = useStore((state) => state.login);
-  const logout = useStore((state) => state.logout);
-  const user = useStore((state) => state.user);
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
+  const login = userStore((state) => state.login);
+  const logout = userStore((state) => state.logout);
+  const user = userStore((state) => state.user);
 
   useEffect(() => {
     const channel = new BroadcastChannel('auth-channel');

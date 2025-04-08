@@ -6,6 +6,7 @@ import Header from './_component/layout/header/Header';
 import Providers from './providers';
 import PwaProvider from './PwaProvider';
 import TabBar from './_component/layout/TabBar';
+import WebSocketController from './_component/WebsocketController';
 
 export const viewport: Viewport = {
   themeColor: 'black',
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body>
         <PwaProvider>
           <Providers>
+            <WebSocketController />
             <div className="relative flex justify-center items-center min-h-screen bg-gray-100">
               <div className="w-[430px] h-screen overflow-hidden relative z-10 flex justify-center items-center">
                 <div className="bg-white h-full w-full flex flex-col relative">

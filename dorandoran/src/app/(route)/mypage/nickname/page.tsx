@@ -8,10 +8,10 @@ import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigationHistory } from '@/app/_util/hooks/useNavigationHistory';
 import { useRouter } from 'next/navigation';
-import { useStore } from '@/store/useStore';
+import { userStore } from '@/store/useUserStore';
 
 export default function Nickname() {
-  const { updateData, user } = useStore();
+  const { updateData, user } = userStore();
   const [nickname, setNickname] = useState('');
   const router = useRouter();
   const { goBack } = useNavigationHistory();
@@ -29,8 +29,8 @@ export default function Nickname() {
       const previousPage = goBack();
       router.push(previousPage);
     },
-    onError: (error) => {
-      console.log(error);
+    onError: () => {
+      alert('닉네임 형식이 올바르지 않거나 이미 사용 중인 닉네임입니다.');
     },
   });
 

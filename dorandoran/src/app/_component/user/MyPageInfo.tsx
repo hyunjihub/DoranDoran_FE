@@ -13,14 +13,14 @@ import PushNotificationInput from '@/app/_component/form/setting/PushNotificatio
 import arrow from '/public/img/icon/prevArrow.svg';
 import { getFetchUserInfo } from '@/app/_util/getFetchUserInfo';
 import { useQuery } from '@tanstack/react-query';
-import { useStore } from '@/store/useStore';
+import { userStore } from '@/store/useUserStore';
 
 interface MypageInfoProps {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function MypageInfo({ setIsActive }: MypageInfoProps) {
-  const user = useStore((state) => state.user);
+  const user = userStore((state) => state.user);
   const { data, isLoading } = useQuery<IMypage, Error>({
     queryKey: ['user'],
     queryFn: getFetchUserInfo,
