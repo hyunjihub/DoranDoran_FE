@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { AuthStatus } from '@/app/_util/types/types';
 import EmailInput from '../form/EmailInput';
 import { ISignupForm } from '@/app/_util/types/types';
+import Loading from '../layout/Loading';
 import NicknameInput from '../form/NicknameInput';
 import PasswordInput from '../form/PasswordInput';
 import axios from 'axios';
@@ -15,6 +16,7 @@ import { useState } from 'react';
 export default function SignupForm() {
   const router = useRouter();
   const [authState, setAuthState] = useState<AuthStatus>('idle');
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -44,17 +46,27 @@ export default function SignupForm() {
   };
 
   return (
-    <form className="mt-[24px] flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
-      <EmailInput authState={authState} setAuthState={setAuthState} register={register} errors={errors} watch={watch} />
-      <PasswordInput type="signup" register={register} errors={errors} watch={watch} />
-      <NicknameInput register={register} watch={watch} errors={errors} />
+    <>
+      <form className="mt-[24px] flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
+        <EmailInput
+          authState={authState}
+          setAuthState={setAuthState}
+          register={register}
+          errors={errors}
+          watch={watch}
+          setIsLoading={setIsLoading}
+        />
+        <PasswordInput type="signup" register={register} errors={errors} watch={watch} />
+        <NicknameInput register={register} watch={watch} errors={errors} />
 
-      <button
-        className="w-full py-[12px] border border-[#7B3796] bg-[#7B3796] rounded text-white text-center font-bold"
-        disabled={mutation.isPending}
-      >
-        가입하기
-      </button>
-    </form>
+        <button
+          className="w-full py-[12px] border border-[#7B3796] bg-[#7B3796] rounded text-white text-center font-bold"
+          disabled={mutation.isPending}
+        >
+          가입하기
+        </button>
+      </form>
+      {isLoading && <Loading />}
+    </>
   );
 }

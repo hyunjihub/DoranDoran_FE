@@ -8,18 +8,21 @@ import { useMutation } from '@tanstack/react-query';
 interface AuthButtonProps<T extends FieldValues> {
   authState: AuthStatus;
   setAuthState: React.Dispatch<React.SetStateAction<AuthStatus>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   watch: UseFormWatch<T>;
 }
 
 export default function AuthButton<T extends ISignupForm | IFindForm>({
   authState,
   setAuthState,
+  setIsLoading,
   watch,
 }: AuthButtonProps<T>) {
   const email = watch('email' as Path<T>);
 
   const mutation = useMutation({
     mutationFn: async () => {
+      setIsLoading(true);
       const response = await axios.post('/api/member/auth/email', {
         email: email,
         isSignUp: true,
@@ -27,9 +30,11 @@ export default function AuthButton<T extends ISignupForm | IFindForm>({
       return response.data;
     },
     onSuccess: () => {
+      setIsLoading(false);
       setAuthState('inProgress');
     },
     onError: (error) => {
+      setIsLoading(false);
       if (axios.isAxiosError(error) && error.response) {
         const errorMessage = error.response.data?.error;
         if (errorMessage === '이미 가입된 이메일입니다.') {

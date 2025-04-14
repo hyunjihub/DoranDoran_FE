@@ -1,22 +1,32 @@
-import { AuthStatus } from '@/app/_util/types/types';
+import { AuthStatus, IFindForm, ISignupForm } from '@/app/_util/types/types';
+import { FieldValues, Path, UseFormWatch } from 'react-hook-form';
+
+import AuthCodeError from '../error/AuthCodeError';
 import axios from 'axios';
-import getAuthTime from '@/app/_util/getAuthTime';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
-interface AuthCodeProps {
+interface AuthCodeProps<T extends FieldValues> {
   authState: AuthStatus;
   setAuthState: React.Dispatch<React.SetStateAction<AuthStatus>>;
+  watch: UseFormWatch<T>;
   timeLeft: number;
 }
 
-export default function AuthCode({ authState, setAuthState, timeLeft }: AuthCodeProps) {
+export default function AuthCode<T extends ISignupForm | IFindForm>({
+  authState,
+  setAuthState,
+  timeLeft,
+  watch,
+}: AuthCodeProps<T>) {
+  const email = watch('email' as Path<T>);
   const [authCode, setAuthCode] = useState('');
 
   const mutation = useMutation({
     mutationFn: async () => {
       await axios.post('/api/member/auth/code', {
-        authCode: authCode,
+        authCode: Number(authCode),
+        email: email,
       });
     },
     onSuccess: () => {
@@ -55,15 +65,7 @@ export default function AuthCode({ authState, setAuthState, timeLeft }: AuthCode
           인증번호 확인
         </button>
       </div>
-      {authState === 'inProgress' ? (
-        <p className="mt-2 text-xs text-red-500">인증번호가 발송되었습니다. 유효시간 : {getAuthTime(timeLeft)}</p>
-      ) : authState === 'failed' ? (
-        <p className="mt-2 text-xs text-red-500">인증에 실패하였습니다.</p>
-      ) : authState === 'success' ? (
-        <p className="mt-2 text-xs text-blue-500">인증이 완료되었습니다.</p>
-      ) : (
-        <></>
-      )}
+      <AuthCodeError authState={authState} timeLeft={timeLeft} />
     </div>
   );
 }

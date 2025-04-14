@@ -10,6 +10,7 @@ import { useTimer } from '@/app/_util/hooks/useTimer';
 interface EmailInputProps<T extends FieldValues> {
   authState: AuthStatus;
   setAuthState: React.Dispatch<React.SetStateAction<AuthStatus>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   register: UseFormRegister<T>;
   watch: UseFormWatch<T>;
   errors: {
@@ -20,6 +21,7 @@ interface EmailInputProps<T extends FieldValues> {
 export default function EmailInput<T extends ISignupForm | IFindForm>({
   authState,
   setAuthState,
+  setIsLoading,
   register,
   watch,
   errors,
@@ -42,8 +44,10 @@ export default function EmailInput<T extends ISignupForm | IFindForm>({
           },
         })}
       />
-      <AuthButton authState={authState} setAuthState={setAuthState} watch={watch} />
-      {authState !== 'idle' && <AuthCode authState={authState} setAuthState={setAuthState} timeLeft={timeLeft} />}
+      <AuthButton authState={authState} setAuthState={setAuthState} watch={watch} setIsLoading={setIsLoading} />
+      {authState !== 'idle' && (
+        <AuthCode authState={authState} setAuthState={setAuthState} timeLeft={timeLeft} watch={watch} />
+      )}
       {errors.email ? <span className="text-red-500 text-xs font-normal">{errors.email.message}</span> : <></>}
     </label>
   );
