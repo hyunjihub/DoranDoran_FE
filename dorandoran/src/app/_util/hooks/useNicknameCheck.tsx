@@ -14,10 +14,10 @@ export default function useNicknameCheck(nickname: string) {
     }
 
     try {
-      const response = await axios.get(`/api/member/nickname?nickname=${nickname}`);
+      const response = await axios.get(`/api/member/nickname?word=${nickname}`);
       setIsAvailable(response.data);
     } catch {
-      setIsAvailable(null);
+      setIsAvailable(false);
     }
   };
 
