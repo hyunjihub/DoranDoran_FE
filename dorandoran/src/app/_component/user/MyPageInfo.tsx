@@ -21,9 +21,12 @@ interface MypageInfoProps {
 
 export default function MypageInfo({ setIsActive }: MypageInfoProps) {
   const user = userStore((state) => state.user);
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
+
   const { data, isLoading } = useQuery<IMypage, Error>({
     queryKey: ['user'],
     queryFn: getFetchUserInfo,
+    enabled: isLoggedIn,
     refetchOnWindowFocus: false,
   });
 

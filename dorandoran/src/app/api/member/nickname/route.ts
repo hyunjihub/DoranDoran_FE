@@ -11,9 +11,8 @@ export async function GET(request: Request) {
 
   try {
     await axios.get(`${process.env.API_BASE_URL}/nickname?word=${word}`);
-    return NextResponse.json({}, { status: 204 });
+    return NextResponse.json({}, { status: 200 });
   } catch (error: unknown) {
-    console.log(error);
     let errorMessage = '서버 오류 발생';
     let status = 500;
 
