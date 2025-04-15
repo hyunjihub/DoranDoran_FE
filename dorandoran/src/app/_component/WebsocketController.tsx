@@ -8,16 +8,23 @@ export default function WebSocketController() {
   const pathname = usePathname();
   const connect = websocketStore((state) => state.connect);
   const disconnect = websocketStore((state) => state.disconnect);
+  const socket = websocketStore((state) => state.socket);
 
   useEffect(() => {
     const isChatRoute = pathname.startsWith('/chat') || pathname === '/chatlist';
 
-    if (isChatRoute) {
+    if (!socket && isChatRoute) {
       connect();
-    } else {
+    } else if (socket && !isChatRoute) {
       disconnect();
     }
-  }, [pathname, disconnect, connect]);
+
+    return () => {
+      if (socket && !isChatRoute) {
+        disconnect();
+      }
+    };
+  }, [socket, pathname, disconnect, connect]);
 
   return null;
 }
