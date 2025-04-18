@@ -12,7 +12,8 @@ interface WebSocketStore {
   connect: () => void;
   disconnect: () => void;
   subscribeRoom: (roomId: number) => void;
-  sendMessage: (msg: string) => void;
+  unsubscribeRoom: () => void;
+  sendMessage: (msg: string, type: string) => void;
 }
 
 export const websocketStore = create<WebSocketStore>()(
@@ -71,14 +72,24 @@ export const websocketStore = create<WebSocketStore>()(
         }
       },
 
-      sendMessage: (msg: string) => {
+      unsubscribeRoom: () => {
+        const socket = get().socket;
+        const currentRoom = get().subscribedRoomId;
+
+        if (socket && socket.connected && currentRoom !== null) {
+          socket.unsubscribe(`/topic/${currentRoom}`);
+          set({ subscribedRoomId: null, messages: [] });
+        }
+      },
+
+      sendMessage: (msg: string, type: string) => {
         const socket = get().socket;
         const roomId = get().subscribedRoomId;
 
         if (socket && roomId) {
           socket.publish({
             destination: `/app/chat/${roomId}`,
-            body: JSON.stringify({ content: msg }),
+            body: JSON.stringify({ content: msg, type: type }),
           });
         }
       },

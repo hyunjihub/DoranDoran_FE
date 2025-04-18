@@ -29,6 +29,17 @@ export interface IRoom {
   lastChatTime: string;
 }
 
+export interface IServerMessage {
+  chatId: number;
+  type: 'text' | 'string' | 'system';
+  contents: string;
+  senderId: number;
+  senderNickname: string;
+  senderProfileImage: string;
+  date: string;
+  time: string;
+}
+
 export interface IMessage {
   id: number;
   sender: string;

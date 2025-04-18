@@ -4,9 +4,12 @@ import { ChangeEvent, useRef, useState } from 'react';
 
 import CameraIcon from '../ui/CameraIcon';
 import Image from 'next/image';
+import getImageURL from '@/app/_util/getImageURL';
 import send from '/public/img/icon/send.svg';
+import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function MessageInput() {
+  const sendMessage = websocketStore((state) => state.sendMessage);
   const [message, setMessage] = useState<string>('');
   const fileInput = useRef<HTMLInputElement | null>(null);
 
@@ -20,11 +23,17 @@ export default function MessageInput() {
     }
   };
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      console.log('파일 업로드:', file.name);
+  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const image = event.target.files?.[0];
+    if (image) {
+      const url = await getImageURL(image);
+      if (url) {
+        sendMessage(url, 'image');
+      }
+    } else {
+      alert('이미지 파일만 업로드 가능합니다.');
     }
+    event.target.value = '';
   };
 
   return (
@@ -42,7 +51,7 @@ export default function MessageInput() {
           <CameraIcon type="purple" size={30} />
         </button>
 
-        <button className="ml-2">
+        <button className="ml-2" onClick={() => sendMessage(message, 'text')}>
           <Image src={send} alt="메시지 전송" width={40} height={40} />
         </button>
       </div>

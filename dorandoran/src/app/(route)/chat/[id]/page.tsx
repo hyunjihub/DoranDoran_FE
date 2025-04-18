@@ -5,9 +5,13 @@ import MessageInput from '@/app/_component/chat/MessageInput';
 import ProtectedRoute from '@/app/_component/ProtectedRoute';
 import { chatStore } from '@/store/useChatStore';
 import { useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function Chat() {
   const { setChat } = chatStore();
+  const subscribeRoom = websocketStore((state) => state.subscribeRoom);
+  const { id } = useParams();
 
   useEffect(() => {
     setChat({
@@ -15,7 +19,8 @@ export default function Chat() {
       isAvaliable: true,
       chatTitle: '임시 채팅 제목',
     });
-  }, [setChat]);
+    subscribeRoom(Number(id));
+  }, [setChat, subscribeRoom, id]);
 
   return (
     <ProtectedRoute>

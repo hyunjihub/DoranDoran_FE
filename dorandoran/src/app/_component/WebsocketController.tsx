@@ -2,9 +2,11 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { userStore } from '@/store/useUserStore';
 import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function WebSocketController() {
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
   const pathname = usePathname();
   const connect = websocketStore((state) => state.connect);
   const disconnect = websocketStore((state) => state.disconnect);
@@ -13,7 +15,7 @@ export default function WebSocketController() {
   useEffect(() => {
     const isChatRoute = pathname.startsWith('/chat') || pathname === '/chatlist';
 
-    if (!socket && isChatRoute) {
+    if (isLoggedIn && !socket && isChatRoute) {
       connect();
     } else if (socket && !isChatRoute) {
       disconnect();
@@ -24,7 +26,7 @@ export default function WebSocketController() {
         disconnect();
       }
     };
-  }, [socket, pathname, disconnect, connect]);
+  }, [isLoggedIn, socket, pathname, disconnect, connect]);
 
   return null;
 }
