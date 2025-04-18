@@ -7,27 +7,21 @@ export default function useNicknameCheck(nickname: string) {
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  const checkNicknameAvailability = async (nickname: string) => {
-    if (nickname.length < 2 || nickname.length > 8) {
-      setIsAvailable(null);
-      return;
-    }
-
-    try {
-      const response = await axios.get(`/api/member/nickname?word=${nickname}`);
-      setIsAvailable(response.data);
-    } catch {
-      setIsAvailable(false);
-    }
-  };
-
-  const { refetch } = useQuery({
+  const { refetch, data } = useQuery<boolean | null>({
     queryKey: ['nicknameCheck', nickname],
-    queryFn: () => checkNicknameAvailability(nickname),
-    enabled: !!nickname && nickname.length >= 2 && nickname.length <= 8,
-    refetchOnWindowFocus: false, // 창을 다시 포커싱해도 쿼리 재실행 안 함
-    retry: false, // 실패 시 재시도 안 함
-    refetchInterval: false, // 자동으로 주기적인 리패치하지 않음
+    queryFn: async () => {
+      if (nickname.length < 2 || nickname.length > 8) return null;
+
+      try {
+        await axios.get(`/api/member/nickname?word=${nickname}`);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    refetchOnWindowFocus: false,
+    retry: false,
+    refetchInterval: false,
   });
 
   useEffect(() => {
@@ -41,6 +35,10 @@ export default function useNicknameCheck(nickname: string) {
       refetch();
     }, 500);
   }, [nickname, refetch]);
+
+  useEffect(() => {
+    setIsAvailable(data ?? null);
+  }, [data]);
 
   return isAvailable;
 }

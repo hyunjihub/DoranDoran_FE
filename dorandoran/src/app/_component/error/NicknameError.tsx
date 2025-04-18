@@ -16,7 +16,7 @@ export default function NicknameError({ errors, isAvailable }: NicknameErrorProp
       ) : isAvailable === true ? (
         <span className="text-green-500 text-xs font-normal">사용 가능한 닉네임입니다.</span>
       ) : (
-        <></>
+        <span className="h-[16px]"></span>
       )}
     </>
   );
