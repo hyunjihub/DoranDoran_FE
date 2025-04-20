@@ -74,6 +74,7 @@ export const websocketStore = create<WebSocketStore>()(
           });
 
           set({ subscribedRoomId: roomId, messages: [] });
+          console.log('SockJS 구독');
         }
       },
 
@@ -97,6 +98,7 @@ export const websocketStore = create<WebSocketStore>()(
             body: JSON.stringify({ content: msg, type }),
           });
         }
+        console.log('메시지 전송');
       },
     }),
     {
