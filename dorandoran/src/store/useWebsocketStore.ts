@@ -2,6 +2,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { Client } from '@stomp/stompjs';
 import { IMessage } from '@/app/_util/types/types';
+import SockJS from 'sockjs-client';
 import { create } from 'zustand';
 
 interface WebSocketStore {
@@ -28,7 +29,7 @@ export const websocketStore = create<WebSocketStore>()(
         if (currentSocket && currentSocket.connected) return;
 
         const socket = new Client({
-          brokerURL: 'ws://your-websocket-url',
+          webSocketFactory: () => new SockJS('https://api.dorandoran.online'),
           reconnectDelay: 5000,
           onConnect: () => {
             set({ socket });
@@ -37,6 +38,10 @@ export const websocketStore = create<WebSocketStore>()(
             if (roomId !== null) {
               get().subscribeRoom(roomId);
             }
+            console.log('SockJS 연결 완료');
+          },
+          onStompError: (frame) => {
+            console.error('STOMP Error:', frame);
           },
         });
 
@@ -58,10 +63,10 @@ export const websocketStore = create<WebSocketStore>()(
 
         if (socket && socket.connected && currentRoom !== roomId) {
           if (currentRoom !== null) {
-            socket.unsubscribe(`topic/${currentRoom}`);
+            socket.unsubscribe(`/chatRoom/${currentRoom}`);
           }
 
-          socket.subscribe(`/topic/${roomId}`, (message) => {
+          socket.subscribe(`/chatRoom/${roomId}`, (message) => {
             const parsed = JSON.parse(message.body);
             set((state) => ({
               messages: [...state.messages, parsed],
@@ -77,7 +82,7 @@ export const websocketStore = create<WebSocketStore>()(
         const currentRoom = get().subscribedRoomId;
 
         if (socket && socket.connected && currentRoom !== null) {
-          socket.unsubscribe(`/topic/${currentRoom}`);
+          socket.unsubscribe(`/chatRoom/${currentRoom}`);
           set({ subscribedRoomId: null, messages: [] });
         }
       },
@@ -88,8 +93,8 @@ export const websocketStore = create<WebSocketStore>()(
 
         if (socket && roomId) {
           socket.publish({
-            destination: `/app/chat/${roomId}`,
-            body: JSON.stringify({ content: msg, type: type }),
+            destination: `/pub/${roomId}`,
+            body: JSON.stringify({ content: msg, type }),
           });
         }
       },
