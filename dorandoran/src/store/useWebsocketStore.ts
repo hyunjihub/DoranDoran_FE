@@ -61,6 +61,8 @@ export const websocketStore = create<WebSocketStore>()(
         const socket = get().socket;
         const currentRoom = get().subscribedRoomId;
 
+        console.log();
+
         if (socket && socket.connected && currentRoom !== roomId) {
           if (currentRoom !== null) {
             socket.unsubscribe(`/chatRoom/${currentRoom}`);
@@ -97,8 +99,8 @@ export const websocketStore = create<WebSocketStore>()(
             destination: `/pub/${roomId}`,
             body: JSON.stringify({ content: msg, type }),
           });
+          console.log(`/pub/${roomId}`);
         }
-        console.log('메시지 전송');
       },
     }),
     {
