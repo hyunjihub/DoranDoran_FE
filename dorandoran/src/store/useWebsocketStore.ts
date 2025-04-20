@@ -29,7 +29,7 @@ export const websocketStore = create<WebSocketStore>()(
         if (currentSocket && currentSocket.connected) return;
 
         const socket = new Client({
-          webSocketFactory: () => new SockJS('https://api.dorandoran.online'),
+          webSocketFactory: () => new SockJS('https://api.dorandoran.online/ws/chat'),
           reconnectDelay: 5000,
           onConnect: () => {
             set({ socket });
