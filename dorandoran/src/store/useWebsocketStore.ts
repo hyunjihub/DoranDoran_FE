@@ -61,8 +61,6 @@ export const websocketStore = create<WebSocketStore>()(
         const socket = get().socket;
         const currentRoom = get().subscribedRoomId;
 
-        console.log();
-
         if (socket && socket.connected && currentRoom !== roomId) {
           if (currentRoom !== null) {
             socket.unsubscribe(`/chatRoom/${currentRoom}`);

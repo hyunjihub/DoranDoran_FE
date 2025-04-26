@@ -15,18 +15,15 @@ export default function WebSocketController() {
   useEffect(() => {
     const isChatRoute = pathname.startsWith('/chat') || pathname === '/mychat';
 
-    if (isLoggedIn && !socket && isChatRoute) {
-      connect();
-    } else if (socket && !isChatRoute) {
+    if (!isLoggedIn || !isChatRoute) {
       disconnect();
+      return;
     }
 
-    return () => {
-      if (socket && !isChatRoute) {
-        disconnect();
-      }
-    };
-  }, [isLoggedIn, socket, pathname, disconnect, connect]);
+    if (!socket || !socket.connected) {
+      connect();
+    }
+  }, [isLoggedIn, pathname, connect, disconnect, socket]);
 
   return null;
 }
