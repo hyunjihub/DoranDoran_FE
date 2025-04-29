@@ -8,7 +8,7 @@ export default function Setting() {
     <ProtectedRoute>
       <div className="w-full h-full flex flex-col items-center">
         <div className="w-full border-b border-t">
-          <ImageInput />
+          <ImageInput image={''} type="chat" />
         </div>
         <div className="w-full  border-b">
           <InputToLink
