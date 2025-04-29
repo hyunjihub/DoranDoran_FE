@@ -37,7 +37,7 @@ export default function MypageInfo({ setIsActive }: MypageInfoProps) {
       ) : (
         <div className="w-full h-full flex flex-col items-center">
           <div className="w-full border-b border-t">
-            <ImageInput />
+            <ImageInput image={user.profileImage} type="mypage" />
           </div>
           <div className="w-full border-b">
             <InputToLink name="닉네임 변경" placeHolder="" link="/mypage/nickname" inputData={user.nickname || ''} />
@@ -48,12 +48,10 @@ export default function MypageInfo({ setIsActive }: MypageInfoProps) {
           <div className="w-full border-b">
             <ChatReceiveInput isPermmited={data?.isPermitted ?? false} />
           </div>
-          <div className="w-full flex justify-between items-center px-[16px] py-[18px]">
+          <Link href={'/find'} className="w-full flex justify-between items-center px-[16px] py-[18px]">
             <p className="font-bold">비밀번호 재설정</p>
-            <Link href={'/find'}>
-              <Image className="rotate-180" src={arrow} alt="비밀번호 재설정" width={8} height={8} />
-            </Link>
-          </div>
+            <Image className="rotate-180" src={arrow} alt="비밀번호 재설정" width={8} height={8} />
+          </Link>
           <div className="w-full border-y">
             <PushNotificationInput isNotification={data?.isNotification ?? false} />
           </div>

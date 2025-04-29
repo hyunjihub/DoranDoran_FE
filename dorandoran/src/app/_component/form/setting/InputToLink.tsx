@@ -4,17 +4,21 @@ import arrow from '/public/img/icon/prevArrow.svg';
 
 interface InputToLinkProps {
   name: string;
-  inputData: string;
+  inputData: string | null;
   placeHolder: string;
   link: string;
 }
 
-export default function InputToLink({ name, inputData = '', placeHolder, link }: InputToLinkProps) {
+export default function InputToLink({ name, inputData = null, placeHolder, link }: InputToLinkProps) {
   return (
     <Link href={link} className="flex justify-between px-[16px] py-[18px]">
       <p className="font-bold">{name}</p>
       <div className="flex items-center gap-5">
-        <p className="max-w-[240px] overflow-hidden text-ellipsis whitespace-nowrap">
+        <p
+          className={`max-w-[240px] overflow-hidden text-ellipsis whitespace-nowrap ${
+            !inputData ? 'text-gray-500' : ''
+          }`}
+        >
           {inputData ? inputData : placeHolder}
         </p>
         <Image className="rotate-180" src={arrow} alt={name} width={8} height={8} />

@@ -5,13 +5,20 @@ import { ChangeEvent, useRef } from 'react';
 import CameraIcon from '../../ui/CameraIcon';
 import Image from 'next/image';
 import axios from 'axios';
+import { createChatStore } from '@/store/useCreateChat';
 import getImageURL from '@/app/_util/getImageURL';
 import profile from '/public/img/profile.jpg';
 import { useMutation } from '@tanstack/react-query';
 import { userStore } from '@/store/useUserStore';
 
-export default function ImageInput() {
+interface ImageInputProps {
+  image: string | null;
+  type: 'mypage' | 'chat';
+}
+
+export default function ImageInput({ image, type }: ImageInputProps) {
   const user = userStore((state) => state.user);
+  const setImage = createChatStore((state) => state.setImage);
   const updateData = userStore((state) => state.updateData);
 
   const fileInput = useRef<HTMLInputElement | null>(null);
@@ -38,7 +45,11 @@ export default function ImageInput() {
     if (image) {
       const url = await getImageURL(image);
       if (url) {
-        mutation.mutate(url);
+        if (type === 'chat') {
+          setImage(url);
+        } else {
+          mutation.mutate(url);
+        }
       }
     } else {
       alert('이미지 파일만 업로드 가능합니다.');
@@ -49,7 +60,7 @@ export default function ImageInput() {
   return (
     <div className="w-full h-[200px] bg-gray-200 flex justify-center items-center">
       <div className="relative w-[140px] h-[140px] rounded-full border">
-        <Image className="object-cover rounded-full" src={user.profileImage || profile} alt="프로필 이미지" fill />
+        <Image className="object-cover rounded-full" src={image || profile} alt="프로필 이미지" fill />
         <button
           className="w-[40px] h-[40px] absolute bottom-0 right-0 rounded-full bg-gray-300 flex items-center justify-center"
           onClick={handleUploadImg}
