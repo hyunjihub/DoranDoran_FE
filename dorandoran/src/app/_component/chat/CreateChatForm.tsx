@@ -21,7 +21,6 @@ export default function CreateChatForm() {
         alert('채팅방 이름을 설정해주세요.');
         return;
       }
-      console.log(chatRoomImage, chatRoomTitle, maxCount, description);
       const response = await axios.post('/api/chat/chatrooms', {
         chatRoomImage,
         chatRoomTitle,

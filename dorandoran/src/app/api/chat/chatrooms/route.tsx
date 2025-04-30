@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import axios from 'axios';
 import chatroomSample from '@/app/_util/json/chatroom.json';
 
 export async function GET(request: Request) {
@@ -16,4 +17,23 @@ export async function GET(request: Request) {
     nextPage: page + 1,
     hasMore,
   });
+}
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+
+    const { data } = await axios.post(`${process.env.API_BASE_URL}/chat/chatrooms`, body);
+    return NextResponse.json(data, { status: 200 });
+  } catch (error: unknown) {
+    let errorMessage = '서버 오류 발생';
+    let status = 500;
+
+    if (axios.isAxiosError(error) && error.response) {
+      errorMessage = error.response.data?.message || errorMessage;
+      status = error.response.status || status;
+    }
+
+    return NextResponse.json({ error: errorMessage }, { status });
+  }
 }

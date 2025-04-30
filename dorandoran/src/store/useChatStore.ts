@@ -4,6 +4,7 @@ import { IChat } from '@/app/_util/types/types';
 import { create } from 'zustand';
 
 interface ChatState {
+  chatRoomId: number;
   isManager: boolean | null;
   isAvaliable: boolean | null;
   chatTitle: string | null;
@@ -15,6 +16,7 @@ interface ChatState {
 const chatStore = create(
   persist<ChatState>(
     (set) => ({
+      chatRoomId: 0,
       isManager: null,
       isAvaliable: null,
       chatTitle: null,

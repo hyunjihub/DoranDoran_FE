@@ -11,7 +11,8 @@ import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function ChatHeader() {
   const unsubscribeRoom = websocketStore((state) => state.unsubscribeRoom);
-  const { chatTitle } = chatStore();
+  const chatTitle = chatStore((state) => state.chatTitle);
+
   const pathname = usePathname();
   const router = useRouter();
 
@@ -26,9 +27,11 @@ export default function ChatHeader() {
         <Image src={arrow} alt="이전페이지" width={12} height={24} />
       </div>
       <h1 className="font-semibold">{chatTitle}</h1>
-      <Link className="absolute right-[16px]" href={`${pathname}/setting`} role="button">
-        <Image src={more} alt="채팅방 설정" width={32} height={32} />
-      </Link>
+      {!pathname.includes('info') && (
+        <Link className="absolute right-[16px]" href={`${pathname}/info`} role="button">
+          <Image src={more} alt="채팅방 설정" width={32} height={32} />
+        </Link>
+      )}
     </div>
   );
 }
