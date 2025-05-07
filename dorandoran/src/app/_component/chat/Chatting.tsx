@@ -1,16 +1,19 @@
 'use client';
 
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps } from 'react-virtualized';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 
 import Date from './Date';
-import { IMessage } from '@/app/_util/types/types';
 import MyMessage from './MyMessage';
 import OtherMessage from './OtherMessage';
 import SystemMessage from './SystemMessage';
+import axios from 'axios';
 import getChatDate from '@/app/_util/getChatDate';
 import getChatTime from '@/app/_util/getChatTime';
-import messageSample from '@/app/_util/json/messageSample.json';
+import { useParams } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { userStore } from '@/store/useUserStore';
+import { websocketStore } from '@/store/useWebsocketStore';
 
 const cache = new CellMeasurerCache({
   fixedWidth: true,
@@ -18,11 +21,24 @@ const cache = new CellMeasurerCache({
 });
 
 export default function Chatting() {
-  const [messages, setMessages] = useState<IMessage[]>([]);
+  const { id } = useParams();
+  const messages = websocketStore((state) => state.messages);
+  const setMessage = websocketStore((state) => state.setMessage);
+  const memberId = userStore((state) => state.user.memberId);
+
+  const { data } = useQuery({
+    queryKey: ['chatMessages', id],
+    queryFn: async () => {
+      const response = await axios.get(`/chats?chatRoomId=${id}`);
+      return response.data;
+    },
+  });
 
   useEffect(() => {
-    setMessages(messageSample.messages);
-  }, []);
+    if (data) {
+      setMessage(data);
+    }
+  }, [data, setMessage]);
 
   const processedMessages = useMemo(() => {
     return messages.map((message, index, arr) => {
@@ -31,7 +47,7 @@ export default function Chatting() {
       const isLastInGroup =
         index === arr.length - 1 ||
         message.timestamp !== arr[index + 1].timestamp ||
-        message.sender !== arr[index + 1].sender;
+        message.senderId !== arr[index + 1].senderId;
 
       return { ...message, isDateChanged, isLastInGroup };
     });
@@ -44,14 +60,14 @@ export default function Chatting() {
         <CellMeasurer cache={cache} parent={parent} key={key} columnIndex={0} rowIndex={index}>
           <div key={key} style={style} className="w-full flex flex-col items-center">
             {message.isDateChanged && <Date timestamp={message.timestamp} />}
-            {message.sender === 'me' ? (
+            {message.senderId === memberId ? (
               <MyMessage
-                message={message.content}
+                message={message.contents}
                 timestamp={message.isLastInGroup ? getChatTime(message.timestamp) : null}
               />
-            ) : message.sender === 'other' ? (
+            ) : message.senderId !== memberId ? (
               <OtherMessage
-                message={message.content}
+                message={message.contents}
                 timestamp={message.isLastInGroup ? getChatTime(message.timestamp) : null}
               />
             ) : (
@@ -61,7 +77,7 @@ export default function Chatting() {
         </CellMeasurer>
       );
     },
-    [processedMessages]
+    [processedMessages, memberId]
   );
 
   return (

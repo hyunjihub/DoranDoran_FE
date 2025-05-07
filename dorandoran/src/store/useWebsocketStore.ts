@@ -15,6 +15,7 @@ interface WebSocketStore {
   subscribeRoom: (roomId: number) => void;
   unsubscribeRoom: () => void;
   sendMessage: (msg: string, type: string) => void;
+  setMessage: (msg: IMessage[]) => void;
 }
 
 export const websocketStore = create<WebSocketStore>()(
@@ -38,10 +39,6 @@ export const websocketStore = create<WebSocketStore>()(
             if (roomId !== null) {
               get().subscribeRoom(roomId);
             }
-            console.log('SockJS 연결 완료');
-          },
-          onStompError: (frame) => {
-            console.error('STOMP Error:', frame);
           },
         });
 
@@ -74,7 +71,6 @@ export const websocketStore = create<WebSocketStore>()(
           });
 
           set({ subscribedRoomId: roomId, messages: [] });
-          console.log('SockJS 구독');
         }
       },
 
@@ -97,8 +93,11 @@ export const websocketStore = create<WebSocketStore>()(
             destination: `/pub/${roomId}`,
             body: JSON.stringify({ content: msg, type }),
           });
-          console.log(`/pub/${roomId}`);
         }
+      },
+
+      setMessage: (msg: IMessage[]) => {
+        set({ messages: msg });
       },
     }),
     {

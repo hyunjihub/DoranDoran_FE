@@ -50,9 +50,11 @@ export interface IServerMessage {
 }
 
 export interface IMessage {
-  id: number;
-  sender: string;
-  content: string;
+  chatId: number;
+  senderId: number;
+  contents: string;
+  senderAt: string;
+  type: 'text' | 'system' | 'image';
   timestamp: string;
   isDateChanged?: boolean;
   isLastInGroup?: boolean;
