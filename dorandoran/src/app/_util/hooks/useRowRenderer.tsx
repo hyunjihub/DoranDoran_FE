@@ -23,7 +23,7 @@ export const useRowRenderer = ({ processedMessages, cache }: Props) => {
     return (
       <CellMeasurer cache={cache} parent={parent} key={key} columnIndex={0} rowIndex={index}>
         <div key={key} style={style} className="w-full flex flex-col items-center">
-          {message.isDateChanged && <Date timestamp={message.date} />}
+          {message.isDateChanged && <Date date={message.date} />}
           {message.senderId === memberId ? (
             <MyMessage message={message.contents} timestamp={message.isLastInGroup ? message.time : null} />
           ) : message.senderId !== memberId ? (
