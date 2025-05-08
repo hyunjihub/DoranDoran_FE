@@ -38,24 +38,15 @@ export interface IRoomInfo {
   isManager: boolean;
 }
 
-export interface IServerMessage {
+export interface IMessage {
   chatId: number;
-  type: 'text' | 'string' | 'system';
+  type: 'text' | 'image' | 'system';
   contents: string;
   senderId: number;
   senderNickname: string;
   senderProfileImage: string;
   date: string;
   time: string;
-}
-
-export interface IMessage {
-  chatId: number;
-  senderId: number;
-  contents: string;
-  senderAt: string;
-  type: 'text' | 'system' | 'image';
-  timestamp: string;
   isDateChanged?: boolean;
   isLastInGroup?: boolean;
 }

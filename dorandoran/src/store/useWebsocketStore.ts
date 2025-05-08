@@ -1,6 +1,7 @@
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { Client } from '@stomp/stompjs';
+import { IMessage } from '@/app/_util/types/types';
 import SockJS from 'sockjs-client';
 import { create } from 'zustand';
 
@@ -14,7 +15,11 @@ interface WebSocketStore {
   subscribeRoom: (roomId: number, roomType: 'group' | 'private') => void;
   unsubscribeRoom: () => void;
   sendMessage: (msg: string, type: string) => void;
+  setMessageHandler: (handler: (msg: IMessage) => void) => void;
+  clearMessageHandler: () => void;
 }
+
+let messageHandler: ((msg: IMessage) => void) | null = null;
 
 export const websocketStore = create<WebSocketStore>()(
   persist(
@@ -69,8 +74,14 @@ export const websocketStore = create<WebSocketStore>()(
           }
 
           socket.subscribe(newTopic, (message) => {
-            const parsed = JSON.parse(message.body);
-            console.log(parsed);
+            try {
+              const parsed: IMessage = JSON.parse(message.body);
+              if (messageHandler) {
+                messageHandler(parsed);
+              }
+            } catch (error) {
+              console.error('메시지 파싱 오류:', error);
+            }
           });
 
           set({ subscribedRoomId: roomId, subscribedRoomType: roomType });
@@ -98,6 +109,14 @@ export const websocketStore = create<WebSocketStore>()(
             body: JSON.stringify({ content: msg, type }),
           });
         }
+      },
+
+      setMessageHandler: (handler) => {
+        messageHandler = handler;
+      },
+
+      clearMessageHandler: () => {
+        messageHandler = null;
       },
     }),
     {
