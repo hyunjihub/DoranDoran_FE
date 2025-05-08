@@ -19,7 +19,7 @@ export default function Chat() {
       isAvaliable: true,
       chatTitle: '임시 채팅 제목',
     });
-    subscribeRoom(Number(id));
+    subscribeRoom(Number(id), 'group');
   }, [setChat, subscribeRoom, id]);
 
   return (

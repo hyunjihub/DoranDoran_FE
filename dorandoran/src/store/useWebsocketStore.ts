@@ -1,21 +1,19 @@
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { Client } from '@stomp/stompjs';
-import { IMessage } from '@/app/_util/types/types';
 import SockJS from 'sockjs-client';
 import { create } from 'zustand';
 
 interface WebSocketStore {
   socket: Client | null;
   subscribedRoomId: number | null;
-  messages: IMessage[];
+  subscribedRoomType: 'group' | 'private' | null;
 
   connect: () => void;
   disconnect: () => void;
-  subscribeRoom: (roomId: number) => void;
+  subscribeRoom: (roomId: number, roomType: 'group' | 'private') => void;
   unsubscribeRoom: () => void;
   sendMessage: (msg: string, type: string) => void;
-  setMessage: (msg: IMessage[]) => void;
 }
 
 export const websocketStore = create<WebSocketStore>()(
@@ -23,7 +21,7 @@ export const websocketStore = create<WebSocketStore>()(
     (set, get) => ({
       socket: null,
       subscribedRoomId: null,
-      messages: [],
+      subscribedRoomType: null,
 
       connect: () => {
         const currentSocket = get().socket;
@@ -35,9 +33,9 @@ export const websocketStore = create<WebSocketStore>()(
           onConnect: () => {
             set({ socket });
 
-            const roomId = get().subscribedRoomId;
-            if (roomId !== null) {
-              get().subscribeRoom(roomId);
+            const { subscribedRoomId, subscribedRoomType } = get();
+            if (subscribedRoomId !== null && subscribedRoomType !== null) {
+              get().subscribeRoom(subscribedRoomId, subscribedRoomType);
             }
           },
         });
@@ -50,62 +48,64 @@ export const websocketStore = create<WebSocketStore>()(
         const socket = get().socket;
         if (socket) {
           socket.deactivate();
-          set({ socket: null, subscribedRoomId: null, messages: [] });
+          set({ socket: null, subscribedRoomId: null, subscribedRoomType: null });
         }
       },
 
-      subscribeRoom: (roomId: number) => {
+      subscribeRoom: (roomId, roomType) => {
         const socket = get().socket;
-        const currentRoom = get().subscribedRoomId;
+        const { subscribedRoomId, subscribedRoomType } = get();
 
-        if (socket && socket.connected && currentRoom !== roomId) {
-          if (currentRoom !== null) {
-            socket.unsubscribe(`/chatRoom/${currentRoom}`);
+        const prevTopic =
+          subscribedRoomId !== null && subscribedRoomType !== null
+            ? `/${subscribedRoomType}/${subscribedRoomId}`
+            : null;
+
+        const newTopic = `/${roomType}/${roomId}`;
+
+        if (socket && socket.connected && prevTopic !== newTopic) {
+          if (prevTopic) {
+            socket.unsubscribe(prevTopic);
           }
 
-          socket.subscribe(`/chatRoom/${roomId}`, (message) => {
+          socket.subscribe(newTopic, (message) => {
             const parsed = JSON.parse(message.body);
-            set((state) => ({
-              messages: [...state.messages, parsed],
-            }));
+            console.log(parsed);
           });
 
-          set({ subscribedRoomId: roomId, messages: [] });
+          set({ subscribedRoomId: roomId, subscribedRoomType: roomType });
         }
       },
 
       unsubscribeRoom: () => {
         const socket = get().socket;
-        const currentRoom = get().subscribedRoomId;
+        const { subscribedRoomId, subscribedRoomType } = get();
 
-        if (socket && socket.connected && currentRoom !== null) {
-          socket.unsubscribe(`/chatRoom/${currentRoom}`);
-          set({ subscribedRoomId: null, messages: [] });
+        if (socket && socket.connected && subscribedRoomId !== null && subscribedRoomType !== null) {
+          const topic = `/${subscribedRoomType}/${subscribedRoomId}`;
+          socket.unsubscribe(topic);
+          set({ subscribedRoomId: null, subscribedRoomType: null });
         }
       },
 
       sendMessage: (msg: string, type: string) => {
         const socket = get().socket;
-        const roomId = get().subscribedRoomId;
+        const { subscribedRoomId, subscribedRoomType } = get();
 
-        if (socket && roomId) {
+        if (socket && subscribedRoomId && subscribedRoomType) {
           socket.publish({
-            destination: `/pub/${roomId}`,
+            destination: `/pub/${subscribedRoomType}/${subscribedRoomId}`,
             body: JSON.stringify({ content: msg, type }),
           });
         }
       },
-
-      setMessage: (msg: IMessage[]) => {
-        set({ messages: msg });
-      },
     }),
     {
       name: 'websocketStorage',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => sessionStorage),
       partialize: (state) => ({
         subscribedRoomId: state.subscribedRoomId,
-        messages: state.messages,
+        subscribedRoomType: state.subscribedRoomType,
       }),
     }
   )

@@ -1,9 +1,10 @@
 'use client';
 
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps } from 'react-virtualized';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import Date from './Date';
+import { IMessage } from '@/app/_util/types/types';
 import MyMessage from './MyMessage';
 import OtherMessage from './OtherMessage';
 import SystemMessage from './SystemMessage';
@@ -13,7 +14,6 @@ import getChatTime from '@/app/_util/getChatTime';
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { userStore } from '@/store/useUserStore';
-import { websocketStore } from '@/store/useWebsocketStore';
 
 const cache = new CellMeasurerCache({
   fixedWidth: true,
@@ -22,23 +22,18 @@ const cache = new CellMeasurerCache({
 
 export default function Chatting() {
   const { id } = useParams();
-  const messages = websocketStore((state) => state.messages);
-  const setMessage = websocketStore((state) => state.setMessage);
   const memberId = userStore((state) => state.user.memberId);
+  const [messages, setMessages] = useState<IMessage[]>([]);
 
   const { data } = useQuery({
     queryKey: ['chatMessages', id],
     queryFn: async () => {
       const response = await axios.get(`/chats?chatRoomId=${id}`);
-      return response.data;
+      setMessages(response.data);
     },
   });
 
-  useEffect(() => {
-    if (data) {
-      setMessage(data);
-    }
-  }, [data, setMessage]);
+  console.log(data);
 
   const processedMessages = useMemo(() => {
     return messages.map((message, index, arr) => {
