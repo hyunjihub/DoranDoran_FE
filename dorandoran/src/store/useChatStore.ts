@@ -6,11 +6,11 @@ import { create } from 'zustand';
 interface ChatState {
   chatRoomId: number;
   isManager: boolean | null;
-  isAvaliable: boolean | null;
+  partInPeople: number;
   chatTitle: string | null;
+  isGroup: boolean;
   setChat: (newData: IChat) => void;
   updateTitle: (modified: { chatTitle: string }) => void;
-  updateState: (modified: { isAvaliable: boolean }) => void;
 }
 
 const chatStore = create(
@@ -18,21 +18,19 @@ const chatStore = create(
     (set) => ({
       chatRoomId: 0,
       isManager: null,
-      isAvaliable: null,
+      partInPeople: 0,
       chatTitle: null,
+      isGroup: false,
       setChat: (newData) =>
         set(() => ({
           isManager: newData.isManager,
-          isAvaliable: newData.isAvaliable,
+          partInPeople: newData.partInPeople,
           chatTitle: newData.chatTitle,
+          isGroup: newData.isGroup,
         })),
       updateTitle: (modified: { chatTitle: string }) =>
         set(() => ({
           chatTitle: modified.chatTitle,
-        })),
-      updateState: (modified: { isAvaliable: boolean }) =>
-        set(() => ({
-          isAvaliable: modified.isAvaliable,
         })),
     }),
     {

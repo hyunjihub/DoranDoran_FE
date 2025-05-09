@@ -1,5 +1,7 @@
 'use client';
 
+import { useParams, useRouter } from 'next/navigation';
+
 import DeleteChatRoom from '@/app/_component/chat/DeleteChatRoom';
 import { IRoomInfo } from '@/app/_util/types/types';
 import Image from 'next/image';
@@ -10,10 +12,10 @@ import ReadOnlyInputText from './ReadOnlyInputText';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 
 export default function RoomInfo() {
   const router = useRouter();
+  const { id } = useParams();
 
   const { data } = useQuery<IRoomInfo>({
     queryKey: ['room'],
@@ -57,7 +59,7 @@ export default function RoomInfo() {
               name="채팅방 이름"
               placeHolder="채팅방 이름을 설정해주세요"
               inputData={data.chatRoomTitle}
-              link="/new-chat/title"
+              link={`/chat/${id}/info/title`}
             />
           ) : (
             <ReadOnlyInputText name="채팅방 이름" inputData={data.chatRoomTitle} />
@@ -69,7 +71,7 @@ export default function RoomInfo() {
               name="채팅방 소개"
               placeHolder="채팅방 소개 문구를 작성해주세요"
               inputData={data.description}
-              link="/new-chat/description"
+              link={`/chat/${id}/info/description`}
             />
           ) : (
             <ReadOnlyInputText name="채팅방 소개" inputData={data.description} />

@@ -12,8 +12,9 @@ export interface IMypage {
 
 export interface IChat {
   isManager: boolean | null;
-  isAvaliable: boolean | null;
+  partInPeople: number;
   chatTitle: string | null;
+  isGroup: boolean;
 }
 
 export interface IWebsocket {
