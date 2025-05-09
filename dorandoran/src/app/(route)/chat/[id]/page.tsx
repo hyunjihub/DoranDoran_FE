@@ -16,7 +16,8 @@ export default function Chat() {
   useEffect(() => {
     setChat({
       isManager: true,
-      isAvaliable: true,
+      isGroup: true,
+      partInPeople: 7,
       chatTitle: '임시 채팅 제목',
     });
     subscribeRoom(Number(id), 'group');
