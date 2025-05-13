@@ -14,15 +14,22 @@ export default function useChatMessages() {
   const clearMessageHandler = websocketStore((state) => state.clearMessageHandler);
   const [messages, setMessages] = useState<IMessage[]>([]);
 
-  const { data } = useQuery({
+  const { data } = useQuery<IMessage[], Error>({
     queryKey: ['chatMessages', id],
     queryFn: async () => {
-      const response = await axios.get(`/chats?chatRoomId=${id}`);
-      setMessages(response.data);
+      const response = await axios.get<IMessage[]>(`/chats?chatRoomId=${id}`);
+      return response.data;
     },
+    enabled: typeof id === 'string',
+    staleTime: 0,
+    refetchOnMount: true,
   });
 
-  console.log(data); // data 변수 활용을 위한 임시 코드 추후 infiniteQuery로 변경 필요
+  useEffect(() => {
+    if (Array.isArray(data)) {
+      setMessages(data);
+    }
+  }, [data]);
 
   useEffect(() => {
     const handleMessage = (msg: IMessage) => {
