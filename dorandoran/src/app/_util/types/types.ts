@@ -4,6 +4,10 @@ export interface IUser {
   profileImage: string | null;
 }
 
+export interface IUserProfile extends IUser {
+  chatPermitted: boolean;
+}
+
 export interface IMypage {
   email: string | null;
   isNotification: boolean | null;

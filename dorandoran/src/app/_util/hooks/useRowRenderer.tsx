@@ -10,12 +10,13 @@ import OtherMessage from '@/app/_component/chat/OtherMessage';
 import SystemMessage from '@/app/_component/chat/SystemMessage';
 import { userStore } from '@/store/useUserStore';
 
-interface Props {
+interface useRowRendererProps {
   processedMessages: IMessage[];
   cache: CellMeasurerCache;
+  setModalOpen: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const useRowRenderer = ({ processedMessages, cache }: Props) => {
+export const useRowRenderer = ({ processedMessages, cache, setModalOpen }: useRowRendererProps) => {
   const memberId = userStore((state) => state.user.memberId);
 
   const rowRenderer = ({ index, key, style, parent }: ListRowProps) => {
@@ -27,7 +28,11 @@ export const useRowRenderer = ({ processedMessages, cache }: Props) => {
           {message.senderId === memberId ? (
             <MyMessage message={message.contents} timestamp={message.isLastInGroup ? message.time : null} />
           ) : message.senderId !== memberId ? (
-            <OtherMessage message={message.contents} timestamp={message.isLastInGroup ? message.time : null} />
+            <OtherMessage
+              message={message}
+              time={message.isLastInGroup ? message.time : null}
+              setModalOpen={setModalOpen}
+            />
           ) : (
             <SystemMessage />
           )}

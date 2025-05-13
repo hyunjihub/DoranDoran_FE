@@ -1,10 +1,12 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import Chatting from '@/app/_component/chat/Chatting';
 import MessageInput from '@/app/_component/chat/MessageInput';
+import Profile from '@/app/_component/chat/Profile';
 import ProtectedRoute from '@/app/_component/ProtectedRoute';
 import { chatStore } from '@/store/useChatStore';
-import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { websocketStore } from '@/store/useWebsocketStore';
 
@@ -12,6 +14,7 @@ export default function Chat() {
   const { setChat } = chatStore();
   const subscribeRoom = websocketStore((state) => state.subscribeRoom);
   const { id } = useParams();
+  const [modalOpen, setModalOpen] = useState(-1);
 
   useEffect(() => {
     setChat({
@@ -26,9 +29,10 @@ export default function Chat() {
   return (
     <ProtectedRoute>
       <div className="h-full px-[16px] flex flex-col">
-        <Chatting />
+        <Chatting setModalOpen={setModalOpen} />
         <MessageInput />
       </div>
+      {modalOpen != -1 && <Profile id={modalOpen} />}
     </ProtectedRoute>
   );
 }
