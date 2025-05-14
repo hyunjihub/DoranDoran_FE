@@ -28,11 +28,11 @@ export default function Chat() {
 
   return (
     <ProtectedRoute>
-      <div className="h-full px-[16px] flex flex-col">
+      <div className="h-full flex flex-col">
         <Chatting setModalOpen={setModalOpen} />
         <MessageInput />
+        {modalOpen != -1 && <Profile id={modalOpen} setModalOpen={setModalOpen} />}
       </div>
-      {modalOpen != -1 && <Profile id={modalOpen} />}
     </ProtectedRoute>
   );
 }

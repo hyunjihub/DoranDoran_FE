@@ -19,7 +19,7 @@ export default function Chatting({ setModalOpen }: ChattingProps) {
   const rowRenderer = useRowRenderer({ processedMessages, cache, setModalOpen });
 
   return (
-    <div className="w-full h-full pb-[75px]">
+    <div className="w-full h-full px-[16px] pb-[75px]">
       <AutoSizer>
         {({ height, width }) => (
           <List

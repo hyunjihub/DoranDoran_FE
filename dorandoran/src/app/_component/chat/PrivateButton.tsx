@@ -21,8 +21,8 @@ export default function PrivateButton({ chatPermitted, id }: { chatPermitted: bo
 
   return (
     <button
-      className={`text-white text-lg font-bold rounded px-[72px] py-[12px] ${
-        chatPermitted ? 'bg-[#7B3796]' : 'bg-gray-500'
+      className={`text-white font-semibold rounded px-[72px] py-[12px] ${
+        chatPermitted ? 'bg-[#7B3796]' : 'bg-gray-300 cursor-not-allowed'
       }`}
       disabled={!chatPermitted}
       onClick={() => mutation.mutate()}
