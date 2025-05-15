@@ -25,6 +25,8 @@ export async function GET() {
       status = error.response.status || status;
     }
 
+    if (status === 404 && errorMessage === '채팅방을 찾을 수 없습니다.') return NextResponse.json([], { status: 200 });
+
     return NextResponse.json({ error: errorMessage }, { status });
   }
 }
