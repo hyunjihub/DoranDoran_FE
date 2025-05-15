@@ -4,7 +4,7 @@ import NumberButton from '../../ui/NumberButton';
 import { createChatStore } from '@/store/useCreateChat';
 import { isMobile } from 'react-device-detect';
 
-export default function MaxCountInput() {
+export default function MaxCountInput({ isManager }: { isManager: boolean }) {
   const maxCount = createChatStore((state) => state.maxCount);
   const setMax = createChatStore((state) => state.setMax);
 
@@ -29,7 +29,7 @@ export default function MaxCountInput() {
             })}
           </select>
         ) : (
-          <NumberButton count={maxCount} setCount={setMax} />
+          <NumberButton count={maxCount} setCount={setMax} isManager={isManager} />
         )}
       </div>
     </div>

@@ -1,15 +1,12 @@
-import ChatListItem from '@/app/_component/chat/ChatListItem';
 import CreateButton from '@/app/_component/chat/CreateButton';
+import MyChatList from '@/app/_component/chatList/MyChatList';
 import ProtectedRoute from '@/app/_component/ProtectedRoute';
 
 export default function MyChat() {
   return (
     <ProtectedRoute>
       <div className="h-full flex flex-col">
-        <ul>
-          <ChatListItem />
-          <ChatListItem />
-        </ul>
+        <MyChatList />
         <CreateButton />
       </div>
     </ProtectedRoute>

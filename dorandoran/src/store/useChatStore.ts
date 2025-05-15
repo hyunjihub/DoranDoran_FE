@@ -5,7 +5,6 @@ import { create } from 'zustand';
 
 interface ChatState {
   chatRoomId: number;
-  isManager: boolean | null;
   partInPeople: number;
   chatTitle: string | null;
   isGroup: boolean;
@@ -17,13 +16,11 @@ const chatStore = create(
   persist<ChatState>(
     (set) => ({
       chatRoomId: 0,
-      isManager: null,
       partInPeople: 0,
       chatTitle: null,
       isGroup: false,
       setChat: (newData) =>
         set(() => ({
-          isManager: newData.isManager,
           partInPeople: newData.partInPeople,
           chatTitle: newData.chatTitle,
           isGroup: newData.isGroup,

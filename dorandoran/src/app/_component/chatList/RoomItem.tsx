@@ -1,24 +1,23 @@
 'use client';
 
-import { IRoom } from '@/app/_util/types/types';
+import { IRoomItem } from '@/app/_util/types/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import RoomBadge from './RoomBadge';
-import temp from '/public/img/180x180.svg';
 
-export default function RoomItem({ room }: { room: IRoom }) {
+export default function RoomItem({ room }: { room: IRoomItem }) {
   return (
-    <li className="max-w-[180px]" title={room.title}>
-      <Link href={`/chat/${room.id}`}>
+    <li className="max-w-[180px]" title={room.chatRoomTitle}>
+      <Link href={`/chat/group/${room.chatRoomId}`}>
         <div className="relative w-[180px] h-[180px]">
-          <Image className="rounded-lg" src={temp} alt={room.title} fill />
+          <Image className="rounded-lg" src={room.chatRoomImage || ''} alt={room.chatRoomTitle} fill />
           <RoomBadge type="new" />
         </div>
-        <p className="mt-2 font-semibold truncate">{room.title}</p>
+        <p className="mt-2 font-semibold truncate">{room.chatRoomTitle}</p>
         <div className="mt-1 flex justify-between items-center">
           <p className="text-xs text-gray-500">마지막 채팅 {room.lastChatTime}</p>
           <p className="text-sm ">
-            <strong className="text-[#7B3796]">{room.count}</strong>/{room.maxCount}
+            <strong className="text-[#7B3796]">{room.partInPeople}</strong>/{room.maxCount}
           </p>
         </div>
       </Link>

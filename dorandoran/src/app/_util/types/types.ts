@@ -15,7 +15,6 @@ export interface IMypage {
 }
 
 export interface IChat {
-  isManager: boolean | null;
   partInPeople: number;
   chatTitle: string | null;
   isGroup: boolean;
@@ -27,11 +26,19 @@ export interface IWebsocket {
 }
 
 export interface IRoom {
-  id: number;
-  title: string;
-  count: number;
-  maxCount: number;
+  chatRoomId: number;
+  chatRoomTitle: string;
+  partInPeople: number;
+  chatRoomImage: string | null;
+  nonReadCount?: number;
+  lastChatContent?: string;
   lastChatTime: string;
+  isGroup?: boolean;
+}
+
+export interface IRoomItem extends IRoom {
+  description: string;
+  maxCount: number;
 }
 
 export interface IRoomInfo {

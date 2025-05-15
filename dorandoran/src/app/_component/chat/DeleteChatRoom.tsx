@@ -7,8 +7,7 @@ import { useNavigationHistory } from '@/app/_util/hooks/useNavigationHistory';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
-export default function DeleteChatRoom() {
-  const isManager = chatStore((state) => state.isManager);
+export default function DeleteChatRoom({ isManager }: { isManager: boolean }) {
   const chatRoomId = chatStore((state) => state.chatRoomId);
   const queryClient = useQueryClient();
   const router = useRouter();

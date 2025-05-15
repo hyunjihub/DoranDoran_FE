@@ -83,7 +83,7 @@ export default function RoomInfo() {
         </div>
         <div className="w-full border-b">
           {data.isManager ? (
-            <MaxCountInput />
+            <MaxCountInput isManager={data.isManager} />
           ) : (
             <div className="flex justify-between items-center px-[16px] py-[18px]">
               <p className="font-bold">최대 참여자 수</p>
@@ -94,7 +94,7 @@ export default function RoomInfo() {
             </div>
           )}
         </div>
-        <DeleteChatRoom />
+        <DeleteChatRoom isManager={data.isManager} />
       </>
     )
   );

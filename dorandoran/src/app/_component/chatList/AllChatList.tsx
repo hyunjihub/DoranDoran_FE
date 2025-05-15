@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-import { IRoom } from '@/app/_util/types/types';
+import { IRoomItem } from '@/app/_util/types/types';
 import Loading from '../layout/Loading';
 import RoomItem from '@/app/_component/chatList/RoomItem';
 import axios from 'axios';
@@ -55,7 +55,7 @@ export default function AllChatList() {
         <>
           <ul className="my-4 pb-24 grid grid-cols-2 gap-4">
             {data?.pages.map((page, pageIndex) =>
-              page.data.map((room: IRoom, idx: number) => <RoomItem room={room} key={`${pageIndex}-${idx}`} />)
+              page.data.map((room: IRoomItem, idx: number) => <RoomItem room={room} key={`${pageIndex}-${idx}`} />)
             )}
           </ul>
           {isFetchingNextPage && <p className="text-xs text-center py-4">불러오는 중...</p>}

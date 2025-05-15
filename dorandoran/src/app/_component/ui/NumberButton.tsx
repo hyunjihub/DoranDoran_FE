@@ -1,16 +1,14 @@
 'use client';
 
 import { ChangeEvent } from 'react';
-import { chatStore } from '@/store/useChatStore';
 
 interface NumberButtonProps {
   count: number;
   setCount: (count: number) => void;
+  isManager: boolean;
 }
 
-export default function NumberButton({ count, setCount }: NumberButtonProps) {
-  const isManager = chatStore((state) => state.isManager);
-
+export default function NumberButton({ count, setCount, isManager }: NumberButtonProps) {
   const handleIncrease = () => {
     if (count < 100) setCount(count + 1);
   };

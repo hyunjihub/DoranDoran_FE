@@ -59,7 +59,7 @@ export default function CreateChatForm() {
         />
       </div>
       <div className="w-full border-b">
-        <MaxCountInput />
+        <MaxCountInput isManager={true} />
       </div>
       <button
         className="mt-10 w-[200px] text-white font-bold bg-[#7B3796] rounded-lg py-[12px]"
