@@ -16,7 +16,7 @@ export default function Profile({ id, setModalOpen }: ProfileProps) {
   const { data } = useQuery<IUserProfile>({
     queryKey: ['chatMessages', id],
     queryFn: async () => {
-      const response = await axios.get<IUserProfile>(`/profile?id=${id}`);
+      const response = await axios.get<IUserProfile>(`/api/chat/profile?id=${id}`);
       return response.data;
     },
     enabled: id > 0,

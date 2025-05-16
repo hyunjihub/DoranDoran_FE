@@ -1,19 +1,10 @@
-import { IRoom } from '@/app/_util/types/types';
+import { IUser } from '@/app/_util/types/types';
 import { NextResponse } from 'next/server';
 import axios from 'axios';
-import { cookies } from 'next/headers';
 
 export async function GET() {
   try {
-    const cookieStore = cookies();
-    const accessToken = (await cookieStore).get('access')?.value || '';
-
-    const { data } = await axios.get<IRoom>(`${process.env.API_BASE_URL}/chat/lists`, {
-      withCredentials: true,
-      headers: {
-        Cookie: `access=${accessToken}`,
-      },
-    });
+    const { data } = await axios.get<IUser[]>(`${process.env.API_BASE_URL}/chat/recommends`);
 
     return NextResponse.json(data, { status: 200 });
   } catch (error: unknown) {
