@@ -6,23 +6,29 @@ import RecommendItem from './RecommendItem';
 import axios from 'axios';
 import refresh from '/public/img/icon/refresh.svg';
 import { useQuery } from '@tanstack/react-query';
+import { userStore } from '@/store/useUserStore';
 
 export default function Recommend() {
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
+
   const { data, refetch } = useQuery<IUser[]>({
     queryKey: ['recommend'],
     queryFn: async () => {
       const response = await axios.get<IUser[]>(`/api/chat/recommends`);
       return response.data;
     },
+    enabled: isLoggedIn,
     staleTime: 0,
     refetchOnMount: true,
   });
+
+  if (!isLoggedIn) return null;
 
   return (
     <section className="mt-[60px] px-[24px]">
       <h2 className="text-xl font-bold">새로운 친구를 만나보세요! 👭</h2>
       <p className="text-xs text-gray-500">새로운 친구, 새로운 인연! 도란도란에서!</p>
-      <ul className="flex gap-4">
+      <ul className="flex gap-4 mt-[16px]">
         {data &&
           data.map((user, key) => {
             return <RecommendItem user={user} key={key} />;

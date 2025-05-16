@@ -3,6 +3,7 @@
 import { IUser } from '@/app/_util/types/types';
 import Image from 'next/image';
 import axios from 'axios';
+import profile from '/public/img/profile.jpg';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
@@ -23,11 +24,14 @@ export default function RecommendItem({ user }: { user: IUser }) {
 
   return (
     <li className="flex flex-col">
-      <div className="relative rounded-full w-[100px] h-[100px] border">
-        <Image className="object-cover rounded-full" src={user.profileImage || ''} alt="프로필 이미지" fill />
+      <div className="relative rounded-full w-[100px] h-[100px]">
+        <Image className="object-cover rounded-full" src={user.profileImage || profile} alt="프로필 이미지" fill />
       </div>
-      <p>{user.nickname}</p>
-      <button className="rounded-lg bg-[#7B3796] text-white px-[12px] py-[4px]" onClick={() => mutation.mutate()}>
+      <p className="mt-[4px] text-center font-semibold">{user.nickname}</p>
+      <button
+        className="mt-[4px] rounded-lg bg-[#7B3796] text-white text-sm py-[4px]"
+        onClick={() => mutation.mutate()}
+      >
         1:1 채팅
       </button>
     </li>

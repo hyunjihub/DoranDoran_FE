@@ -4,13 +4,14 @@ import { IRoomItem } from '@/app/_util/types/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import RoomBadge from './RoomBadge';
+import profile from '/public/img/profile.jpg';
 
 export default function RoomItem({ room }: { room: IRoomItem }) {
   return (
     <li className="max-w-[180px]" title={room.chatRoomTitle}>
       <Link href={`/chat/group/${room.chatRoomId}`}>
         <div className="relative w-[180px] h-[180px]">
-          <Image className="rounded-lg" src={room.chatRoomImage || ''} alt={room.chatRoomTitle} fill />
+          <Image className="rounded-lg" src={room.chatRoomImage || profile} alt={room.chatRoomTitle} fill />
           <RoomBadge type="new" />
         </div>
         <p className="mt-2 font-semibold truncate">{room.chatRoomTitle}</p>
