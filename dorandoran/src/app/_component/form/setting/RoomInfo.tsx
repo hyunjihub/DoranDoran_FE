@@ -1,5 +1,6 @@
 'use client';
 
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 
 import DeleteChatRoom from '@/app/_component/chat/DeleteChatRoom';
@@ -11,14 +12,14 @@ import MaxCountInput from '@/app/_component/form/setting/MaxCountInput';
 import ReadOnlyInputText from './ReadOnlyInputText';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
 
 export default function RoomInfo() {
   const router = useRouter();
   const { id } = useParams();
+  const queryClient = useQueryClient();
 
   const { data } = useQuery<IRoomInfo>({
-    queryKey: ['room'],
+    queryKey: ['room', id],
     queryFn: async () => {
       try {
         const response = await axios.get(`/api/chat/chatrooms?id=${123}`);
@@ -39,12 +40,35 @@ export default function RoomInfo() {
     }
   }, [data, router]);
 
+  const uploadMutation = useMutation({
+    mutationFn: async (profileImage: string) => {
+      await axios.patch('/api/chat/info/image', { chatRoomId: id, chatRoomImage: profileImage });
+      return profileImage;
+    },
+    onSuccess: (profileImage) => {
+      queryClient.setQueryData<IRoomInfo>(['room', id], (oldData) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          chatRoomImage: profileImage,
+        };
+      });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   return (
     data && (
       <>
         <div className="w-full border-b border-t">
           {data.isManager ? (
-            <ImageInput image={data.chatRoomImage} type="chat" />
+            <ImageInput
+              image={data.chatRoomImage}
+              type="chat"
+              onChange={(profileImage) => uploadMutation.mutate(profileImage)}
+            />
           ) : (
             <div className="w-full h-[200px] bg-gray-200 flex justify-center items-center">
               <div className="relative w-[140px] h-[140px] rounded-full border">

@@ -4,35 +4,20 @@ import { ChangeEvent, useRef } from 'react';
 
 import CameraIcon from '../../ui/CameraIcon';
 import Image from 'next/image';
-import axios from 'axios';
 import { createChatStore } from '@/store/useCreateChat';
 import getImageURL from '@/app/_util/getImageURL';
 import profile from '/public/img/profile.jpg';
-import { useMutation } from '@tanstack/react-query';
-import { userStore } from '@/store/useUserStore';
 
 interface ImageInputProps {
   image: string | null;
   type: 'mypage' | 'chat';
+  onChange: (imageUrl: string) => void;
 }
 
-export default function ImageInput({ image, type }: ImageInputProps) {
-  const user = userStore((state) => state.user);
+export default function ImageInput({ image, type, onChange }: ImageInputProps) {
   const setImage = createChatStore((state) => state.setImage);
-  const updateData = userStore((state) => state.updateData);
 
   const fileInput = useRef<HTMLInputElement | null>(null);
-  const mutation = useMutation({
-    mutationFn: async (profileImage: string) => {
-      await axios.patch('/api/member/mypage/profile', { profileImage });
-    },
-    onSuccess: (_data, profileImage) => {
-      updateData({ profileImage, nickname: user.nickname || '' });
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
 
   const handleUploadImg = () => {
     if (fileInput.current) {
@@ -48,7 +33,7 @@ export default function ImageInput({ image, type }: ImageInputProps) {
         if (type === 'chat') {
           setImage(url);
         } else {
-          mutation.mutate(url);
+          onChange(url);
         }
       }
     } else {
