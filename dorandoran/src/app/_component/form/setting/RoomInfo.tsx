@@ -64,11 +64,7 @@ export default function RoomInfo() {
       <>
         <div className="w-full border-b border-t">
           {data.isManager ? (
-            <ImageInput
-              image={data.chatRoomImage}
-              type="chat"
-              onChange={(profileImage) => uploadMutation.mutate(profileImage)}
-            />
+            <ImageInput image={data.chatRoomImage} onChange={(profileImage) => uploadMutation.mutate(profileImage)} />
           ) : (
             <div className="w-full h-[200px] bg-gray-200 flex justify-center items-center">
               <div className="relative w-[140px] h-[140px] rounded-full border">

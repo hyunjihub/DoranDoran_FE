@@ -7,16 +7,14 @@ import axios from 'axios';
 import { createChatStore } from '@/store/useCreateChat';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { userStore } from '@/store/useUserStore';
 
 export default function CreateChatForm() {
   const chatRoomImage = createChatStore((state) => state.chatRoomImage);
   const chatRoomTitle = createChatStore((state) => state.chatRoomTitle);
+  const setImage = createChatStore((state) => state.setImage);
   const maxCount = createChatStore((state) => state.maxCount);
   const description = createChatStore((state) => state.description);
   const router = useRouter();
-  const user = userStore((state) => state.user);
-  const updateData = userStore((state) => state.updateData);
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -40,26 +38,14 @@ export default function CreateChatForm() {
     },
   });
 
-  const uploadMutation = useMutation({
-    mutationFn: async (profileImage: string) => {
-      await axios.patch('/api/member/mypage/profile', { profileImage });
-    },
-    onSuccess: (_data, profileImage) => {
-      updateData({ profileImage, nickname: user.nickname || '' });
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
+  const handleSetImage = (profileImage: string) => {
+    setImage(profileImage);
+  };
 
   return (
     <div className="w-full h-full flex flex-col items-center">
       <div className="w-full border-b border-t">
-        <ImageInput
-          image={chatRoomImage}
-          type="chat"
-          onChange={(profileImage) => uploadMutation.mutate(profileImage)}
-        />
+        <ImageInput image={chatRoomImage} onChange={handleSetImage} />
       </div>
       <div className="w-full border-b">
         <InputToLink

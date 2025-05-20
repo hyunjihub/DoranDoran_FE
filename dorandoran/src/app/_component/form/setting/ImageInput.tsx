@@ -4,19 +4,15 @@ import { ChangeEvent, useRef } from 'react';
 
 import CameraIcon from '../../ui/CameraIcon';
 import Image from 'next/image';
-import { createChatStore } from '@/store/useCreateChat';
 import getImageURL from '@/app/_util/getImageURL';
 import profile from '/public/img/profile.jpg';
 
 interface ImageInputProps {
   image: string | null;
-  type: 'mypage' | 'chat';
   onChange: (imageUrl: string) => void;
 }
 
-export default function ImageInput({ image, type, onChange }: ImageInputProps) {
-  const setImage = createChatStore((state) => state.setImage);
-
+export default function ImageInput({ image, onChange }: ImageInputProps) {
   const fileInput = useRef<HTMLInputElement | null>(null);
 
   const handleUploadImg = () => {
@@ -30,11 +26,7 @@ export default function ImageInput({ image, type, onChange }: ImageInputProps) {
     if (image) {
       const url = await getImageURL(image);
       if (url) {
-        if (type === 'chat') {
-          setImage(url);
-        } else {
-          onChange(url);
-        }
+        onChange(url);
       }
     } else {
       alert('이미지 파일만 업로드 가능합니다.');

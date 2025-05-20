@@ -1,5 +1,7 @@
 'use client';
 
+import { useMutation, useQuery } from '@tanstack/react-query';
+
 import ChatReceiveInput from '@/app/_component/form/setting/ChatReceiveInput';
 import EmailInput from '../form/setting/EmailInput';
 import { IMypage } from '@/app/_util/types/types';
@@ -11,8 +13,8 @@ import Loading from '@/app/_component/layout/Loading';
 import Logout from '@/app/_component/user/Logout';
 import PushNotificationInput from '@/app/_component/form/setting/PushNotificationInput';
 import arrow from '/public/img/icon/prevArrow.svg';
+import axios from 'axios';
 import { getFetchUserInfo } from '@/app/_util/getFetchUserInfo';
-import { useQuery } from '@tanstack/react-query';
 import { userStore } from '@/store/useUserStore';
 
 interface MypageInfoProps {
@@ -22,12 +24,25 @@ interface MypageInfoProps {
 export default function MypageInfo({ setIsActive }: MypageInfoProps) {
   const user = userStore((state) => state.user);
   const isLoggedIn = userStore((state) => state.isLoggedIn);
+  const updateData = userStore((state) => state.updateData);
 
   const { data, isLoading } = useQuery<IMypage, Error>({
     queryKey: ['user'],
     queryFn: getFetchUserInfo,
     enabled: isLoggedIn,
     refetchOnWindowFocus: false,
+  });
+
+  const mutation = useMutation({
+    mutationFn: async (profileImage: string) => {
+      await axios.patch('/api/member/mypage/profile', { profileImage });
+    },
+    onSuccess: (_data, profileImage) => {
+      updateData({ profileImage, nickname: user.nickname || '' });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
   });
 
   return (
@@ -37,7 +52,7 @@ export default function MypageInfo({ setIsActive }: MypageInfoProps) {
       ) : (
         <div className="w-full h-full flex flex-col items-center">
           <div className="w-full border-b border-t">
-            <ImageInput image={user.profileImage} type="mypage" />
+            <ImageInput image={user.profileImage} onChange={(profileImage) => mutation.mutate(profileImage)} />
           </div>
           <div className="w-full border-b">
             <InputToLink name="닉네임 변경" placeHolder="" link="/mypage/nickname" inputData={user.nickname || ''} />
