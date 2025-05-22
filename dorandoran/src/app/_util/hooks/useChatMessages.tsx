@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { IMessage } from '@/app/_util/types/types';
 import axios from 'axios';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
 import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function useChatMessages() {
@@ -14,15 +14,18 @@ export default function useChatMessages() {
   const clearMessageHandler = websocketStore((state) => state.clearMessageHandler);
   const [messages, setMessages] = useState<IMessage[]>([]);
 
-  const { data } = useQuery<IMessage[], Error>({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useInfiniteQuery<IMessage[]>({
     queryKey: ['chatMessages', id],
-    queryFn: async () => {
-      const response = await axios.get<IMessage[]>(`/chats?chatRoomId=${id}`);
+    queryFn: async ({ pageParam = null }) => {
+      const cursorParam = pageParam ? `cursor=${pageParam}&` : '';
+      const response = await axios.get<IMessage[]>(`/chats?${cursorParam}limit=10&chatRoomId=${id}`);
       return response.data;
     },
-    enabled: typeof id === 'string',
-    staleTime: 0,
-    refetchOnMount: true,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage || lastPage.length < 10) return undefined;
+      return lastPage[lastPage.length - 1].chatId;
+    },
   });
 
   useEffect(() => {
@@ -53,5 +56,11 @@ export default function useChatMessages() {
     });
   }, [messages]);
 
-  return { processedMessages };
+  return {
+    processedMessages,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+  };
 }
