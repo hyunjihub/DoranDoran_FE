@@ -24,14 +24,11 @@ export default function RecommendItem({ user }: { user: IUser }) {
 
   return (
     <li className="flex flex-col">
-      <div className="relative rounded-full w-[100px] h-[100px]">
+      <div className="relative rounded-full w-[80px] h-[80px]">
         <Image className="object-cover rounded-full" src={user.profileImage || profile} alt="프로필 이미지" fill />
       </div>
       <p className="mt-[4px] text-center font-semibold">{user.nickname}</p>
-      <button
-        className="mt-[4px] rounded-lg bg-[#7B3796] text-white text-sm py-[4px]"
-        onClick={() => mutation.mutate()}
-      >
+      <button className="mt-[4px] rounded bg-[#7B3796] text-white text-xs py-[4px]" onClick={() => mutation.mutate()}>
         1:1 채팅
       </button>
     </li>
