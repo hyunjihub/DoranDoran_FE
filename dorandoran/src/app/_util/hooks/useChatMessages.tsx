@@ -1,15 +1,16 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useParams, usePathname } from 'next/navigation';
 
 import { IMessage } from '@/app/_util/types/types';
 import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
 import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function useChatMessages() {
   const { id } = useParams();
+  const pathname = usePathname();
   const setMessageHandler = websocketStore((state) => state.setMessageHandler);
   const clearMessageHandler = websocketStore((state) => state.clearMessageHandler);
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -18,7 +19,7 @@ export default function useChatMessages() {
     queryKey: ['chatMessages', id],
     queryFn: async ({ pageParam = null }) => {
       const cursorParam = pageParam ? `cursor=${pageParam}&` : '';
-      const response = await axios.get<IMessage[]>(`/chats?${cursorParam}limit=10&chatRoomId=${id}`);
+      const response = await axios.get<IMessage[]>(`/api/chat/chats?${pathname.startsWith("/chat/group")?"groupId":"privateId"}=${cursorParam}&key=${id}`);
       return response.data;
     },
     initialPageParam: 0,
