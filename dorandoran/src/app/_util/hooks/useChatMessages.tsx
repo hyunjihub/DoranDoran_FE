@@ -19,7 +19,9 @@ export default function useChatMessages() {
     queryKey: ['chatMessages', id],
     queryFn: async ({ pageParam = null }) => {
       const cursorParam = pageParam ? `cursor=${pageParam}&` : '';
-      const response = await axios.get<IMessage[]>(`/api/chat/chats?${pathname.startsWith("/chat/group")?"groupId":"privateId"}=${cursorParam}&key=${id}`);
+      const response = await axios.get<IMessage[]>(
+        `/api/chat/chats?${pathname.startsWith('/chat/group') ? 'groupId' : 'privateId'}=${id}&key=${cursorParam}`
+      );
       return response.data;
     },
     initialPageParam: 0,
