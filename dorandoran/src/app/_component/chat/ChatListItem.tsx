@@ -5,6 +5,7 @@ import Image from 'next/image';
 import RoomLeave from '../chatList/RoomLeave';
 import { chatStore } from '@/store/useChatStore';
 import { motion } from 'framer-motion';
+import profile from '/public/img/profile.jpg';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -43,7 +44,11 @@ export default function ChatListItem({ room }: { room: IRoom }) {
           }
         }}
       >
-        <Image className="w-[60px] h-[60px] rounded-full" src={room.chatRoomImage || ''} alt={room.chatRoomTitle} />
+        <Image
+          className="w-[60px] h-[60px] rounded-full"
+          src={room.chatRoomImage || profile}
+          alt={room.chatRoomTitle}
+        />
         <div className="flex flex-col text-sm mr-4">
           <div className="flex flex-row gap-1 mb-1">
             <p className="text-base font-bold">{room.chatRoomTitle}</p>
