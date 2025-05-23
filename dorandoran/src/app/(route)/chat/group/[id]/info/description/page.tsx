@@ -41,7 +41,7 @@ export default function Description() {
         inputData={roomDescription}
         setInputData={setRoomDescription}
         type={'description'}
-        onChange={mutation.mutate}
+        onChange={() => mutation.mutate}
       />
     </ProtectedRoute>
   );

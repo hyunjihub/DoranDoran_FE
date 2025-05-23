@@ -13,9 +13,9 @@ export async function GET(request: Request) {
     const privateId = Number(searchParams.get('privateId') || null);
 
     const { data } = await axios.get<IMessage[]>(
-      `${process.env.API_BASE_URL}/chat/chats?${groupId ? 'groupId' : 'privateId'}=${
-        groupId ? groupId : privateId
-      }&key=${key}`,
+      `${process.env.API_BASE_URL}/chat/chats?${groupId ? 'groupId' : 'privateId'}=${groupId ? groupId : privateId}${
+        key ? `&key=${key}` : ''
+      }`,
       {
         withCredentials: true,
         headers: {

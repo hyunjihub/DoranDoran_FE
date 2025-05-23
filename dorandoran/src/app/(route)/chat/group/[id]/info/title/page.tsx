@@ -40,7 +40,7 @@ export default function ChatTitle() {
 
   return (
     <ProtectedRoute>
-      <InfoInput inputData={roomTitle} setInputData={setRoomTitle} type="title" onChange={mutation.mutate} />
+      <InfoInput inputData={roomTitle} setInputData={setRoomTitle} type="title" onChange={() => mutation.mutate} />
     </ProtectedRoute>
   );
 }
