@@ -32,8 +32,8 @@ export default function useChatMessages() {
   });
 
   useEffect(() => {
-    if (Array.isArray(data)) {
-      setMessages(data);
+    if (Array.isArray(data?.pages[0])) {
+      setMessages(data.pages[0]);
     }
   }, [data]);
 

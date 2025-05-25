@@ -2,14 +2,15 @@ import { NextResponse } from 'next/server';
 import axios from 'axios';
 import { cookies } from 'next/headers';
 
-export async function POST(req: Request) {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
   const cookieStore = cookies();
   const accessToken = (await cookieStore).get('access')?.value || '';
 
   try {
-    const body = await req.json();
+    const id = Number(searchParams.get('id') || 1);
 
-    const { data } = await axios.post(`${process.env.API_BASE_URL}/chat/profile`, body, {
+    const { data } = await axios.get(`${process.env.API_BASE_URL}/chat/profile?id=${id}`, {
       withCredentials: true,
       headers: {
         Cookie: `access=${accessToken};`,

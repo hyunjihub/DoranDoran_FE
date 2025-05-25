@@ -53,7 +53,7 @@ export interface IRoomInfo {
 export interface IMessage {
   chatId: number;
   type: 'text' | 'image' | 'system';
-  contents: string;
+  content: string;
   senderId: number;
   senderNickname: string;
   senderProfileImage: string;

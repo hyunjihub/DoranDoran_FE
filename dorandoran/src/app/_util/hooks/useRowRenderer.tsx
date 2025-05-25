@@ -26,7 +26,7 @@ export const useRowRenderer = ({ processedMessages, cache, setModalOpen }: useRo
         <div key={key} style={style} className="w-full flex flex-col items-center">
           {message.isDateChanged && <Date date={message.date} />}
           {message.senderId === memberId ? (
-            <MyMessage message={message.contents} timestamp={message.isLastInGroup ? message.time : null} />
+            <MyMessage message={message.content} timestamp={message.isLastInGroup ? message.time : null} />
           ) : message.senderId !== memberId ? (
             <OtherMessage
               message={message}

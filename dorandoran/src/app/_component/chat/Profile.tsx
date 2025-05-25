@@ -5,6 +5,7 @@ import Image from 'next/image';
 import PrivateButton from './PrivateButton';
 import axios from 'axios';
 import cancel from '/public/img/icon/cancel.svg';
+import profile from '/public/img/profile.jpg';
 import { useQuery } from '@tanstack/react-query';
 
 interface ProfileProps {
@@ -37,7 +38,7 @@ export default function Profile({ id, setModalOpen }: ProfileProps) {
         <div className="border relative w-[140px] h-[140px] rounded-full mb-[40px]">
           <Image
             className="w-[140px] h-[140px] object-cover rounded-full"
-            src={data?.profileImage as string}
+            src={data?.profileImage || profile}
             alt="프로필 이미지"
             fill
           />

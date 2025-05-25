@@ -4,6 +4,7 @@ import { AutoSizer, CellMeasurerCache, List } from 'react-virtualized';
 
 import useChatMessages from '@/app/_util/hooks/useChatMessages';
 import { useChatScroll } from '@/app/_util/hooks/useChatScroll';
+import { useEffect } from 'react';
 import { useRowRenderer } from '@/app/_util/hooks/useRowRenderer';
 
 interface ChattingProps {
@@ -18,8 +19,13 @@ const cache = new CellMeasurerCache({
 export default function Chatting({ setModalOpen }: ChattingProps) {
   const { processedMessages, fetchNextPage, hasNextPage, isFetchingNextPage } = useChatMessages();
 
-  const rowRenderer = useRowRenderer({ processedMessages, cache, setModalOpen });
+  useEffect(() => {
+    if (processedMessages.length > 0) {
+      console.log(processedMessages);
+    }
+  }, [processedMessages]);
 
+  const rowRenderer = useRowRenderer({ processedMessages, cache, setModalOpen });
   const { listRef, handleScroll } = useChatScroll({
     processedMessages,
     isFetchingNextPage,
