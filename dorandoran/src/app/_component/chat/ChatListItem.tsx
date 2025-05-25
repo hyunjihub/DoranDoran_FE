@@ -6,7 +6,6 @@ import RoomLeave from '../chatList/RoomLeave';
 import { chatStore } from '@/store/useChatStore';
 import { motion } from 'framer-motion';
 import profile from '/public/img/profile.jpg';
-import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import user from '/public/img/icon/user.svg';
@@ -17,7 +16,6 @@ export default function ChatListItem({ room }: { room: IRoom }) {
   const router = useRouter();
   const { setChat } = chatStore();
   const subscribeRoom = websocketStore((state) => state.subscribeRoom);
-  const { id } = useParams();
 
   const handleEnter = () => {
     setChat({
@@ -25,7 +23,7 @@ export default function ChatListItem({ room }: { room: IRoom }) {
       partInPeople: room.partInPeople,
       chatTitle: room.chatRoomTitle,
     });
-    subscribeRoom(Number(id), 'private');
+    subscribeRoom(room.chatRoomId, room.isGroup ? 'group' : 'private');
     router.push(`/chat/${room.isGroup ? 'group' : 'private'}/${room.chatRoomId}`);
   };
 
