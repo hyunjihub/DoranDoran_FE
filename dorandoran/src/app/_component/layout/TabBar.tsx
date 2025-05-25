@@ -12,7 +12,7 @@ import userIcon from '/public/img/icon/user.svg';
 export default function TabBar() {
   const pathname = usePathname();
   const notRendering = ['/search', '/login', '/singup', '/find', '/chat', '/mypage/nickname'];
-  const isChatRoute = pathname.startsWith('/chat/') && pathname.split('/').length === 3;
+  const isChatRoute = pathname.startsWith('/chat/') && pathname.split('/').length === 4;
 
   if (notRendering.includes(pathname) || isChatRoute) return null;
   return (
