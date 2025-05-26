@@ -31,7 +31,7 @@ export default function ChatListItem({ room }: { room: IRoom }) {
     <li className="relative w-full max-w-md mx-auto overflow-hidden" onClick={handleEnter}>
       <RoomLeave swiped={swiped} />
       <motion.div
-        className="py-2 pr-3 flex justify-between items-center bg-white"
+        className="py-2 px-3 flex justify-center items-center bg-white"
         drag="x"
         dragConstraints={{ left: -70, right: 0 }}
         onDragEnd={(event, info) => {
@@ -42,13 +42,17 @@ export default function ChatListItem({ room }: { room: IRoom }) {
           }
         }}
       >
-        <Image
-          className="w-[60px] h-[60px] rounded-full"
-          src={room.chatRoomImage || profile}
-          alt={room.chatRoomTitle}
-        />
-        <div className="flex flex-col text-sm mr-4">
-          <div className="flex flex-row gap-1 mb-1">
+        <div className="relative w-[60px] h-[60px] rounded-full mr-4">
+          <Image
+            className="object-cover rounded-full"
+            src={room.chatRoomImage || profile}
+            alt={room.chatRoomTitle}
+            fill
+          />
+        </div>
+
+        <div className="flex flex-col grow text-sm mr-4 truncate">
+          <div className="flex gap-1 mb-1">
             <p className="text-base font-bold">{room.chatRoomTitle}</p>
             <div className="flex items-center gap-1 text-xs text-gray-400">
               <Image src={user} alt="참여인원" width={15} height={15} />
@@ -59,8 +63,12 @@ export default function ChatListItem({ room }: { room: IRoom }) {
         </div>
         <div className="flex flex-col gap-1 items-end">
           <p className="text-xs text-gray-400">{room.lastChatTime}</p>
-          <div className="rounded-full bg-[#7B3796] w-[20px] h-[20px] text-white text-xs font-bold flex items-center justify-center">
-            {room.nonReadCount}
+          <div
+            className={`rounded-full bg-[#7B3796] w-[20px] h-[20px] text-white text-xs font-bold flex items-center justify-center ${
+              !room.nonReadCount || room.nonReadCount === 0 ? 'opacity-0' : ''
+            }`}
+          >
+            {room.nonReadCount && room.nonReadCount > 99 ? '99+' : room.nonReadCount}
           </div>
         </div>
       </motion.div>
