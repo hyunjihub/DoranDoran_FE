@@ -15,10 +15,19 @@ export default function DeleteChatRoom({ isManager }: { isManager: boolean }) {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      // 추후 채팅방 제거 코드도 조건부로 추가 할 예정
-      if (confirm('채팅방을 나가시겠습니까?')) {
-        await axios.delete(`/api/chatrooms?id=${chatRoomId}`);
-      } else throw new Error('사용자가 채팅방 나가기를 취소했습니다.');
+      if (isManager) {
+        if (confirm('채팅방을 나가시겠습니까?')) {
+          await axios.delete(`/api/chatrooms?groupId=${chatRoomId}`);
+        } else throw new Error('사용자가 채팅방 나가기를 취소했습니다.');
+      } else {
+        if (
+          confirm(
+            '채팅방을 폐쇄하시겠습니까?\n폐쇄된 채팅방은 복구가 불가능하며 참여 중인 회원의 메시지 전송이 불가능해집니다.'
+          )
+        ) {
+          await axios.delete(`/api/shutdown?groupId=${chatRoomId}`);
+        } else throw new Error('사용자가 채팅방 폐쇄를 취소했습니다.');
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myChatRoom'] });
