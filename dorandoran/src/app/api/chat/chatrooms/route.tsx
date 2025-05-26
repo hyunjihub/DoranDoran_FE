@@ -1,23 +1,35 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
-import chatroomSample from '@/app/_util/json/chatroom.json';
 import { cookies } from 'next/headers';
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const page = Number(searchParams.get('page') || '1');
-  const limit = Number(searchParams.get('limit') || '10');
+  try {
+    const { searchParams } = new URL(request.url);
+    const cursor = Number(searchParams.get('cursor') || '0');
+    const limit = Number(searchParams.get('limit') || '10');
 
-  const start = (page - 1) * limit;
-  const end = start + limit;
-  const data = chatroomSample.room.slice(start, end);
-  const hasMore = end < chatroomSample.room.length;
+    const { data } = await axios.get(
+      `${process.env.API_BASE_URL}/chat/chatrooms?limit=${limit}${cursor > 0 ? `&cursor=${cursor}` : ''}`
+    );
 
-  return NextResponse.json({
-    data,
-    nextPage: page + 1,
-    hasMore,
-  });
+    const hasMore = data.length === limit;
+
+    return NextResponse.json({
+      data,
+      nextPage: cursor !== null ? cursor + 1 : 1,
+      hasMore,
+    });
+  } catch (error: unknown) {
+    let errorMessage = '서버 오류 발생';
+    let status = 500;
+
+    if (axios.isAxiosError(error) && error.response) {
+      errorMessage = error.response.data?.message || errorMessage;
+      status = error.response.status || status;
+    }
+
+    return NextResponse.json({ error: errorMessage }, { status });
+  }
 }
 
 export async function POST(req: Request) {

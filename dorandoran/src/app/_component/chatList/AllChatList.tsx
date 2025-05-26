@@ -9,8 +9,8 @@ import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 export default function AllChatList() {
-  const fetchChats = async ({ pageParam = 1 }) => {
-    const res = await axios.get(`/api/chat/chatrooms?page=${pageParam}&limit=8`);
+  const fetchChats = async ({ pageParam = 0 }) => {
+    const res = await axios.get(`/api/chat/chatrooms?cursor=${pageParam}&limit=8`);
     return res.data;
   };
 
