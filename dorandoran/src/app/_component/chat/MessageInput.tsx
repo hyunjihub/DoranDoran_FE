@@ -1,39 +1,28 @@
 'use client';
 
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
 
-import CameraIcon from '../ui/CameraIcon';
 import Image from 'next/image';
-import getImageURL from '@/app/_util/getImageURL';
+import ImageSend from './ImageSend';
 import send from '/public/img/icon/send.svg';
 import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function MessageInput() {
   const sendMessage = websocketStore((state) => state.sendMessage);
   const [message, setMessage] = useState<string>('');
-  const fileInput = useRef<HTMLInputElement | null>(null);
 
   const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(event.target.value);
   };
 
-  const handleUploadImg = () => {
-    if (fileInput.current) {
-      fileInput.current.click();
-    }
-  };
-
-  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const image = event.target.files?.[0];
-    if (image) {
-      const url = await getImageURL(image);
-      if (url) {
-        sendMessage(url, 'image');
+  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      if (message.trim() !== '') {
+        sendMessage(message, 'text');
+        setMessage('');
       }
-    } else {
-      alert('이미지 파일만 업로드 가능합니다.');
     }
-    event.target.value = '';
   };
 
   return (
@@ -42,15 +31,11 @@ export default function MessageInput() {
         <textarea
           value={message}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
           placeholder="메시지를 입력하세요..."
           className="w-full h-full outline-none resize-none scrollbar-hide"
         />
-        <input className="hidden" type="file" ref={fileInput} onChange={handleFileChange} />
-
-        <button onClick={handleUploadImg}>
-          <CameraIcon type="purple" size={30} />
-        </button>
-
+        <ImageSend />
         <button className="ml-2" onClick={() => sendMessage(message, 'text')}>
           <Image src={send} alt="메시지 전송" width={40} height={40} />
         </button>
