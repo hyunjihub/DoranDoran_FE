@@ -66,7 +66,7 @@ export const websocketStore = create<WebSocketStore>()(
             ? `/${subscribedRoomType}/${subscribedRoomId}`
             : null;
 
-        const newTopic = `/${roomType}/${roomId}`;
+        const newTopic = `/chatRoom/${roomType}/${roomId}`;
 
         if (socket && socket.connected && prevTopic !== newTopic) {
           if (prevTopic) {
