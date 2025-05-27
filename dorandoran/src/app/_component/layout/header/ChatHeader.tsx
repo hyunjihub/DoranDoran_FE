@@ -5,31 +5,45 @@ import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import arrow from '/public/img/icon/prevArrow.svg';
+import axios from 'axios';
 import { chatStore } from '@/store/useChatStore';
-import { isMobile } from 'react-device-detect';
+import leave from '/public/img/icon/leave.svg';
 import more from '/public/img/icon/more.svg';
-import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function ChatHeader() {
   const unsubscribeRoom = websocketStore((state) => state.unsubscribeRoom);
   const chatTitle = chatStore((state) => state.chatTitle);
+  const chatRoomId = chatStore((state) => state.chatRoomId);
   const pathname = usePathname();
   const router = useRouter();
-
-  const [showDropdown, setShowDropdown] = useState(false);
 
   const handleGoToChatList = () => {
     unsubscribeRoom();
     router.push('/mychat');
   };
 
-  const handleToggleDropdown = () => {
-    setShowDropdown((prev) => !prev);
+  const mutation = useMutation({
+    mutationFn: async () => {
+      await axios.delete(`/api/chat/chatrooms?privateId=${chatRoomId}`);
+    },
+    onSuccess: () => {
+      handleGoToChatList();
+    },
+    onError: () => {
+      alert('오류');
+    },
+  });
+
+  const handleRoomLeave = () => {
+    if (confirm('채팅방을 나가시겠습니까?')) {
+      mutation.mutate();
+    }
   };
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center px-[16px] py-[12px]">
+    <div className="relative w-full h-full flex items-center justify-center px-[16px] py-[12px] z-50">
       <div className="absolute left-[16px]" onClick={handleGoToChatList} role="button">
         <Image src={arrow} alt="이전페이지" width={12} height={24} />
       </div>
@@ -38,15 +52,10 @@ export default function ChatHeader() {
 
       {!pathname.includes('info') && (
         <>
-          {!isMobile ? (
-            <div className="absolute right-[16px] z-50" role="button" onClick={handleToggleDropdown}>
-              <Image src={more} alt="메뉴 열기" width={32} height={32} />
-              {showDropdown && (
-                <ul className="absolute top-full right-0 w-[100px] bg-white border rounded shadow z-10">
-                  <li className="w-full px-2 py-2 hover:bg-gray-100">채팅방 나가기</li>
-                </ul>
-              )}
-            </div>
+          {pathname.includes('private') ? (
+            <button className="absolute right-[16px]" onClick={handleRoomLeave}>
+              <Image src={leave} alt="채팅방 설정" width={32} height={32} />
+            </button>
           ) : (
             <Link className="absolute right-[16px]" href={`${pathname}/info`} role="button">
               <Image src={more} alt="채팅방 설정" width={32} height={32} />
