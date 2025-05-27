@@ -27,14 +27,14 @@ export const useRowRenderer = ({ processedMessages, cache, setModalOpen }: useRo
           {message.isDateChanged && <Date date={message.date} />}
           {message.senderId === memberId ? (
             <MyMessage message={message.content} timestamp={message.isLastInGroup ? message.time : null} />
-          ) : message.senderId !== memberId ? (
+          ) : message.type !== 'system' ? (
             <OtherMessage
               message={message}
               time={message.isLastInGroup ? message.time : null}
               setModalOpen={setModalOpen}
             />
           ) : (
-            <SystemMessage />
+            <SystemMessage message={message} />
           )}
         </div>
       </CellMeasurer>
