@@ -66,9 +66,9 @@ export const websocketStore = create<WebSocketStore>()(
             ? `/${subscribedRoomType}/${subscribedRoomId}`
             : null;
 
-        const newTopic = `/chatRoom/${roomType}/${roomId}`;
+        const newTopic = `/sub/${roomType}/${roomId}`;
 
-        if (socket && socket.connected && prevTopic !== newTopic) {
+        if (socket && socket.connected) {
           if (prevTopic) {
             socket.unsubscribe(prevTopic);
           }
@@ -76,6 +76,7 @@ export const websocketStore = create<WebSocketStore>()(
           socket.subscribe(newTopic, (message) => {
             try {
               const parsed: IMessage = JSON.parse(message.body);
+              console.log(parsed);
               if (messageHandler) {
                 messageHandler(parsed);
               }
