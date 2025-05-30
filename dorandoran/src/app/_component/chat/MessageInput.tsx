@@ -25,6 +25,11 @@ export default function MessageInput() {
     }
   };
 
+  const handleSendMessage = () => {
+    sendMessage(message, 'text');
+    setMessage('');
+  };
+
   return (
     <div className="absolute bottom-0 left-0 w-full border-t border-[#EAEAEA] px-[16px] py-[12px] bg-white">
       <div className="flex items-center justify-between">
@@ -36,7 +41,7 @@ export default function MessageInput() {
           className="w-full h-full outline-none resize-none scrollbar-hide"
         />
         <ImageSend />
-        <button className="ml-2" onClick={() => sendMessage(message, 'text')}>
+        <button className="ml-2" onClick={handleSendMessage}>
           <Image src={send} alt="메시지 전송" width={40} height={40} />
         </button>
       </div>

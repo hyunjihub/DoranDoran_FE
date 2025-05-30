@@ -1,7 +1,6 @@
-import { useEffect, useRef } from 'react';
-
 import { IMessage } from '../types/types';
 import { List } from 'react-virtualized';
+import { useRef } from 'react';
 
 export function useChatScroll({
   processedMessages,
@@ -17,26 +16,6 @@ export function useChatScroll({
   const listRef = useRef<List>(null);
   const prevScrollTopRef = useRef(0);
   const firstVisibleMessageIdRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (listRef.current && processedMessages.length > 0) {
-      listRef.current.scrollToRow(processedMessages.length - 1);
-    }
-  }, [processedMessages.length]);
-
-  useEffect(() => {
-    if (!isFetchingNextPage && listRef.current && firstVisibleMessageIdRef.current) {
-      const index = processedMessages.findIndex((msg) => msg.chatId === firstVisibleMessageIdRef.current);
-
-      if (index !== -1) {
-        const offset = listRef.current.getOffsetForRow({
-          alignment: 'start',
-          index,
-        });
-        listRef.current.scrollToPosition(offset);
-      }
-    }
-  }, [processedMessages, isFetchingNextPage]);
 
   const handleScroll = (scrollTop: number) => {
     prevScrollTopRef.current = scrollTop;

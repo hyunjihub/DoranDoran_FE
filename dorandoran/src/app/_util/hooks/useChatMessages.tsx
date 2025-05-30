@@ -18,9 +18,9 @@ export default function useChatMessages() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useInfiniteQuery<IMessage[]>({
     queryKey: ['chatMessages', id],
     queryFn: async ({ pageParam = null }) => {
-      const cursorParam = pageParam ? `cursor=${pageParam}&` : '';
+      const cursorParam = pageParam ? `&key=${pageParam}` : '';
       const response = await axios.get<IMessage[]>(
-        `/api/chat/chats?${pathname.startsWith('/chat/group') ? 'groupId' : 'privateId'}=${id}&key=${cursorParam}`
+        `/api/chat/chats?${pathname.startsWith('/chat/group') ? 'groupId' : 'privateId'}=${id}${cursorParam}`
       );
       return response.data;
     },
