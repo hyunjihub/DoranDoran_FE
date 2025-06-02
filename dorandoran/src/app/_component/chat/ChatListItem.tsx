@@ -24,7 +24,7 @@ export default function ChatListItem({ room }: { room: IRoom }) {
       partInPeople: room.partInPeople,
       chatTitle: room.chatRoomTitle,
     });
-    subscribeRoom(room.chatRoomId, room.isGroup ? 'group' : 'private');
+    if (!room.isClose) subscribeRoom(room.chatRoomId, room.isGroup ? 'group' : 'private');
     router.push(`/chat/${room.isGroup ? 'group' : 'private'}/${room.chatRoomId}`);
   };
 
