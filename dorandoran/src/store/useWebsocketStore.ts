@@ -84,6 +84,11 @@ export const websocketStore = create<WebSocketStore>()(
             }
           });
 
+          socket.publish({
+            destination: `/pub/${subscribedRoomType}/${subscribedRoomId}`,
+            body: JSON.stringify({ content: null, type: 'enter' }),
+          });
+
           set({ subscribedRoomId: roomId, subscribedRoomType: roomType });
         }
       },
@@ -94,6 +99,10 @@ export const websocketStore = create<WebSocketStore>()(
 
         if (socket && socket.connected && subscribedRoomId !== null && subscribedRoomType !== null) {
           const topic = `/${subscribedRoomType}/${subscribedRoomId}`;
+          socket.publish({
+            destination: `/pub/${subscribedRoomType}/${subscribedRoomId}`,
+            body: JSON.stringify({ content: null, type: 'leave' }),
+          });
           socket.unsubscribe(topic);
           set({ subscribedRoomId: null, subscribedRoomType: null });
         }

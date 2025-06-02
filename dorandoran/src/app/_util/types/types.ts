@@ -54,7 +54,7 @@ export interface IRoomInfo {
 
 export interface IMessage {
   chatId: number;
-  type: 'text' | 'image' | 'system';
+  type: 'text' | 'image' | 'system' | 'enter' | 'leave';
   content: string;
   senderId: number;
   senderNickname: string | null;
