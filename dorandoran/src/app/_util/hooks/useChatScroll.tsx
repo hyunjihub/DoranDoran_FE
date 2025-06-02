@@ -1,6 +1,7 @@
+import { useEffect, useRef } from 'react';
+
 import { IMessage } from '../types/types';
 import { List } from 'react-virtualized';
-import { useRef } from 'react';
 
 export function useChatScroll({
   processedMessages,
@@ -16,6 +17,12 @@ export function useChatScroll({
   const listRef = useRef<List>(null);
   const prevScrollTopRef = useRef(0);
   const firstVisibleMessageIdRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (listRef.current && processedMessages.length > 0) {
+      listRef.current.scrollToRow(processedMessages.length - 1);
+    }
+  }, [processedMessages.length]);
 
   const handleScroll = (scrollTop: number) => {
     prevScrollTopRef.current = scrollTop;

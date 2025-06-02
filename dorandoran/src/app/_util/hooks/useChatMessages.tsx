@@ -27,7 +27,7 @@ export default function useChatMessages() {
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       if (!lastPage || lastPage.length < 10) return undefined;
-      return lastPage[lastPage.length - 1].chatId;
+      return lastPage[0].chatId;
     },
   });
 

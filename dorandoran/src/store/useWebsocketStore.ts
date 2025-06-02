@@ -76,7 +76,6 @@ export const websocketStore = create<WebSocketStore>()(
           socket.subscribe(newTopic, (message) => {
             try {
               const parsed: IMessage = JSON.parse(message.body);
-              console.log(parsed);
               if (messageHandler) {
                 messageHandler(parsed);
               }
