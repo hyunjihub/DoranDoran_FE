@@ -57,8 +57,8 @@ export interface IMessage {
   type: 'text' | 'image' | 'system';
   content: string;
   senderId: number;
-  senderNickname: string;
-  senderProfileImage: string;
+  senderNickname: string | null;
+  senderProfileImage: string | null;
   date: string;
   time: string;
   isDateChanged?: boolean;
