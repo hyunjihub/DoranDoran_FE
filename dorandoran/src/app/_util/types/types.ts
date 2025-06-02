@@ -18,6 +18,7 @@ export interface IChat {
   partInPeople: number;
   chatTitle: string | null;
   isGroup: boolean;
+  isClose: boolean;
 }
 
 export interface IWebsocket {
@@ -34,6 +35,7 @@ export interface IRoom {
   lastChatContent?: string;
   lastChatTime: string;
   isGroup?: boolean;
+  isClose?: boolean;
 }
 
 export interface IRoomItem extends IRoom {

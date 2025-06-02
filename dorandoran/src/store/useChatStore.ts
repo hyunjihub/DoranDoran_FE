@@ -8,6 +8,7 @@ interface ChatState {
   partInPeople: number;
   chatTitle: string | null;
   isGroup: boolean;
+  isClose: boolean;
   setChat: (newData: IChat) => void;
   updateTitle: (modified: { chatTitle: string }) => void;
 }
@@ -19,11 +20,13 @@ const chatStore = create(
       partInPeople: 0,
       chatTitle: null,
       isGroup: false,
+      isClose: false,
       setChat: (newData) =>
         set(() => ({
           partInPeople: newData.partInPeople,
           chatTitle: newData.chatTitle,
           isGroup: newData.isGroup,
+          isClose: newData.isClose,
         })),
       updateTitle: (modified: { chatTitle: string }) =>
         set(() => ({

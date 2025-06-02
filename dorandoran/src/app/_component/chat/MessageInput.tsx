@@ -4,10 +4,12 @@ import { ChangeEvent, KeyboardEvent, useState } from 'react';
 
 import Image from 'next/image';
 import ImageSend from './ImageSend';
+import { chatStore } from '@/store/useChatStore';
 import send from '/public/img/icon/send.svg';
 import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function MessageInput() {
+  const isClose = chatStore((state) => state.isClose);
   const sendMessage = websocketStore((state) => state.sendMessage);
   const [message, setMessage] = useState<string>('');
 
@@ -16,18 +18,22 @@ export default function MessageInput() {
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      if (message.trim() !== '') {
-        sendMessage(message, 'text');
-        setMessage('');
+    if (!isClose) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        if (message.trim() !== '') {
+          sendMessage(message, 'text');
+          setMessage('');
+        }
       }
     }
   };
 
   const handleSendMessage = () => {
-    sendMessage(message, 'text');
-    setMessage('');
+    if (!isClose) {
+      sendMessage(message, 'text');
+      setMessage('');
+    }
   };
 
   return (
@@ -37,6 +43,7 @@ export default function MessageInput() {
           value={message}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
+          disabled={isClose}
           placeholder="메시지를 입력하세요..."
           className="w-full h-full outline-none resize-none scrollbar-hide"
         />

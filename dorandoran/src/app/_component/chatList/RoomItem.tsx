@@ -15,6 +15,7 @@ export default function RoomItem({ room }: { room: IRoomItem }) {
 
   const handleEnter = () => {
     setChat({
+      isClose: false,
       isGroup: room.isGroup || true,
       partInPeople: room.partInPeople,
       chatTitle: room.chatRoomTitle,
