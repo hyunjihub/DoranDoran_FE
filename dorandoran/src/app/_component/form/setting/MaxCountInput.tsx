@@ -1,35 +1,25 @@
 'use client';
 
 import NumberButton from '../../ui/NumberButton';
-import { createChatStore } from '@/store/useCreateChat';
+import NumberSelect from '../../ui/NumberSelect';
 import { isMobile } from 'react-device-detect';
 
-export default function MaxCountInput({ isManager }: { isManager: boolean }) {
-  const maxCount = createChatStore((state) => state.maxCount);
-  const setMax = createChatStore((state) => state.setMax);
+interface MaxCountInputProps {
+  count: number;
+  setCount: (count: number) => void;
+  isManager: boolean;
+}
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setMax(Number(e.target.value));
-  };
-
+export default function MaxCountInput({ isManager, count, setCount }: MaxCountInputProps) {
   return (
     <div className="flex justify-between items-center px-[16px] py-[18px]">
       <p className="font-bold">최대 참여자 수</p>
 
       <div className="flex items-center gap-5">
         {isMobile ? (
-          <select className="border rounded px-3 py-1 text-sm" value={maxCount} onChange={handleChange}>
-            {[...Array(99)].map((_, i) => {
-              const val = i + 2;
-              return (
-                <option key={val} value={val}>
-                  {val}명
-                </option>
-              );
-            })}
-          </select>
+          <NumberSelect count={count} setCount={setCount} />
         ) : (
-          <NumberButton count={maxCount} setCount={setMax} isManager={isManager} />
+          <NumberButton count={count} setCount={setCount} isManager={isManager} />
         )}
       </div>
     </div>

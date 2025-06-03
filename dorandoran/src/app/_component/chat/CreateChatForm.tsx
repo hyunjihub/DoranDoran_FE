@@ -13,6 +13,7 @@ export default function CreateChatForm() {
   const chatRoomTitle = createChatStore((state) => state.chatRoomTitle);
   const setImage = createChatStore((state) => state.setImage);
   const maxCount = createChatStore((state) => state.maxCount);
+  const setMax = createChatStore((state) => state.setMax);
   const description = createChatStore((state) => state.description);
   const router = useRouter();
 
@@ -64,7 +65,7 @@ export default function CreateChatForm() {
         />
       </div>
       <div className="w-full border-b">
-        <MaxCountInput isManager={true} />
+        <MaxCountInput isManager={true} count={maxCount} setCount={setMax} />
       </div>
       <button
         className="mt-10 w-[200px] text-white font-bold bg-[#7B3796] rounded-lg py-[12px]"
