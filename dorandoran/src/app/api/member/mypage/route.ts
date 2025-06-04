@@ -2,11 +2,28 @@ import { IMypage } from '@/app/_util/types/types';
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 import { cookies } from 'next/headers';
+import { reissue } from '@/app/_util/reissue';
 
 export async function GET() {
   try {
     const cookieStore = cookies();
-    const accessToken = (await cookieStore).get('access')?.value || '';
+    let accessToken = (await cookieStore).get('access')?.value || '';
+    const refreshToken = (await cookieStore).get('refresh')?.value || '';
+
+    if (!accessToken) {
+      if (refreshToken) {
+        await reissue();
+        const newAccessToken = (await cookieStore).get('access')?.value || '';
+
+        if (!newAccessToken) {
+          return NextResponse.json({ status: 401 });
+        }
+
+        accessToken = newAccessToken;
+      } else {
+        return NextResponse.json({ status: 401 });
+      }
+    }
 
     const { data } = await axios.get<IMypage>(`${process.env.API_BASE_URL}/member/mypage`, {
       withCredentials: true,
