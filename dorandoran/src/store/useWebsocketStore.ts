@@ -70,6 +70,10 @@ export const websocketStore = create<WebSocketStore>()(
 
         if (socket && socket.connected) {
           if (prevTopic) {
+            socket.publish({
+              destination: `/pub/${subscribedRoomType}/${subscribedRoomId}`,
+              body: JSON.stringify({ content: null, type: 'leave' }),
+            });
             socket.unsubscribe(prevTopic);
           }
 
