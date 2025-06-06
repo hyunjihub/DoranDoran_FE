@@ -6,13 +6,12 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const cursor = Number(searchParams.get('cursor') || '0');
-    const limit = Number(searchParams.get('limit') || '10');
 
     const { data } = await axios.get(
-      `${process.env.API_BASE_URL}/chat/chatrooms?limit=${limit}${cursor > 0 ? `&cursor=${cursor}` : ''}`
+      `${process.env.API_BASE_URL}/chat/chatrooms?${cursor > 0 ? `&cursor=${cursor}` : ''}`
     );
 
-    const hasMore = data.length === limit;
+    const hasMore = data.length === 8;
 
     return NextResponse.json({
       data,
