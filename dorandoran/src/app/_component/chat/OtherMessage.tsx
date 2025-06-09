@@ -29,7 +29,11 @@ export default function OtherMessage({ message, time, setModalOpen }: OtherMessa
 
         <div className="flex gap-1.5 items-end">
           <div className="max-w-[200px] bg-gray-200 rounded-lg py-1.5 px-3 text-sm mt-1 font-light">
-            {message.content}
+            {message.type === 'text' ? (
+              <p>{message.content}</p>
+            ) : (
+              <Image src={message.content} alt="이미지" width={180} height={0} unoptimized />
+            )}
           </div>
           {time && <p className="text-xs text-gray-400">{message.time}</p>}
         </div>

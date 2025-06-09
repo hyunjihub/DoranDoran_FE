@@ -21,12 +21,19 @@ export const useRowRenderer = ({ processedMessages, cache, setModalOpen }: useRo
 
   const rowRenderer = ({ index, key, style, parent }: ListRowProps) => {
     const message = processedMessages[index];
+    if (message.type === 'enter' || message.type === 'leave') {
+      return null;
+    }
     return (
       <CellMeasurer cache={cache} parent={parent} key={key} columnIndex={0} rowIndex={index}>
         <div key={key} style={style} className="w-full flex flex-col items-center">
           {message.isDateChanged && <Date date={message.date} />}
           {message.senderId === memberId ? (
-            <MyMessage message={message.content} timestamp={message.isLastInGroup ? message.time : null} />
+            <MyMessage
+              type={message.type}
+              message={message.content}
+              timestamp={message.isLastInGroup ? message.time : null}
+            />
           ) : message.senderId !== memberId && message.senderId !== -1 ? (
             <OtherMessage
               message={message}

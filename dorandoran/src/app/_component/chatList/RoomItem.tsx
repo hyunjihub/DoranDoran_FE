@@ -14,14 +14,16 @@ export default function RoomItem({ room }: { room: IRoomItem }) {
   const subscribeRoom = websocketStore((state) => state.subscribeRoom);
 
   const handleEnter = () => {
-    setChat({
-      isClose: false,
-      isGroup: room.isGroup || true,
-      partInPeople: room.partInPeople,
-      chatTitle: room.chatRoomTitle,
-    });
-    subscribeRoom(room.chatRoomId, 'private');
-    router.push(`/chat/${room.isGroup ? 'group' : 'private'}/${room.chatRoomId}`);
+    if (confirm('해당 채팅방에 참여여하시겠습니까?')) {
+      setChat({
+        isClose: false,
+        isGroup: room.isGroup || true,
+        partInPeople: room.partInPeople,
+        chatTitle: room.chatRoomTitle,
+      });
+      subscribeRoom(room.chatRoomId, 'private');
+      router.push(`/chat/${room.isGroup ? 'group' : 'private'}/${room.chatRoomId}`);
+    }
   };
 
   return (
