@@ -9,7 +9,9 @@ interface WebSocketStore {
   socket: Client | null;
   subscribedRoomId: number | null;
   subscribedRoomType: 'group' | 'private' | null;
+  memberId: number | null;
 
+  setMemberId: (id: number | null) => void;
   connect: () => void;
   disconnect: () => void;
   subscribeRoom: (roomId: number, roomType: 'group' | 'private') => void;
@@ -27,7 +29,11 @@ export const websocketStore = create<WebSocketStore>()(
       socket: null,
       subscribedRoomId: null,
       subscribedRoomType: null,
+      memberId: null,
 
+      setMemberId: (id) => {
+        set({ memberId: id });
+      },
       connect: () => {
         const currentSocket = get().socket;
         if (currentSocket && currentSocket.connected) return;
@@ -46,6 +52,18 @@ export const websocketStore = create<WebSocketStore>()(
         });
 
         socket.activate();
+
+        const memberId = get().memberId;
+        socket.subscribe(`/sub/personal/${memberId}`, (message) => {
+          try {
+            const parsed: IMessage = JSON.parse(message.body); // 추후 personal 메시지 형식 확정되면 수정 필요
+            if (messageHandler) {
+              messageHandler(parsed);
+            }
+          } catch (error) {
+            console.error('메시지 파싱 오류:', error);
+          }
+        });
         set({ socket });
       },
 
@@ -138,6 +156,7 @@ export const websocketStore = create<WebSocketStore>()(
       partialize: (state) => ({
         subscribedRoomId: state.subscribedRoomId,
         subscribedRoomType: state.subscribedRoomType,
+        memberId: state.memberId,
       }),
     }
   )

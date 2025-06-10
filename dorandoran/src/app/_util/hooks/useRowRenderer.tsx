@@ -28,7 +28,9 @@ export const useRowRenderer = ({ processedMessages, cache, setModalOpen }: useRo
       <CellMeasurer cache={cache} parent={parent} key={key} columnIndex={0} rowIndex={index}>
         <div key={key} style={style} className="w-full flex flex-col items-center">
           {message.isDateChanged && <Date date={message.date} />}
-          {message.senderId === memberId ? (
+          {message.type == 'system' || message.type === 'change' ? (
+            <SystemMessage message={message} />
+          ) : message.senderId === memberId ? (
             <MyMessage
               type={message.type}
               message={message.content}
@@ -41,7 +43,7 @@ export const useRowRenderer = ({ processedMessages, cache, setModalOpen }: useRo
               setModalOpen={setModalOpen}
             />
           ) : (
-            message.type == 'system' && <SystemMessage message={message} />
+            <></>
           )}
         </div>
       </CellMeasurer>

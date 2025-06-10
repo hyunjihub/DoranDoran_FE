@@ -4,9 +4,11 @@ import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { userStore } from '@/store/useUserStore';
+import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function Logout() {
   const logout = userStore((state) => state.logout);
+  const setMemberId = websocketStore((state) => state.setMemberId);
   const router = useRouter();
 
   const mutation = useMutation({
@@ -20,6 +22,7 @@ export default function Logout() {
       );
     },
     onSuccess: () => {
+      setMemberId(null);
       logout();
       localStorage.removeItem('doran-rememberMe');
       router.push('/');

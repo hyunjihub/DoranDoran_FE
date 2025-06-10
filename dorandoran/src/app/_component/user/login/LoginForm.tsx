@@ -11,10 +11,12 @@ import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { userStore } from '@/store/useUserStore';
+import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function LoginForm() {
   const router = useRouter();
-  const { login } = userStore();
+  const login = userStore((state) => state.login);
+  const setMemberId = websocketStore((state) => state.setMemberId);
   const [loginFail, setLoginFail] = useState(false);
   const [capsLockFlag, setCapsLockFlag] = useState(false);
   const param = useSearchParams();
@@ -32,6 +34,7 @@ export default function LoginForm() {
     },
     onSuccess: (data) => {
       login(data);
+      setMemberId(data.memberId);
       localStorage.setItem('doran-rememberMe', '1');
       router.push(decodeURIComponent(param.get('redirect') ?? '/'));
     },
