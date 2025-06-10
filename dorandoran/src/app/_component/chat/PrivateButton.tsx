@@ -8,7 +8,7 @@ export default function PrivateButton({ chatPermitted, id }: { chatPermitted: bo
   const router = useRouter();
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.post('/api/chat/chatrooms', { memberId: id });
+      const response = await axios.post('/api/chat/private', { memberId: id });
       return response.data;
     },
     onSuccess: (data) => {

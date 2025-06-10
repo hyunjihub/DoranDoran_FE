@@ -3,8 +3,10 @@
 import { IRoomItem } from '@/app/_util/types/types';
 import Image from 'next/image';
 import RoomBadge from './RoomBadge';
+import axios from 'axios';
 import { chatStore } from '@/store/useChatStore';
 import profile from '/public/img/profile.jpg';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { websocketStore } from '@/store/useWebsocketStore';
 
@@ -13,8 +15,11 @@ export default function RoomItem({ room }: { room: IRoomItem }) {
   const { setChat } = chatStore();
   const subscribeRoom = websocketStore((state) => state.subscribeRoom);
 
-  const handleEnter = () => {
-    if (confirm('해당 채팅방에 참여여하시겠습니까?')) {
+  const mutation = useMutation({
+    mutationFn: async () => {
+      await axios.post(`/api/chat/group`, { chatRoomId: room.chatRoomId });
+    },
+    onSuccess: () => {
       setChat({
         isClose: false,
         isGroup: room.isGroup || true,
@@ -23,6 +28,15 @@ export default function RoomItem({ room }: { room: IRoomItem }) {
       });
       subscribeRoom(room.chatRoomId, 'private');
       router.push(`/chat/${room.isGroup ? 'group' : 'private'}/${room.chatRoomId}`);
+    },
+    onError: () => {
+      alert('오류');
+    },
+  });
+
+  const handleEnter = () => {
+    if (confirm('해당 채팅방에 참여여하시겠습니까?')) {
+      mutation.mutate();
     }
   };
 

@@ -11,7 +11,7 @@ export default function RecommendItem({ user }: { user: IUser }) {
   const router = useRouter();
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.post('/api/chat/chatrooms', { memberId: user.memberId });
+      const response = await axios.post('/api/chat/private', { memberId: user.memberId });
       return response.data;
     },
     onSuccess: (data) => {
