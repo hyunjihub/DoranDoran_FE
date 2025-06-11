@@ -12,7 +12,7 @@ import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function RoomItem({ room }: { room: IRoomItem }) {
   const router = useRouter();
-  const { setChat } = chatStore();
+  const setChat = chatStore((state) => state.setChat);
   const subscribeRoom = websocketStore((state) => state.subscribeRoom);
 
   const mutation = useMutation({

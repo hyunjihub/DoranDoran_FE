@@ -6,6 +6,7 @@ import { useParams, usePathname } from 'next/navigation';
 import { IMessage } from '@/app/_util/types/types';
 import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import useUpdateRoomInfo from './useUpdateRoomInfo';
 import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function useChatMessages() {
@@ -13,7 +14,10 @@ export default function useChatMessages() {
   const pathname = usePathname();
   const setMessageHandler = websocketStore((state) => state.setMessageHandler);
   const clearMessageHandler = websocketStore((state) => state.clearMessageHandler);
+
   const [messages, setMessages] = useState<IMessage[]>([]);
+
+  const updateRoomInfo = useUpdateRoomInfo(id as string);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useInfiniteQuery<IMessage[]>({
     queryKey: ['chatMessages', id],
@@ -38,13 +42,17 @@ export default function useChatMessages() {
   }, [data]);
 
   useEffect(() => {
-    const handleMessage = (msg: IMessage) => {
-      setMessages((prev) => [...prev, msg]);
+    const handleMessage = async (msg: IMessage) => {
+      if (msg.type === 'change') {
+        await updateRoomInfo();
+      } else {
+        setMessages((prev) => [...prev, msg]);
+      }
     };
 
     setMessageHandler(handleMessage);
     return () => clearMessageHandler();
-  }, [clearMessageHandler, setMessageHandler]);
+  }, [clearMessageHandler, setMessageHandler, updateRoomInfo]);
 
   const processedMessages = useMemo(() => {
     return messages.map((message, index, arr) => {

@@ -19,7 +19,7 @@ export default function RoomInfo() {
     queryKey: ['room', id],
     queryFn: async () => {
       try {
-        const response = await axios.get(`/api/chat/info?id=${123}`);
+        const response = await axios.get(`/api/chat/info?id=${id}`);
         return response.data;
       } catch {
         return null;
