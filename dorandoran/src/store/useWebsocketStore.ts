@@ -44,7 +44,19 @@ export const websocketStore = create<WebSocketStore>()(
           onConnect: () => {
             set({ socket });
 
-            const { subscribedRoomId, subscribedRoomType } = get();
+            const { memberId, subscribedRoomId, subscribedRoomType } = get();
+            if (memberId !== null) {
+              socket.subscribe(`/sub/personal/${memberId}`, (message) => {
+                try {
+                  const parsed: IMessage = JSON.parse(message.body);
+                  if (messageHandler) {
+                    messageHandler(parsed);
+                  }
+                } catch (error) {
+                  console.error('메시지 파싱 오류:', error);
+                }
+              });
+            }
             if (subscribedRoomId !== null && subscribedRoomType !== null) {
               get().subscribeRoom(subscribedRoomId, subscribedRoomType);
             }
@@ -52,18 +64,6 @@ export const websocketStore = create<WebSocketStore>()(
         });
 
         socket.activate();
-
-        const memberId = get().memberId;
-        socket.subscribe(`/sub/personal/${memberId}`, (message) => {
-          try {
-            const parsed: IMessage = JSON.parse(message.body); // 추후 personal 메시지 형식 확정되면 수정 필요
-            if (messageHandler) {
-              messageHandler(parsed);
-            }
-          } catch (error) {
-            console.error('메시지 파싱 오류:', error);
-          }
-        });
         set({ socket });
       },
 
