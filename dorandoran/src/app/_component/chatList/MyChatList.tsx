@@ -3,10 +3,15 @@
 import ChatListItem from '../chat/ChatListItem';
 import { IRoom } from '@/app/_util/types/types';
 import axios from 'axios';
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function MyChatList() {
-  const { data } = useQuery<IRoom[]>({
+  const setPersonalHandler = websocketStore((state) => state.setPersonalHandler);
+  const clearPersonalHandler = websocketStore((state) => state.clearPersonalHandler);
+
+  const { data, refetch } = useQuery<IRoom[]>({
     queryKey: ['myChat'],
     queryFn: async () => {
       const response = await axios.get<IRoom[]>(`/api/chat/lists`);
@@ -15,6 +20,15 @@ export default function MyChatList() {
     staleTime: 0,
     refetchOnMount: true,
   });
+
+  useEffect(() => {
+    const handleRefresh = async () => {
+      await refetch();
+    };
+
+    setPersonalHandler(handleRefresh);
+    return () => clearPersonalHandler();
+  }, [clearPersonalHandler, setPersonalHandler, refetch]);
 
   return (
     <ul className="h-full">

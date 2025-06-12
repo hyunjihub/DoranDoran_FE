@@ -17,11 +17,14 @@ interface WebSocketStore {
   subscribeRoom: (roomId: number, roomType: 'group' | 'private') => void;
   unsubscribeRoom: () => void;
   sendMessage: (msg: string, type: string) => void;
+  setPersonalHandler: (handler: () => void) => void;
+  clearPersonalHandler: () => void;
   setMessageHandler: (handler: (msg: IMessage) => void) => void;
   clearMessageHandler: () => void;
 }
 
 let messageHandler: ((msg: IMessage) => void) | null = null;
+let personalHandler: (() => void) | null = null;
 
 export const websocketStore = create<WebSocketStore>()(
   persist(
@@ -46,11 +49,10 @@ export const websocketStore = create<WebSocketStore>()(
 
             const { memberId, subscribedRoomId, subscribedRoomType } = get();
             if (memberId !== null) {
-              socket.subscribe(`/sub/personal/${memberId}`, (message) => {
+              socket.subscribe(`/sub/personal/${memberId}`, () => {
                 try {
-                  const parsed: IMessage = JSON.parse(message.body);
-                  if (messageHandler) {
-                    messageHandler(parsed);
+                  if (personalHandler) {
+                    personalHandler();
                   }
                 } catch (error) {
                   console.error('메시지 파싱 오류:', error);
@@ -140,6 +142,14 @@ export const websocketStore = create<WebSocketStore>()(
             body: JSON.stringify({ content: msg, type }),
           });
         }
+      },
+
+      setPersonalHandler: (handler) => {
+        personalHandler = handler;
+      },
+
+      clearPersonalHandler: () => {
+        personalHandler = null;
       },
 
       setMessageHandler: (handler) => {
