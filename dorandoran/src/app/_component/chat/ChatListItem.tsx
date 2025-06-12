@@ -52,7 +52,7 @@ export default function ChatListItem({ room }: { room: IRoom }) {
           />
         </div>
 
-        <div className="flex flex-col grow text-sm mr-4 truncate">
+        <div className="max-w-32 flex flex-col grow text-sm mr-4 truncate">
           <div className="flex gap-1 mb-1">
             <p className="text-base font-bold">{room.chatRoomTitle}</p>
             <div className="flex items-center gap-1 text-xs text-gray-400">
