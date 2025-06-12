@@ -52,7 +52,7 @@ export default function ChatListItem({ room }: { room: IRoom }) {
           />
         </div>
 
-        <div className="max-w-32 flex flex-col grow text-sm mr-4 truncate">
+        <div className="flex flex-col grow text-sm mr-4">
           <div className="flex gap-1 mb-1">
             <p className="text-base font-bold">{room.chatRoomTitle}</p>
             <div className="flex items-center gap-1 text-xs text-gray-400">
@@ -60,7 +60,7 @@ export default function ChatListItem({ room }: { room: IRoom }) {
               {room.partInPeople}
             </div>
           </div>
-          {room.lastChatContent}
+          <p className="max-w-[260px] min-h-[16px] truncate">{room.lastChatContent}</p>
         </div>
         <div className="flex flex-col gap-1 items-end">
           <p className="text-xs text-gray-400">{room.lastChatTime}</p>
