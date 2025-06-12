@@ -109,7 +109,7 @@ export const websocketStore = create<WebSocketStore>()(
           });
 
           socket.publish({
-            destination: `/pub/${subscribedRoomType}/${subscribedRoomId}`,
+            destination: `/pub/${roomType}/${roomId}`,
             body: JSON.stringify({ content: null, type: 'enter' }),
           });
 
