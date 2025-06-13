@@ -1,9 +1,12 @@
+'use client';
+
 import { FieldValues, Path, UseFormWatch } from 'react-hook-form';
 import { IFindForm, ISignupForm } from '@/app/_util/types/types';
 
 import { AuthStatus } from '@/app/_util/types/types';
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
+import { userStore } from '@/store/useUserStore';
 
 interface AuthButtonProps<T extends FieldValues> {
   authState: AuthStatus;
@@ -19,13 +22,14 @@ export default function AuthButton<T extends ISignupForm | IFindForm>({
   watch,
 }: AuthButtonProps<T>) {
   const email = watch('email' as Path<T>);
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
 
   const mutation = useMutation({
     mutationFn: async () => {
       setIsLoading(true);
       const response = await axios.post('/api/member/auth/email', {
         email: email,
-        isSignUp: true,
+        isSignUp: !isLoggedIn,
       });
       return response.data;
     },
