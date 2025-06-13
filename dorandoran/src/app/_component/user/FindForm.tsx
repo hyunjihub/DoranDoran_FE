@@ -28,7 +28,7 @@ export default function FindForm() {
 
   const mutation = useMutation({
     mutationFn: async (data: IFindForm) => {
-      await axios.patch('/api/member/password', data);
+      await axios.patch('/api/member/password', { email: data.email, newPassword: data.password });
     },
     onSuccess: () => {
       if (isLoggedIn) {
