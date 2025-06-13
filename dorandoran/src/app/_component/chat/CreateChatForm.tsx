@@ -4,7 +4,7 @@ import ImageInput from '../form/setting/ImageInput';
 import InputToLink from '../form/setting/InputToLink';
 import MaxCountInput from '../form/setting/MaxCountInput';
 import axios from 'axios';
-import { createChatStore } from '@/store/useCreateChat';
+import createChatStore from '@/store/useCreateChatStore';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 

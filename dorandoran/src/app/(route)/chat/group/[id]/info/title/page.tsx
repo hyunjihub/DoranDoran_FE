@@ -6,7 +6,7 @@ import InfoInput from '@/app/_component/form/chat/InfoInput';
 import ProtectedRoute from '@/app/_component/ProtectedRoute';
 import axios from 'axios';
 import { chatStore } from '@/store/useChatStore';
-import { createChatStore } from '@/store/useCreateChat';
+import { createChatStore } from '@/store/useCreateChatStore';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigationHistory } from '@/app/_util/hooks/useNavigationHistory';
 import { useRouter } from 'next/navigation';

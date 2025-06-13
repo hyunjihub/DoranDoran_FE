@@ -30,4 +30,4 @@ const createChatStore = create<ChatState>((set) => ({
     }),
 }));
 
-export { createChatStore };
+export default createChatStore;
