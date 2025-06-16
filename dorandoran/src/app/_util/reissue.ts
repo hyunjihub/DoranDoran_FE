@@ -1,27 +1,25 @@
-import { NextResponse } from 'next/server';
 import axios from 'axios';
-import { cookies } from 'next/headers';
 
-export async function reissue() {
-  const cookieStore = cookies();
-  const refreshToken = (await cookieStore).get('refresh')?.value;
-
-  const response = await axios.post(`${process.env.API_BASE_URL}/member/reissue`, {
+export async function reissue(refreshToken: string) {
+  const response = await axios.post(`${process.env.API_BASE_URL}/member/reissue`, null, {
     headers: {
       'Content-Type': 'application/json',
       Cookie: `refresh=${refreshToken}`,
     },
+    withCredentials: true,
   });
 
-  const setCookieHeader = response.headers['set-cookie'];
-  if (setCookieHeader) {
-    const res = NextResponse.json(response.data, { status: 201 });
+  const setCookie = response.headers['set-cookie'];
+  const newAccessToken = extractCookieValue(setCookie, 'access');
+  return { accessToken: newAccessToken };
+}
 
-    setCookieHeader.forEach((cookie) => {
-      res.headers.append('Set-Cookie', cookie);
-    });
-
-    return res;
+function extractCookieValue(setCookieHeader: string[] | undefined, name: string): string | null {
+  if (!setCookieHeader) return null;
+  const regex = new RegExp(`${name}=([^;]+)`);
+  for (const cookie of setCookieHeader) {
+    const match = cookie.match(regex);
+    if (match) return match[1];
   }
-  return NextResponse.json({ status: 201 });
+  return null;
 }

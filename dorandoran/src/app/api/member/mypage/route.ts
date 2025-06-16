@@ -10,27 +10,32 @@ export async function GET() {
     let accessToken = (await cookieStore).get('access')?.value || '';
     const refreshToken = (await cookieStore).get('refresh')?.value || '';
 
-    if (!accessToken) {
-      if (refreshToken) {
-        await reissue();
-        const newAccessToken = (await cookieStore).get('access')?.value || '';
+    let response: NextResponse | null = null;
 
-        if (!newAccessToken) {
-          return NextResponse.json({ status: 401 });
-        }
+    if (!accessToken && refreshToken) {
+      const reissueResult = await reissue(refreshToken);
 
-        accessToken = newAccessToken;
-      } else {
+      if (!reissueResult.accessToken) {
         return NextResponse.json({ status: 401 });
       }
+
+      accessToken = reissueResult.accessToken;
+      response = NextResponse.next();
+      response.headers.append('Set-Cookie', `access=${accessToken};`);
     }
 
     const { data } = await axios.get<IMypage>(`${process.env.API_BASE_URL}/member/mypage`, {
       withCredentials: true,
       headers: {
-        Cookie: `access=${accessToken}`,
+        Cookie: `access=${accessToken}; Path=/; HttpOnly; Secure; SameSite=Lax`,
       },
     });
+
+    if (response) {
+      response = NextResponse.json(data, { status: 201 });
+      response.headers.append('Set-Cookie', `access=${accessToken}; Path=/; HttpOnly; Secure; SameSite=Lax`);
+      return response;
+    }
 
     return NextResponse.json(data, { status: 201 });
   } catch (error: unknown) {
