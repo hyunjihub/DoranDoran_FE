@@ -27,13 +27,13 @@ export async function GET() {
     const { data } = await axios.get<IMypage>(`${process.env.API_BASE_URL}/member/mypage`, {
       withCredentials: true,
       headers: {
-        Cookie: `access=${accessToken}; Path=/; HttpOnly; Secure; SameSite=Lax`,
+        Cookie: `access=${accessToken}; Path=/; HttpOnly; Secure; SameSite=None`,
       },
     });
 
     if (response) {
       response = NextResponse.json(data, { status: 201 });
-      response.headers.append('Set-Cookie', `access=${accessToken}; Path=/; HttpOnly; Secure; SameSite=Lax`);
+      response.headers.append('Set-Cookie', `access=${accessToken}; Path=/; HttpOnly; Secure; SameSite=None`);
       return response;
     }
 
