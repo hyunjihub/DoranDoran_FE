@@ -6,6 +6,7 @@ import PrivateButton from './PrivateButton';
 import axios from 'axios';
 import cancel from '/public/img/icon/cancel.svg';
 import profile from '/public/img/profile.jpg';
+import useLogout from '@/app/_util/hooks/useLogout';
 import { useQuery } from '@tanstack/react-query';
 
 interface ProfileProps {
@@ -14,11 +15,39 @@ interface ProfileProps {
 }
 
 export default function Profile({ id, setModalOpen }: ProfileProps) {
+  const executeLogout = useLogout({ type: 'session' });
+
   const { data } = useQuery<IUserProfile>({
     queryKey: ['chatMessages', id],
     queryFn: async () => {
-      const response = await axios.get<IUserProfile>(`/api/chat/profile?id=${id}`);
-      return response.data;
+      try {
+        const res = await axios.get<IUserProfile>(`/api/chat/profile?id=${id}`);
+        return res.data;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const status = error.response?.status;
+          const message = error.response?.data?.message;
+
+          if (status === 401 && message === 'accessToken 만료') {
+            try {
+              await axios.get('/api/member/reissue');
+              const retry = await axios.get<IUserProfile>(`/api/chat/profile?id=${id}`);
+              return retry.data;
+            } catch {
+              executeLogout();
+              throw new Error('로그아웃 되었습니다. 다시 로그인 해주세요.');
+            }
+          } else if (status === 401 && message === 'refreshToken 만료') {
+            executeLogout();
+            throw new Error('로그아웃 되었습니다. 다시 로그인 해주세요.');
+          } else {
+            alert(error.response?.data || error.message);
+          }
+          throw error;
+        } else {
+          throw error;
+        }
+      }
     },
     enabled: id > 0,
     staleTime: 0,

@@ -73,7 +73,7 @@ export const websocketStore = create<WebSocketStore>()(
         const socket = get().socket;
         if (socket) {
           socket.deactivate();
-          set({ socket: null, subscribedRoomId: null, subscribedRoomType: null });
+          set({ socket: null, subscribedRoomId: null, subscribedRoomType: null, memberId: null });
         }
       },
 

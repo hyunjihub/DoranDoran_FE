@@ -1,15 +1,11 @@
 'use client';
 
 import axios from 'axios';
+import useLogout from '@/app/_util/hooks/useLogout';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import { userStore } from '@/store/useUserStore';
-import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function Logout() {
-  const logout = userStore((state) => state.logout);
-  const setMemberId = websocketStore((state) => state.setMemberId);
-  const router = useRouter();
+  const executeLogout = useLogout({ type: 'logout' });
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -22,10 +18,7 @@ export default function Logout() {
       );
     },
     onSuccess: () => {
-      setMemberId(null);
-      logout();
-      localStorage.removeItem('doran-rememberMe');
-      router.push('/');
+      executeLogout();
     },
     onError: (error) => {
       alert(error);

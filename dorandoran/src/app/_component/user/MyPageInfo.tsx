@@ -15,6 +15,7 @@ import PushNotificationInput from '@/app/_component/form/setting/PushNotificatio
 import arrow from '/public/img/icon/prevArrow.svg';
 import axios from 'axios';
 import { getFetchUserInfo } from '@/app/_util/getFetchUserInfo';
+import useLogout from '@/app/_util/hooks/useLogout';
 import { userStore } from '@/store/useUserStore';
 
 interface MypageInfoProps {
@@ -25,10 +26,11 @@ export default function MypageInfo({ setIsActive }: MypageInfoProps) {
   const user = userStore((state) => state.user);
   const isLoggedIn = userStore((state) => state.isLoggedIn);
   const updateData = userStore((state) => state.updateData);
+  const executeLogout = useLogout({ type: 'session' });
 
   const { data, isLoading } = useQuery<IMypage, Error>({
     queryKey: ['user'],
-    queryFn: getFetchUserInfo,
+    queryFn: () => getFetchUserInfo(executeLogout),
     enabled: isLoggedIn,
     refetchOnWindowFocus: false,
   });
