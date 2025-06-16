@@ -6,6 +6,14 @@ export async function DELETE(request: Request) {
   try {
     const cookieStore = cookies();
     const accessToken = (await cookieStore).get('access')?.value || '';
+    const refreshToken = (await cookieStore).get('refresh')?.value || '';
+
+    if (!accessToken && refreshToken) {
+      return NextResponse.json({ message: 'accessToken 만료' }, { status: 401 });
+    } else if (!accessToken && !refreshToken) {
+      return NextResponse.json({ message: 'refreshToken 만료' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(request.url);
     const groupId = Number(searchParams.get('groupId') || '1');
 

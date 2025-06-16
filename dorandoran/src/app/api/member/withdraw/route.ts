@@ -9,26 +9,21 @@ export async function DELETE(req: Request) {
     const accessToken = (await cookieStore).get('access')?.value || '';
     const refreshToken = (await cookieStore).get('refresh')?.value || '';
 
-    const response = await axios.delete(`${process.env.API_BASE_URL}/member/logout`, {
+    if (!accessToken && refreshToken) {
+      return NextResponse.json({ message: 'accessToken 만료' }, { status: 401 });
+    } else if (!accessToken && !refreshToken) {
+      return NextResponse.json({ message: 'refreshToken 만료' }, { status: 401 });
+    }
+
+    await axios.delete(`${process.env.API_BASE_URL}/member/withdraw`, {
       data: {
         password: password,
       },
       withCredentials: true,
       headers: {
-        Cookie: `access=${accessToken}; refresh=${refreshToken};`,
+        Cookie: `access=${accessToken};`,
       },
     });
-
-    const setCookieHeader = response.headers['set-cookie'];
-    if (setCookieHeader) {
-      const res = NextResponse.json({}, { status: 201 });
-
-      setCookieHeader.forEach((cookie) => {
-        res.headers.append('Set-Cookie', cookie);
-      });
-
-      return res;
-    }
 
     return NextResponse.json({}, { status: 204 });
   } catch (error: unknown) {

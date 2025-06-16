@@ -7,6 +7,13 @@ export async function GET() {
   try {
     const cookieStore = cookies();
     const accessToken = (await cookieStore).get('access')?.value || '';
+    const refreshToken = (await cookieStore).get('refresh')?.value || '';
+
+    if (!accessToken && refreshToken) {
+      return NextResponse.json({ message: 'accessToken 만료' }, { status: 401 });
+    } else if (!accessToken && !refreshToken) {
+      return NextResponse.json({ message: 'refreshToken 만료' }, { status: 401 });
+    }
 
     const { data } = await axios.get<IRoom>(`${process.env.API_BASE_URL}/chat/lists`, {
       withCredentials: true,

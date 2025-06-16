@@ -7,6 +7,13 @@ import { v4 as uuidv4 } from 'uuid';
 export async function POST(req: NextRequest) {
   const cookieStore = cookies();
   const accessToken = (await cookieStore).get('access')?.value || '';
+  const refreshToken = (await cookieStore).get('refresh')?.value || '';
+
+  if (!accessToken && refreshToken) {
+    return NextResponse.json({ message: 'accessToken 만료' }, { status: 401 });
+  } else if (!accessToken && !refreshToken) {
+    return NextResponse.json({ message: 'refreshToken 만료' }, { status: 401 });
+  }
 
   const formData = await req.formData();
   const file = formData.get('image');
