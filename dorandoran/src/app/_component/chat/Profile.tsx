@@ -8,6 +8,7 @@ import cancel from '/public/img/icon/cancel.svg';
 import profile from '/public/img/profile.jpg';
 import useLogout from '@/app/_util/hooks/useLogout';
 import { useQuery } from '@tanstack/react-query';
+import { useRequestWithAuthRetry } from '@/app/_util/hooks/useRequestWithAuthRetry';
 
 interface ProfileProps {
   id: number;
@@ -16,6 +17,7 @@ interface ProfileProps {
 
 export default function Profile({ id, setModalOpen }: ProfileProps) {
   const executeLogout = useLogout({ type: 'session' });
+  const requestWithRetry = useRequestWithAuthRetry();
 
   const { data } = useQuery<IUserProfile>({
     queryKey: ['chatMessages', id],
@@ -29,14 +31,7 @@ export default function Profile({ id, setModalOpen }: ProfileProps) {
           const message = error.response?.data?.message;
 
           if (status === 401 && message === 'accessToken 만료') {
-            try {
-              await axios.get('/api/member/reissue');
-              const retry = await axios.get<IUserProfile>(`/api/chat/profile?id=${id}`);
-              return retry.data;
-            } catch {
-              executeLogout();
-              throw new Error('로그아웃 되었습니다. 다시 로그인 해주세요.');
-            }
+            return await requestWithRetry('get', `/api/chat/profile?id=${id}`);
           } else if (status === 401 && message === 'refreshToken 만료') {
             executeLogout();
             throw new Error('로그아웃 되었습니다. 다시 로그인 해주세요.');

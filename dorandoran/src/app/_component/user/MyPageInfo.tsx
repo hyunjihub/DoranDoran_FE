@@ -16,6 +16,7 @@ import arrow from '/public/img/icon/prevArrow.svg';
 import axios from 'axios';
 import { getFetchUserInfo } from '@/app/_util/getFetchUserInfo';
 import useLogout from '@/app/_util/hooks/useLogout';
+import { useRequestWithAuthRetry } from '@/app/_util/hooks/useRequestWithAuthRetry';
 import { userStore } from '@/store/useUserStore';
 
 interface MypageInfoProps {
@@ -26,6 +27,7 @@ export default function MypageInfo({ setIsActive }: MypageInfoProps) {
   const user = userStore((state) => state.user);
   const isLoggedIn = userStore((state) => state.isLoggedIn);
   const updateData = userStore((state) => state.updateData);
+  const requestWithRetry = useRequestWithAuthRetry();
   const executeLogout = useLogout({ type: 'session' });
 
   const { data, isLoading } = useQuery<IMypage, Error>({
@@ -37,13 +39,35 @@ export default function MypageInfo({ setIsActive }: MypageInfoProps) {
 
   const mutation = useMutation({
     mutationFn: async (profileImage: string) => {
-      await axios.patch('/api/member/mypage/profile', { profileImage });
+      try {
+        const response = await axios.patch('/api/member/mypage/profile', { profileImage });
+        return response.data;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const msg = error.response?.data?.message;
+          const status = error.response?.status;
+          if (status === 401 && msg === 'accessToken 만료') {
+            return await requestWithRetry('patch', '/api/member/mypage/profile', { profileImage });
+          } else if (status === 401 && msg === 'refreshToken 만료') {
+            executeLogout();
+            throw new Error('로그아웃 되었습니다. 다시 로그인 해주세요.');
+          } else {
+            alert(error.response?.data || error.message);
+          }
+          throw error;
+        } else {
+          throw error;
+        }
+      }
     },
     onSuccess: (_data, profileImage) => {
       updateData({ profileImage, nickname: user.nickname || '' });
     },
     onError: (error) => {
-      console.log(error);
+      if (error.message?.includes('취소')) {
+        return;
+      }
+      alert(error.message || '문제가 발생했습니다.');
     },
   });
 
