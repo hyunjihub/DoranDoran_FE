@@ -10,8 +10,6 @@ export default function useNicknameCheck(nickname: string) {
   const { refetch, data } = useQuery<boolean | null>({
     queryKey: ['nicknameCheck', nickname],
     queryFn: async () => {
-      if (nickname.length < 2 || nickname.length > 8) return null;
-
       try {
         await axios.get(`/api/member/nickname?word=${nickname}`);
         return true;
@@ -19,6 +17,7 @@ export default function useNicknameCheck(nickname: string) {
         return false;
       }
     },
+    enabled: nickname.length >= 2 && nickname.length <= 8,
     refetchOnWindowFocus: false,
     retry: false,
     refetchInterval: false,

@@ -9,11 +9,15 @@ import RoomImage from './roomInfo/RoomImage';
 import RoomMaxCount from './roomInfo/RoomMaxCount';
 import axios from 'axios';
 import { useEffect } from 'react';
+import useLogout from '@/app/_util/hooks/useLogout';
 import { useQuery } from '@tanstack/react-query';
+import { useRequestWithAuthRetry } from '@/app/_util/hooks/useRequestWithAuthRetry';
 
 export default function RoomInfo() {
   const router = useRouter();
   const { id } = useParams();
+  const executeLogout = useLogout({ type: 'session' });
+  const requestWithRetry = useRequestWithAuthRetry();
 
   const { data } = useQuery<IRoomInfo>({
     queryKey: ['room', id],
@@ -21,8 +25,23 @@ export default function RoomInfo() {
       try {
         const response = await axios.get(`/api/chat/info?id=${id}`);
         return response.data;
-      } catch {
-        return null;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const status = error.response?.status;
+          const message = error.response?.data?.message;
+
+          if (status === 401 && message === 'accessToken 만료') {
+            return await requestWithRetry('get', `/api/chat/info?id=${id}`);
+          } else if (status === 401 && message === 'refreshToken 만료') {
+            executeLogout();
+            throw new Error('로그아웃 되었습니다. 다시 로그인 해주세요.');
+          } else {
+            alert(error.response?.data || error.message);
+          }
+          throw error;
+        } else {
+          throw error;
+        }
       }
     },
     refetchOnWindowFocus: false,

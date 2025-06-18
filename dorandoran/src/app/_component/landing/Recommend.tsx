@@ -5,17 +5,40 @@ import Image from 'next/image';
 import RecommendItem from './RecommendItem';
 import axios from 'axios';
 import refresh from '/public/img/icon/refresh.svg';
+import useLogout from '@/app/_util/hooks/useLogout';
 import { useQuery } from '@tanstack/react-query';
+import { useRequestWithAuthRetry } from '@/app/_util/hooks/useRequestWithAuthRetry';
 import { userStore } from '@/store/useUserStore';
 
 export default function Recommend() {
   const isLoggedIn = userStore((state) => state.isLoggedIn);
+  const executeLogout = useLogout({ type: 'session' });
+  const requestWithRetry = useRequestWithAuthRetry();
 
   const { data, refetch } = useQuery<IUser[]>({
     queryKey: ['recommend'],
     queryFn: async () => {
-      const response = await axios.get<IUser[]>(`/api/chat/recommends`);
-      return response.data;
+      try {
+        const response = await axios.get<IUser[]>(`/api/chat/recommends`);
+        return response.data;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const status = error.response?.status;
+          const message = error.response?.data?.message;
+
+          if (status === 401 && message === 'accessToken 만료') {
+            return await requestWithRetry('get', `/api/chat/recommends`);
+          } else if (status === 401 && message === 'refreshToken 만료') {
+            executeLogout();
+            throw new Error('로그아웃 되었습니다. 다시 로그인 해주세요.');
+          } else {
+            alert(error.response?.data || error.message);
+          }
+          throw error;
+        } else {
+          throw error;
+        }
+      }
     },
     enabled: isLoggedIn,
     staleTime: 0,
