@@ -17,7 +17,7 @@ export default function useNicknameCheck(nickname: string) {
         return false;
       }
     },
-    enabled: nickname.length >= 2 && nickname.length <= 8,
+    enabled: typeof nickname === 'string' && nickname.length >= 2 && nickname.length <= 8,
     refetchOnWindowFocus: false,
     retry: false,
     refetchInterval: false,
