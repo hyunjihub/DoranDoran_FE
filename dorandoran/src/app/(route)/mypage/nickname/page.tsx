@@ -5,8 +5,10 @@ import { useEffect, useState } from 'react';
 import ProtectedRoute from '@/app/_component/ProtectedRoute';
 import TextInput from '@/app/_component/form/setting/TextInput';
 import axios from 'axios';
+import useLogout from '@/app/_util/hooks/useLogout';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigationHistory } from '@/app/_util/hooks/useNavigationHistory';
+import { useRequestWithAuthRetry } from '@/app/_util/hooks/useRequestWithAuthRetry';
 import { useRouter } from 'next/navigation';
 import { userStore } from '@/store/useUserStore';
 
@@ -15,6 +17,8 @@ export default function Nickname() {
   const [nickname, setNickname] = useState('');
   const router = useRouter();
   const { goBack } = useNavigationHistory();
+  const executeLogout = useLogout({ type: 'session' });
+  const requestWithRetry = useRequestWithAuthRetry();
 
   useEffect(() => {
     if (user.nickname) setNickname(user.nickname);
@@ -22,7 +26,26 @@ export default function Nickname() {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      await axios.patch('/api/member/mypage/nickname', { nickname });
+      try {
+        await axios.patch('/api/member/mypage/nickname', { nickname });
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const status = error.response?.status;
+          const message = error.response?.data?.message;
+
+          if (status === 401 && message === 'accessToken 만료') {
+            return await requestWithRetry('patch', '/api/member/mypage/nickname', { nickname });
+          } else if (status === 401 && message === 'refreshToken 만료') {
+            executeLogout();
+            throw new Error('로그아웃 되었습니다. 다시 로그인 해주세요.');
+          } else {
+            alert(error.response?.data || error.message);
+          }
+          throw error;
+        } else {
+          throw error;
+        }
+      }
     },
     onSuccess: () => {
       updateData({ profileImage: user.profileImage || '', nickname: nickname });

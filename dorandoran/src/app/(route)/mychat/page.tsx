@@ -1,4 +1,4 @@
-import CreateButton from '@/app/_component/chat/CreateButton';
+import CreateButton from '@/app/_component/ui/CreateButton';
 import MyChatList from '@/app/_component/chatList/MyChatList';
 import ProtectedRoute from '@/app/_component/ProtectedRoute';
 

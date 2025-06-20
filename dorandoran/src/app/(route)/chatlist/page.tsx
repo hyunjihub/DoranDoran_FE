@@ -1,5 +1,5 @@
 import AllChatList from '@/app/_component/chatList/AllChatList';
-import CreateButton from '@/app/_component/chat/CreateButton';
+import CreateButton from '@/app/_component/ui/CreateButton';
 
 export default function ChatList() {
   return (
