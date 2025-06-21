@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { userStore } from '@/store/useUserStore';
 import { websocketStore } from '@/store/useWebsocketStore';
 
-export default function useLogout({ type }: { type: 'logout' | 'session' }) {
+export default function useLogout({ type }: { type: 'logout' | 'session' }): () => void {
   const logout = userStore((state) => state.logout);
   const disconnect = websocketStore((state) => state.disconnect);
   const router = useRouter();

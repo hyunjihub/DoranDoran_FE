@@ -7,40 +7,19 @@ import EmailInput from '@/app/_component/form/EmailInput';
 import { IFindForm } from '@/app/_util/types/types';
 import Loading from '../layout/Loading';
 import PasswordInput from '@/app/_component/form/PasswordInput';
-import axios from 'axios';
-import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { userStore } from '@/store/useUserStore';
+import useUpdatePassword from '@/app/_util/hooks/useUpdatePassword';
 
 export default function FindForm() {
-  const isLoggedIn = userStore((state) => state.isLoggedIn);
-  const logout = userStore((state) => state.logout);
   const [authState, setAuthState] = useState<AuthStatus>('idle');
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<IFindForm>({ mode: 'onBlur' });
-
-  const mutation = useMutation({
-    mutationFn: async (data: IFindForm) => {
-      await axios.patch('/api/member/password', { email: data.email, newPassword: data.password });
-    },
-    onSuccess: () => {
-      if (isLoggedIn) {
-        logout();
-        localStorage.removeItem('doran-rememberMe');
-      }
-      router.push('/');
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
+  const mutation = useUpdatePassword();
 
   const onSubmit: SubmitHandler<IFindForm> = (data) => {
     if (authState !== 'success') {

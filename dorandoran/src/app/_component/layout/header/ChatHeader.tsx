@@ -4,42 +4,22 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import Image from 'next/image';
 import Link from 'next/link';
+import PrivateRoomLeave from '../../chat/PrivateRoomLeave';
 import arrow from '/public/img/icon/prevArrow.svg';
-import axios from 'axios';
 import { chatStore } from '@/store/useChatStore';
-import leave from '/public/img/icon/leave.svg';
 import more from '/public/img/icon/more.svg';
-import { useMutation } from '@tanstack/react-query';
 import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function ChatHeader() {
   const unsubscribeRoom = websocketStore((state) => state.unsubscribeRoom);
   const chatTitle = chatStore((state) => state.chatTitle);
-  const chatRoomId = chatStore((state) => state.chatRoomId);
+
   const pathname = usePathname();
   const router = useRouter();
 
   const handleGoToChatList = () => {
     unsubscribeRoom();
     router.push('/mychat');
-  };
-
-  const mutation = useMutation({
-    mutationFn: async () => {
-      await axios.delete(`/api/chat/chatrooms?privateId=${chatRoomId}`);
-    },
-    onSuccess: () => {
-      handleGoToChatList();
-    },
-    onError: () => {
-      alert('오류');
-    },
-  });
-
-  const handleRoomLeave = () => {
-    if (confirm('채팅방을 나가시겠습니까?')) {
-      mutation.mutate();
-    }
   };
 
   return (
@@ -53,9 +33,7 @@ export default function ChatHeader() {
       {!pathname.includes('info') && (
         <>
           {pathname.includes('private') ? (
-            <button className="absolute right-[16px]" onClick={handleRoomLeave}>
-              <Image src={leave} alt="채팅방 설정" width={32} height={32} />
-            </button>
+            <PrivateRoomLeave />
           ) : (
             <Link className="absolute right-[16px]" href={`${pathname}/info`} role="button">
               <Image src={more} alt="채팅방 설정" width={32} height={32} />
