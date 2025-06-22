@@ -1,5 +1,6 @@
 import { IMessage } from '@/app/_util/types/types';
 import Image from 'next/image';
+import TextMessage from './TextMessage';
 import profile from '/public/img/profile.jpg';
 
 interface OtherMessageProps {
@@ -26,11 +27,10 @@ export default function OtherMessage({ message, time, setModalOpen }: OtherMessa
 
       <div>
         <p className="font-bold text-sm">{message.senderNickname}</p>
-
         <div className="flex gap-1.5 items-end">
           <div className="max-w-[200px] bg-gray-200 rounded-lg py-1.5 px-3 text-sm mt-1 font-light">
             {message.type === 'text' ? (
-              <p>{message.content}</p>
+              <TextMessage message={message.content} />
             ) : (
               <Image src={message.content} alt="이미지" width={180} height={0} unoptimized />
             )}
