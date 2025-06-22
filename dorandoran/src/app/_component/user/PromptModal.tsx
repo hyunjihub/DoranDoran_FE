@@ -1,8 +1,7 @@
-import axios from 'axios';
-import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+'use client';
+
 import { useState } from 'react';
-import { userStore } from '@/store/useUserStore';
+import useWithdraw from '@/app/_util/hooks/useWithdraw';
 
 interface PromptModalProps {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,28 +9,7 @@ interface PromptModalProps {
 
 export default function PromptModal({ setIsActive }: PromptModalProps) {
   const [input, setInput] = useState('');
-
-  const logout = userStore((state) => state.logout);
-  const router = useRouter();
-
-  const mutation = useMutation({
-    mutationFn: async () => {
-      await axios.delete('/api/member/withdraw', {
-        data: {
-          password: input,
-        },
-        withCredentials: true,
-      });
-    },
-    onSuccess: () => {
-      logout();
-      localStorage.removeItem('doran-rememberMe');
-      router.push('/');
-    },
-    onError: (error) => {
-      alert(error);
-    },
-  });
+  const mutation = useWithdraw(input);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">

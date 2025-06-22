@@ -21,13 +21,7 @@ export default function useRelogin() {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.post(
-        '/api/member/relogin',
-        {},
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post('/api/member/relogin');
       return response.data;
     },
     onSuccess: (data) => {
