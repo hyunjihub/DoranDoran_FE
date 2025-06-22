@@ -7,9 +7,11 @@ import { useEffect } from 'react';
 import useLogout from '@/app/_util/hooks/useLogout';
 import { useQuery } from '@tanstack/react-query';
 import { useRequestWithAuthRetry } from '@/app/_util/hooks/useRequestWithAuthRetry';
+import { userStore } from '@/store/useUserStore';
 import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function MyChatList() {
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
   const setPersonalHandler = websocketStore((state) => state.setPersonalHandler);
   const clearPersonalHandler = websocketStore((state) => state.clearPersonalHandler);
   const executeLogout = useLogout({ type: 'session' });
@@ -40,6 +42,7 @@ export default function MyChatList() {
         }
       }
     },
+    enabled: isLoggedIn,
     staleTime: 0,
     refetchOnMount: true,
   });
