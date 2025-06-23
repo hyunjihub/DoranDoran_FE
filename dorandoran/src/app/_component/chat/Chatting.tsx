@@ -20,7 +20,7 @@ export default function Chatting({ setModalOpen }: ChattingProps) {
   const { processedMessages, fetchNextPage, hasNextPage, isFetchingNextPage } = useChatMessages();
 
   const rowRenderer = useRowRenderer({ processedMessages, cache, setModalOpen });
-  const { listRef, handleScroll } = useChatScroll({
+  const { listRef, scrollingContainerRef, handleScroll } = useChatScroll({
     processedMessages,
     isFetchingNextPage,
     hasNextPage,
@@ -46,7 +46,10 @@ export default function Chatting({ setModalOpen }: ChattingProps) {
             rowRenderer={rowRenderer}
             deferredMeasurementCache={cache}
             overscanRowCount={10}
-            onScroll={({ scrollTop }) => handleScroll(scrollTop)}
+            onScroll={handleScroll}
+            scrollingContainerProps={{
+              ref: scrollingContainerRef,
+            }}
           />
         )}
       </AutoSizer>
