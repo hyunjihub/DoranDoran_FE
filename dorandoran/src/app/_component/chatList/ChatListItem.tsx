@@ -2,7 +2,7 @@
 
 import { IRoom } from '@/app/_util/types/types';
 import Image from 'next/image';
-import RoomLeave from '../chatList/RoomLeave';
+import RoomLeave from './RoomLeave';
 import { chatStore } from '@/store/useChatStore';
 import { motion } from 'framer-motion';
 import profile from '/public/img/profile.jpg';
@@ -60,7 +60,7 @@ export default function ChatListItem({ room }: { room: IRoom }) {
               {room.partInPeople}
             </div>
           </div>
-          <p className="max-w-[260px] min-h-[16px] truncate">{room.lastChatContent}</p>
+          <p className="max-w-[260px] min-h-[16px] truncate text-gray-600">{room.lastChatContent}</p>
         </div>
         <div className="flex flex-col gap-1 items-end">
           <p className="text-xs text-gray-400">{room.lastChatTime}</p>

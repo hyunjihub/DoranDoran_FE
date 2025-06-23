@@ -1,6 +1,6 @@
 'use client';
 
-import ChatListItem from '../chat/ChatListItem';
+import ChatListItem from './ChatListItem';
 import { IRoom } from '@/app/_util/types/types';
 import axios from 'axios';
 import { useEffect } from 'react';
