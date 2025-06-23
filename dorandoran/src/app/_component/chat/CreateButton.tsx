@@ -29,7 +29,7 @@ export default function CreateButton({}) {
           maxCount,
           description,
         });
-        return response.data;
+        return response.data.chatRoomId;
       } catch (error) {
         if (axios.isAxiosError(error)) {
           const status = error.response?.status;
