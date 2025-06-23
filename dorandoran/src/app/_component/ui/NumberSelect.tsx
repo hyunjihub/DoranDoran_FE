@@ -11,7 +11,7 @@ export default function NumberSelect({ count, setCount }: NumberSelectProps) {
   };
 
   return (
-    <select className="border rounded px-3 py-1 text-sm" value={count} onChange={handleChange}>
+    <select className="border rounded px-3 py-1 text-sm outline-none" value={count} onChange={handleChange}>
       {[...Array(99)].map((_, i) => {
         const val = i + 2;
         return (
