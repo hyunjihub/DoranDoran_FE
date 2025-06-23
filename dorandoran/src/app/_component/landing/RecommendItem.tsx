@@ -39,7 +39,7 @@ export default function RecommendItem({ user }: { user: IUser }) {
       }
     },
     onSuccess: (data) => {
-      router.push(`/chat/${data.chatRoomId}`);
+      router.push(`/chat/private/${data.chatRoomId}`);
     },
     onError: () => {
       alert('오류');
