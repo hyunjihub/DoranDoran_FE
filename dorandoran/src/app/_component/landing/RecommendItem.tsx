@@ -9,12 +9,14 @@ import useLogout from '@/app/_util/hooks/useLogout';
 import { useMutation } from '@tanstack/react-query';
 import { useRequestWithAuthRetry } from '@/app/_util/hooks/useRequestWithAuthRetry';
 import { useRouter } from 'next/navigation';
+import { websocketStore } from '@/store/useWebsocketStore';
 
 export default function RecommendItem({ user }: { user: IUser }) {
   const router = useRouter();
   const executeLogout = useLogout({ type: 'session' });
   const requestWithRetry = useRequestWithAuthRetry();
   const setChat = chatStore((state) => state.setChat);
+  const subscribeRoom = websocketStore((state) => state.subscribeRoom);
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -47,6 +49,7 @@ export default function RecommendItem({ user }: { user: IUser }) {
         partInPeople: 2,
         chatTitle: user.nickname,
       });
+      subscribeRoom(data.chatRoomId, 'private');
       router.push(`/chat/private/${data.chatRoomId}`);
     },
     onError: () => {
