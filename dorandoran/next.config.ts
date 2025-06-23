@@ -40,7 +40,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: `${process.env.IMAGE_BUCKET}.s3.amazonaws.com`,
+        hostname: `dorandoran-img.s3.amazonaws.com`,
         pathname: '/**',
       },
     ],
