@@ -14,7 +14,7 @@ import { websocketStore } from '@/store/useWebsocketStore';
 export default function ChatListItem({ room }: { room: IRoom }) {
   const [swiped, setSwiped] = useState(false);
   const router = useRouter();
-  const { setChat } = chatStore();
+  const setChat = chatStore((state) => state.setChat);
   const subscribeRoom = websocketStore((state) => state.subscribeRoom);
 
   const handleEnter = () => {

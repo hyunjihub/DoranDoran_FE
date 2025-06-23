@@ -3,6 +3,7 @@
 import { IUser } from '@/app/_util/types/types';
 import Image from 'next/image';
 import axios from 'axios';
+import { chatStore } from '@/store/useChatStore';
 import profile from '/public/img/profile.jpg';
 import useLogout from '@/app/_util/hooks/useLogout';
 import { useMutation } from '@tanstack/react-query';
@@ -13,6 +14,7 @@ export default function RecommendItem({ user }: { user: IUser }) {
   const router = useRouter();
   const executeLogout = useLogout({ type: 'session' });
   const requestWithRetry = useRequestWithAuthRetry();
+  const setChat = chatStore((state) => state.setChat);
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -39,6 +41,12 @@ export default function RecommendItem({ user }: { user: IUser }) {
       }
     },
     onSuccess: (data) => {
+      setChat({
+        isClose: false,
+        isGroup: false,
+        partInPeople: 2,
+        chatTitle: user.nickname,
+      });
       router.push(`/chat/private/${data.chatRoomId}`);
     },
     onError: () => {
