@@ -33,6 +33,8 @@ export default function useChatMessages() {
       if (!lastPage || lastPage.length < 10) return undefined;
       return lastPage[0].chatId;
     },
+    staleTime: 0,
+    refetchOnMount: true,
   });
 
   useEffect(() => {
