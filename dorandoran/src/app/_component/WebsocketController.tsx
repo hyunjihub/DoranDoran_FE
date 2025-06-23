@@ -13,14 +13,12 @@ export default function WebSocketController() {
   const socket = websocketStore((state) => state.socket);
 
   useEffect(() => {
-    const isChatRoute = pathname.startsWith('/chat') || pathname === '/mychat';
-
-    if (isLoggedIn && !socket && isChatRoute) {
+    if (isLoggedIn && !socket) {
       connect();
     }
 
     return () => {
-      if (socket && !isChatRoute) {
+      if (socket) {
         disconnect();
       }
     };

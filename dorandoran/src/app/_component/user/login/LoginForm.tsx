@@ -16,6 +16,7 @@ import { websocketStore } from '@/store/useWebsocketStore';
 export default function LoginForm() {
   const router = useRouter();
   const login = userStore((state) => state.login);
+  const connect = websocketStore((state) => state.connect);
   const setMemberId = websocketStore((state) => state.setMemberId);
   const [loginFail, setLoginFail] = useState(false);
   const [capsLockFlag, setCapsLockFlag] = useState(false);
@@ -35,6 +36,7 @@ export default function LoginForm() {
     onSuccess: (data) => {
       login(data);
       setMemberId(data.memberId);
+      connect();
       localStorage.setItem('doran-rememberMe', '1');
       router.push(decodeURIComponent(param.get('redirect') ?? '/'));
     },
