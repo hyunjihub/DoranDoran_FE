@@ -29,7 +29,7 @@ export default function ChatListItem({ room }: { room: IRoom }) {
   };
 
   return (
-    <li className="relative w-full max-w-md mx-auto overflow-hidden" onClick={handleEnter}>
+    <li className="relative w-full max-w-md mx-auto overflow-hidden cursor-pointer" onClick={handleEnter}>
       <RoomLeave swiped={swiped} />
       <motion.div
         className="py-2 px-3 flex justify-center items-center bg-white"

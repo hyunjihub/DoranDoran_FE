@@ -66,7 +66,7 @@ export default function RoomItem({ room }: { room: IRoomItem }) {
   return (
     <li className="max-w-[180px]" title={room.chatRoomTitle}>
       <div className="relative w-[180px] h-[180px]" onClick={handleEnter}>
-        <Image className="rounded-lg" src={room.chatRoomImage || profile} alt={room.chatRoomTitle} fill />
+        <Image className="rounded-lg object-cover" src={room.chatRoomImage || profile} alt={room.chatRoomTitle} fill />
         <RoomBadge type="new" />
       </div>
       <p className="mt-2 font-semibold truncate">{room.chatRoomTitle}</p>
