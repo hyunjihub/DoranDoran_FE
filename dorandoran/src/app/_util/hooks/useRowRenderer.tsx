@@ -26,26 +26,25 @@ export const useRowRenderer = ({ processedMessages, cache, setModalOpen }: useRo
     }
     return (
       <CellMeasurer cache={cache} parent={parent} key={key} columnIndex={0} rowIndex={index}>
-        <div key={key} style={style} className="w-full flex flex-col items-center">
-          {message.isDateChanged && <Date date={message.date} />}
-          {message.type == 'system' || message.type === 'change' ? (
-            <SystemMessage message={message} />
-          ) : message.senderId === memberId ? (
-            <MyMessage
-              type={message.type}
-              message={message.content}
-              timestamp={message.isLastInGroup ? message.time : null}
-            />
-          ) : message.senderId !== memberId && message.senderId !== -1 ? (
-            <OtherMessage
-              message={message}
-              time={message.isLastInGroup ? message.time : null}
-              setModalOpen={setModalOpen}
-            />
-          ) : (
-            <></>
-          )}
-        </div>
+        {({ measure, registerChild }) => (
+          <div ref={(el) => registerChild(el)} key={key} style={style} className="w-full flex flex-col items-center">
+            {message.isDateChanged && <Date date={message.date} />}
+            {message.type == 'system' || message.type === 'change' ? (
+              <SystemMessage message={message} />
+            ) : message.senderId === memberId ? (
+              <MyMessage message={message} time={message.isLastInGroup ? message.time : null} onImageLoad={measure} />
+            ) : message.senderId !== memberId && message.senderId !== -1 ? (
+              <OtherMessage
+                message={message}
+                time={message.isLastInGroup ? message.time : null}
+                setModalOpen={setModalOpen}
+                onImageLoad={measure}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
+        )}
       </CellMeasurer>
     );
   };

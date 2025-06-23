@@ -7,9 +7,10 @@ interface OtherMessageProps {
   message: IMessage;
   time: string | null;
   setModalOpen: React.Dispatch<React.SetStateAction<number>>;
+  onImageLoad: () => void;
 }
 
-export default function OtherMessage({ message, time, setModalOpen }: OtherMessageProps) {
+export default function OtherMessage({ message, time, setModalOpen, onImageLoad }: OtherMessageProps) {
   const handleClickProfile = () => {
     setModalOpen(message.senderId);
   };
@@ -32,7 +33,7 @@ export default function OtherMessage({ message, time, setModalOpen }: OtherMessa
             {message.type === 'text' ? (
               <TextMessage message={message.content} />
             ) : (
-              <Image src={message.content} alt="이미지" width={180} height={0} unoptimized />
+              <Image src={message.content} alt="이미지" width={180} height={0} unoptimized onLoad={onImageLoad} />
             )}
           </div>
           {time && <p className="text-xs text-gray-400">{message.time}</p>}
