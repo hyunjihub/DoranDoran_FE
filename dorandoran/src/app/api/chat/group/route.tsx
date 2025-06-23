@@ -32,6 +32,6 @@ export async function POST(req: Request) {
       status = error.response.status || status;
     }
 
-    return NextResponse.json({ error: errorMessage }, { status });
+    return NextResponse.json({ message: errorMessage }, { status });
   }
 }

@@ -5,7 +5,7 @@ import ProtectedRoute from '@/app/_component/ProtectedRoute';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 
-const PromptModal = dynamic(() => import('@/app/_component/user/PromptModal'));
+const PromptModal = dynamic(() => import('@/app/_component/ui/PromptModal'));
 
 export default function MyPage() {
   const [isActive, setIsActive] = useState(false);
