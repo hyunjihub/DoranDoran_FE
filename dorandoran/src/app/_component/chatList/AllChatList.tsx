@@ -3,7 +3,8 @@
 import { useEffect, useRef } from 'react';
 
 import { IRoomItem } from '@/app/_util/types/types';
-import Loading from '../layout/Loading';
+import InfiniteLoading from '../ui/InfiniteLoading';
+import Loading from '../ui/Loading';
 import RoomItem from '@/app/_component/chatList/RoomItem';
 import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -58,7 +59,7 @@ export default function AllChatList() {
               page.data.map((room: IRoomItem, idx: number) => <RoomItem room={room} key={`${pageIndex}-${idx}`} />)
             )}
           </ul>
-          {isFetchingNextPage && <p className="text-xs text-center py-4">불러오는 중...</p>}
+          {isFetchingNextPage && <InfiniteLoading />}
           <div ref={observerRef} className="h-6" />
         </>
       )}

@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { AuthStatus } from '@/app/_util/types/types';
 import EmailInput from '@/app/_component/form/EmailInput';
 import { IFindForm } from '@/app/_util/types/types';
-import Loading from '../layout/Loading';
+import Loading from '../ui/Loading';
 import PasswordInput from '@/app/_component/form/PasswordInput';
 import { useState } from 'react';
 import useUpdatePassword from '@/app/_util/hooks/useUpdatePassword';

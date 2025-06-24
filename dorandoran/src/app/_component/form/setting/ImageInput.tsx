@@ -4,7 +4,7 @@ import { ChangeEvent, useRef, useState } from 'react';
 
 import CameraIcon from '../../ui/CameraIcon';
 import Image from 'next/image';
-import Loading from '../../layout/Loading';
+import Loading from '../../ui/Loading';
 import getImageURL from '@/app/_util/getImageURL';
 import profile from '/public/img/profile.jpg';
 

@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { AuthStatus } from '@/app/_util/types/types';
 import EmailInput from '../form/EmailInput';
 import { ISignupForm } from '@/app/_util/types/types';
-import Loading from '../layout/Loading';
+import Loading from '../ui/Loading';
 import NicknameInput from '../form/NicknameInput';
 import PasswordInput from '../form/PasswordInput';
 import axios from 'axios';

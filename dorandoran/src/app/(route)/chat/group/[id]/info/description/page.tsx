@@ -28,6 +28,10 @@ export default function Description() {
 
   const mutation = useMutation({
     mutationFn: async () => {
+      if (roomDescription.length > 255) {
+        alert('설명은 최대 255자까지 작성할 수 있습니다.');
+        return;
+      }
       try {
         await axios.patch('/api/chat/info/description', { chatRoomId: subscribedRoomId, description: roomDescription });
       } catch (error) {

@@ -32,6 +32,8 @@ export default function useJoinGroupRoom(room: IRoomItem) {
             throw new Error('로그아웃 되었습니다. 다시 로그인 해주세요.');
           } else if (message === '이미 입장한 채팅방입니다.') {
             return;
+          } else if (message === '채팅방에 더이상 참여할 수 없습니다.') {
+            alert('채팅방 최대 인원 수를 초과하여 입장할 수 없습니다.');
           } else {
             alert(error.response?.data || error.message);
           }

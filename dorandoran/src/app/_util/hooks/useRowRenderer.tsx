@@ -21,9 +21,7 @@ export const useRowRenderer = ({ processedMessages, cache, setModalOpen }: useRo
 
   const rowRenderer = ({ index, key, style, parent }: ListRowProps) => {
     const message = processedMessages[index];
-    if (message.type === 'enter' || message.type === 'leave') {
-      return null;
-    }
+
     return (
       <CellMeasurer cache={cache} parent={parent} key={key} columnIndex={0} rowIndex={index}>
         {({ measure, registerChild }) => (

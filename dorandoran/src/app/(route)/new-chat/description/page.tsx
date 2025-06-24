@@ -20,6 +20,10 @@ export default function Description() {
   }, [description]);
 
   const handleChange = () => {
+    if (roomDescription.length > 255) {
+      alert('설명은 최대 255자까지 작성할 수 있습니다.');
+      return;
+    }
     setDescription(roomDescription);
     const previousPage = goBack();
     router.push(previousPage);

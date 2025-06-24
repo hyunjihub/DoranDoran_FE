@@ -20,6 +20,13 @@ export default function ChatTitle() {
   }, [chatRoomTitle]);
 
   const handleChange = () => {
+    if (!chatRoomTitle) {
+      alert('제목은 공백일 수 없습니다.');
+      return;
+    } else if (chatRoomTitle && chatRoomTitle.length > 15) {
+      alert('제목은 1자 이상 15자 이하입니다.');
+      return;
+    }
     setTitle(roomTitle);
     const previousPage = goBack();
     router.push(previousPage);

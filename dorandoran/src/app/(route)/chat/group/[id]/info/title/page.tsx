@@ -30,6 +30,13 @@ export default function ChatTitle() {
 
   const mutation = useMutation({
     mutationFn: async () => {
+      if (!chatRoomTitle) {
+        alert('제목은 공백일 수 없습니다.');
+        return;
+      } else if (chatRoomTitle && chatRoomTitle.length > 15) {
+        alert('제목은 1자 이상 15자 이하입니다.');
+        return;
+      }
       try {
         await axios.patch('/api/chat/info/title', { chatRoomId: subscribedRoomId, chatRoomTitle: roomTitle });
       } catch (error) {

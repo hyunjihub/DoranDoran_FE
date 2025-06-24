@@ -9,7 +9,7 @@ import Image from 'next/image';
 import ImageInput from '@/app/_component/form/setting/ImageInput';
 import InputToLink from '@/app/_component/form/setting/InputToLink';
 import Link from 'next/link';
-import Loading from '@/app/_component/layout/Loading';
+import Loading from '@/app/_component/ui/Loading';
 import Logout from '@/app/_component/user/Logout';
 import PushNotificationInput from '@/app/_component/form/setting/PushNotificationInput';
 import arrow from '/public/img/icon/prevArrow.svg';
