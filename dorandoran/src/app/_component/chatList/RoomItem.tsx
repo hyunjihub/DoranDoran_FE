@@ -5,12 +5,14 @@ import Image from 'next/image';
 import RoomBadge from './RoomBadge';
 import dynamic from 'next/dynamic';
 import profile from '/public/img/profile.jpg';
+import useJoinChatRoom from '@/app/_util/hooks/useJoinGroupRoom';
 import { useState } from 'react';
 
-const AlertModal = dynamic(() => import('@/app/_component/ui/AlertModal'));
+const ConfirmModal = dynamic(() => import('@/app/_component/ui/ConfirmModal'));
 
 export default function RoomItem({ room }: { room: IRoomItem }) {
   const [isActive, setIsActive] = useState(false);
+  const mutation = useJoinChatRoom(room);
 
   return (
     <>
@@ -32,7 +34,16 @@ export default function RoomItem({ room }: { room: IRoomItem }) {
           </p>
         </div>
       </li>
-      {isActive && <AlertModal setIsActive={setIsActive} room={room} />}
+      {isActive && (
+        <ConfirmModal
+          setIsActive={setIsActive}
+          title={'채팅방 참여'}
+          description={'이 방에 참여하시겠습니까?\n입장하면 실시간 대화가 가능합니다.'}
+          confirmText={'참여'}
+          onConfirm={() => mutation.mutate}
+          isPending={mutation.isPending}
+        />
+      )}
     </>
   );
 }
