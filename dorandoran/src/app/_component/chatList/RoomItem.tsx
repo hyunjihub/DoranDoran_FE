@@ -40,7 +40,7 @@ export default function RoomItem({ room }: { room: IRoomItem }) {
           title={'채팅방 참여'}
           description={'이 방에 참여하시겠습니까?\n입장하면 실시간 대화가 가능합니다.'}
           confirmText={'참여'}
-          onConfirm={() => mutation.mutate}
+          onConfirm={() => mutation.mutate()}
           isPending={mutation.isPending}
         />
       )}

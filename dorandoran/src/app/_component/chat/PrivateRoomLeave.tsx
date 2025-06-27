@@ -63,7 +63,7 @@ export default function PrivateRoomLeave() {
           title={'채팅방 나가기'}
           description={'채팅방을 나가시겠습니까?\n나간 채팅방에서의 기록은 복구되지 않습니다.'}
           confirmText={'나가기'}
-          onConfirm={() => mutation.mutate}
+          onConfirm={() => mutation.mutate()}
           isPending={mutation.isPending}
         />
       )}
