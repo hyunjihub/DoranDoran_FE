@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const id = Number(searchParams.get('id') || '0');
 
-    const { data } = await axios.get<IRoomInfo>(`${process.env.API_BASE_URL}/chat/chatrooms?id=${id}}`, {
+    const { data } = await axios.get<IRoomInfo>(`${process.env.API_BASE_URL}/chat/info?id=${id}}`, {
       headers: {
         Cookie: `access=${accessToken}`,
       },

@@ -13,7 +13,7 @@ interface ChattingProps {
 
 const cache = new CellMeasurerCache({
   fixedWidth: true,
-  defaultHeight: 80,
+  defaultHeight: 200,
 });
 
 export default function Chatting({ setModalOpen }: ChattingProps) {
