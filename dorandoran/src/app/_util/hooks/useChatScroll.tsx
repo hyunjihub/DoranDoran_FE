@@ -17,6 +17,7 @@ export function useChatScroll({
   const listRef = useRef<List>(null);
   const scrollingContainerRef = useRef<HTMLDivElement | null>(null);
   const isUserAtBottomRef = useRef(true);
+  const shouldScrollToBottomRef = useRef(true);
 
   const checkIfAtBottom = () => {
     const container = scrollingContainerRef.current;
@@ -37,15 +38,21 @@ export function useChatScroll({
     isUserAtBottomRef.current = checkIfAtBottom();
   };
 
-  useEffect(() => {
-    if (isUserAtBottomRef.current && listRef.current && processedMessages.length > 0) {
+  const onRowsRendered = () => {
+    if (shouldScrollToBottomRef.current && listRef.current) {
       listRef.current.scrollToRow(processedMessages.length - 1);
+      shouldScrollToBottomRef.current = false;
     }
+  };
+
+  useEffect(() => {
+    shouldScrollToBottomRef.current = true;
   }, [processedMessages.length]);
 
   return {
     listRef,
     scrollingContainerRef,
     handleScroll,
+    onRowsRendered,
   };
 }
