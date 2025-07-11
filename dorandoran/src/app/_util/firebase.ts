@@ -12,6 +12,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+const messaging = typeof window !== 'undefined' ? getMessaging(app) : null;
 
 export { messaging, getToken };

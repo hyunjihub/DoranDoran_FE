@@ -1,3 +1,5 @@
+'use client';
+
 import axios from 'axios';
 import { getToken } from 'firebase/messaging';
 import { messaging } from '../firebase';
@@ -6,6 +8,11 @@ const VAPID_KEY = process.env.NEXT_PUBLIC_FIREBASE_APP_ID!;
 
 export const getDeviceToken = async () => {
   try {
+    if (!messaging) {
+      console.warn('Messaging이 초기화되지 않았습니다.');
+      return;
+    }
+
     const permission = await Notification.requestPermission();
     if (permission !== 'granted') {
       console.warn('알림 권한이 거부되었습니다.');
