@@ -4,7 +4,7 @@ import axios from 'axios';
 import { getToken } from 'firebase/messaging';
 import { messaging } from '../firebase';
 
-const VAPID_KEY = process.env.NEXT_PUBLIC_FIREBASE_APP_ID!;
+const VAPID_KEY = process.env.NEXT_PUBLIC_VAPID_KEY!;
 
 export const removeDeviceToken = async () => {
   try {
