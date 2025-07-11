@@ -6,6 +6,7 @@ import { ILoginForm } from '@/app/_util/types/types';
 import LoginError from '../../error/LoginError';
 import LoginInput from './LoginInput';
 import axios from 'axios';
+import { getDeviceToken } from '@/app/_util/hooks/useGetDeviceToken';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
@@ -37,6 +38,7 @@ export default function LoginForm() {
       login(data);
       setMemberId(data.memberId);
       connect();
+      getDeviceToken();
       localStorage.setItem('doran-rememberMe', '1');
       router.push(decodeURIComponent(param.get('redirect') ?? '/'));
     },

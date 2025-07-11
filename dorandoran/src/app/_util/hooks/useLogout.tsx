@@ -1,5 +1,6 @@
 'use client';
 
+import { removeDeviceToken } from './useRemoveDeviceToken';
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { userStore } from '@/store/useUserStore';
@@ -11,6 +12,7 @@ export default function useLogout({ type }: { type: 'logout' | 'session' }): () 
   const router = useRouter();
 
   const executeLogout = useCallback(() => {
+    removeDeviceToken();
     disconnect();
     logout();
     localStorage.removeItem('doran-rememberMe');

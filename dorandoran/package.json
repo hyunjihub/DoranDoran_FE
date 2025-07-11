@@ -17,6 +17,7 @@
     "@types/react-virtualized": "^9.22.2",
     "@types/react-window": "^1.8.8",
     "axios": "^1.8.1",
+    "firebase": "^11.10.0",
     "formidable": "^3.5.2",
     "framer-motion": "^12.4.7",
     "next": "15.1.7",
