@@ -46,6 +46,7 @@ export default function useUpdateRoomInfo(id: string) {
 
       if (roomInfo) {
         setChat({
+          chatRoomId: Number(id),
           isClose,
           isGroup,
           partInPeople: roomInfo.currentCount,

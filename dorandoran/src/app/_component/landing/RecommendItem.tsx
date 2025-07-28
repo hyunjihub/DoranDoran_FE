@@ -44,6 +44,7 @@ export default function RecommendItem({ user }: { user: IUser }) {
     },
     onSuccess: (data) => {
       setChat({
+        chatRoomId: data.chatRoomId,
         isClose: false,
         isGroup: false,
         partInPeople: 2,

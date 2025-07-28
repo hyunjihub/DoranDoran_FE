@@ -45,6 +45,7 @@ export default function useJoinGroupRoom(room: IRoomItem) {
     },
     onSuccess: () => {
       setChat({
+        chatRoomId: room.chatRoomId,
         isClose: false,
         isGroup: true,
         partInPeople: room.partInPeople,
