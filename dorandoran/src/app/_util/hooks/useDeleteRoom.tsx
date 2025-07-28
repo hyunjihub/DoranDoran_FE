@@ -24,13 +24,13 @@ export default function useDeleteRoom(isManager: boolean) {
           if (!isManager) {
             const confirmed = confirm('채팅방을 나가시겠습니까?');
             if (!confirmed) throw new Error('사용자가 채팅방 나가기를 취소했습니다.');
-            await axios.delete(`/api/chatrooms?groupId=${chatRoomId}`);
+            await axios.delete(`/api/chat/chatrooms?groupId=${chatRoomId}`);
           } else {
             const confirmed = confirm(
               '채팅방을 폐쇄하시겠습니까?\n폐쇄된 채팅방은 복구가 불가능하며 참여 중인 회원의 메시지 전송이 불가능해집니다.'
             );
             if (!confirmed) throw new Error('사용자가 채팅방 폐쇄를 취소했습니다.');
-            await axios.delete(`/api/shutdown?groupId=${chatRoomId}`);
+            await axios.delete(`/api/chat/shutdown?groupId=${chatRoomId}`);
           }
         };
 
@@ -43,7 +43,7 @@ export default function useDeleteRoom(isManager: boolean) {
           if (status === 401 && msg === 'accessToken 만료') {
             await requestWithRetry(
               'delete',
-              isManager ? `/api/chatrooms?groupId=${chatRoomId}` : `/api/shutdown?groupId=${chatRoomId}`
+              isManager ? `/api/chat/chatrooms?groupId=${chatRoomId}` : `/api/chat/shutdown?groupId=${chatRoomId}`
             );
           } else if (status === 401 && msg === 'refreshToken 만료') {
             executeLogout();
