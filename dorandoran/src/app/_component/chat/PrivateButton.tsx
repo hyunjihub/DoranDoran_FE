@@ -1,15 +1,27 @@
 'use client';
 
 import axios from 'axios';
+import { chatStore } from '@/store/useChatStore';
 import useLogout from '@/app/_util/hooks/useLogout';
 import { useMutation } from '@tanstack/react-query';
 import { useRequestWithAuthRetry } from '@/app/_util/hooks/useRequestWithAuthRetry';
 import { useRouter } from 'next/navigation';
+import { websocketStore } from '@/store/useWebsocketStore';
 
-export default function PrivateButton({ chatPermitted, id }: { chatPermitted: boolean | undefined; id: number }) {
+export default function PrivateButton({
+  chatPermitted,
+  id,
+  name,
+}: {
+  chatPermitted: boolean | undefined;
+  id: number;
+  name: string;
+}) {
   const router = useRouter();
   const executeLogout = useLogout({ type: 'session' });
   const requestWithRetry = useRequestWithAuthRetry();
+  const setChat = chatStore((state) => state.setChat);
+  const subscribeRoom = websocketStore((state) => state.subscribeRoom);
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -36,7 +48,15 @@ export default function PrivateButton({ chatPermitted, id }: { chatPermitted: bo
       }
     },
     onSuccess: (data) => {
-      router.push(`/chat/${data.chatRoomId}`);
+      setChat({
+        chatRoomId: data.chatRoomId,
+        isClose: false,
+        isGroup: false,
+        partInPeople: 2,
+        chatTitle: name,
+      });
+      subscribeRoom(data.chatRoomId, 'private');
+      router.push(`/chat/private/${data.chatRoomId}`);
     },
     onError: () => {
       alert('오류');

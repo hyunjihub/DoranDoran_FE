@@ -67,7 +67,7 @@ export default function Profile({ id, setModalOpen }: ProfileProps) {
             fill
           />
         </div>
-        <PrivateButton chatPermitted={data?.chatPermitted} id={id} />
+        <PrivateButton chatPermitted={data?.chatPermitted} id={id} name={data?.nickname || ''} />
       </div>
     </div>
   );
