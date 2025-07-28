@@ -32,7 +32,6 @@ export async function GET(request: Request) {
     if (axios.isAxiosError(error) && error.response) {
       errorMessage = error.response.data?.message || errorMessage;
       status = error.response.status || status;
-      console.log(error.response);
     }
 
     return NextResponse.json({ error: errorMessage }, { status });
