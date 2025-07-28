@@ -23,6 +23,7 @@ const chatStore = create(
       isClose: false,
       setChat: (newData) =>
         set(() => ({
+          chatRoomId: newData.chatRoomId,
           partInPeople: newData.partInPeople,
           chatTitle: newData.chatTitle,
           isGroup: newData.isGroup,

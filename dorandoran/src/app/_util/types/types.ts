@@ -15,6 +15,7 @@ export interface IMypage {
 }
 
 export interface IChat {
+  chatRoomId: number;
   partInPeople: number;
   chatTitle: string | null;
   isGroup: boolean;

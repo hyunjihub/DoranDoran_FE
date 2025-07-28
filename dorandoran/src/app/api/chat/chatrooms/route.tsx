@@ -13,7 +13,6 @@ export async function GET(request: Request) {
     );
 
     const hasMore = data.length === 8;
-
     return NextResponse.json({
       data,
       nextPage: cursor !== null ? cursor + 1 : 1,
