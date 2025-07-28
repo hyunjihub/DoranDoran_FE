@@ -26,6 +26,7 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
+    "react-loading-skeleton": "^3.5.0",
     "react-slick": "^0.30.3",
     "react-virtualized": "^9.22.6",
     "react-virtualized-auto-sizer": "^1.0.25",

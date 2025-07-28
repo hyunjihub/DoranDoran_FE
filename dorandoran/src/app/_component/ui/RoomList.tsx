@@ -2,6 +2,7 @@
 
 import { IRoomItem } from '@/app/_util/types/types';
 import RoomItem from '../chatList/RoomItem';
+import RoomSkeleton from '../chatList/RoomSkeleton';
 import axios from 'axios';
 import useLogout from '@/app/_util/hooks/useLogout';
 import { useQuery } from '@tanstack/react-query';
@@ -15,7 +16,7 @@ export default function RoomList() {
   const executeLogout = useLogout({ type: 'session' });
   const requestWithRetry = useRequestWithAuthRetry();
 
-  const { data } = useQuery<RoomListResponse>({
+  const { data, isLoading } = useQuery<RoomListResponse>({
     queryKey: ['newRoom'],
     queryFn: async () => {
       try {
@@ -46,9 +47,13 @@ export default function RoomList() {
 
   return (
     <ul className="mt-4 grid grid-cols-2 gap-4">
-      {(data?.data ?? []).map((room, key) => (
-        <RoomItem room={room} key={key} />
-      ))}
+      {isLoading ? (
+        Array.from({ length: 4 }).map((_, i) => <RoomSkeleton key={i} />)
+      ) : data && data.data.length > 0 ? (
+        data.data.map((room) => <RoomItem room={room} key={room.chatRoomId} />)
+      ) : (
+        <p className="col-span-2 text-center text-gray-500">참여 가능한 채팅방이 없습니다.</p>
+      )}
     </ul>
   );
 }
